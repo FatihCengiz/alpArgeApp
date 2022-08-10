@@ -232,3 +232,8 @@
        url('../fonts/poppins/poppins-v5-latin-900italic.ttf') format('truetype'), /* Safari, Android, iOS */
        url('../fonts/poppins/poppins-v5-latin-900italic.svg#Poppins') format('svg'); /* Legacy iOS */
 }
+@font-face {
+  font-family: 'Poppins';
+  src: url('../fonts/poppins/Poppins-Regular.ttf'); /* Login Compat Modes */
+}
+

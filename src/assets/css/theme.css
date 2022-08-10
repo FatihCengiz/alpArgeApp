@@ -2112,6 +2112,12 @@ section {
     left: 0;
     height: 100%;
 }
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
 
 .menu-sidebar2 {
     width: 280px;
@@ -2120,7 +2126,6 @@ section {
     top: 0;
     bottom: 0;
     background: #fff;
-    overflow-y: auto;
     height: 100vh;
     -webkit-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -2141,7 +2146,7 @@ section {
     -moz-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    background: #365cad;
+    background: #76922f;
     padding: 0 35px;
 }
 
@@ -2210,6 +2215,7 @@ section {
     height: calc(100vh - 75px);
     border-right: 1px solid #e5e5e5;
     position: relative;
+    overflow-y: auto;
 }
 
 .navbar-sidebar2 .navbar__list li {
@@ -2277,30 +2283,30 @@ section {
     border-color: #ebebeb;
 }
 
+
 .inbox-num {
-    position: absolute;
-    top: 50%;
+
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
     -o-transform: translateY(-50%);
     transform: translateY(-50%);
-    right: 34px;
-    width: 30px;
-    height: 30px;
     background: #ff4b5a;
     text-align: center;
     line-height: 30px;
-    font-size: 14px;
+    font-size: 15px;
     color: #fff;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+    margin-left: 120px;
+    padding: 5px 10px 5px 10px;
+    font-weight: 600;
 }
 
 .header-desktop2 {
     height: 75px;
-    background: #4272d7;
+    background: #92be21;
     position: fixed;
     z-index: 1001;
     top: 0;
@@ -4763,10 +4769,10 @@ section {
 
 @media (max-width: 991px) {
     .au-breadcrumb {
-        height: 130px;
+        height: 0px;
     }
 
-    .au-breadcrumb.m-t-75 {
+    .au-breadcrumb.m-t-10 {
         margin-top: 0;
     }
 }
