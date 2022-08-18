@@ -1,0 +1,188 @@
+<div class="page-container2">
+  <section class="statistic">
+    <div class="section__content section__content--p30">
+      <div class="container-fluid">
+        <form  [formGroup]="demandForm" autocomplete="off">
+          <h2 class="text-center mb-4">Talep Oluştur</h2>
+          <div class="row">
+            <div class="col-sm-6 form-group">
+              <label for="name-p">Proje Adı</label>
+              <input
+                type="search"
+                class="form-control"
+                name="Pname"
+                id="name-p"
+                formControlName="projectName"
+                required
+              />
+
+            </div>
+            <div class="col-sm-6 form-group">
+              <label for="type-p">Proje Tipi</label>
+              <select  formControlName="projectType" class="form-control custom-select browser-default">
+                <option value="Bilister Kalıbı">Bilister Kalıbı</option>
+                <option value="Test Jigi">Test Jigi</option>
+                <option value="Yazılım">Yazılım</option>
+              </select>
+            </div>
+            <div class="col-sm-2 form-group">
+              <label for="type-d">Talep Şekli</label>
+              <select formControlName="demandType" class="form-control custom-select browser-default">
+                <option value="1">Müşteri Talebi</option>
+                <option value="2">İşletme Talebi</option>
+              </select>
+            </div>
+
+            <div class="col-sm-4 form-group">
+              <label for="customer">Müşteri Adı ve Kodu</label>
+              <select formControlName="customer" class="form-control custom-select browser-default">
+                <option value="1">10T - ALPPLAS BOLU</option>
+                <option value="Åland Islands">B</option>
+                <option value="Zimbabwe">C</option>
+              </select>
+            </div>
+
+            <div class="col-sm-3 form-group">
+              <label for="DateD">Talep Tarihi</label>
+              <input
+                type="Date"
+                name="dob"
+                class="form-control"
+                id="DateD"
+                formControlName="demandDate"
+                placeholder=""
+                required
+              />
+            </div>
+            <div class="col-sm-3 form-group">
+              <label for="DeliveryD">Teslim Tarihi</label>
+              <input
+                type="Date"
+                name="dob"
+                class="form-control"
+                id="DeliveryD"
+                formControlName="deliveryDate"
+                placeholder=""
+                required
+              />
+            </div>
+
+
+            <div class="col-sm-3 form-group">
+              <label for="tesisCode">Tesis Kodu</label>
+              <select
+                id="tesisCode"
+                class="form-control browser-default custom-select"
+                formControlName="facilityCode"
+              >
+                <option value="male">10</option>
+                <option value="female">20</option>
+              </select>
+            </div>
+            <div class="col-sm-3 form-group">
+              <label for="quantity">Miktar</label>
+              <input
+                type="Number"
+                name="cnf-password"
+                class="form-control"
+                id="quantity"
+                formControlName="quantity"
+                required
+              />
+            </div>
+            <div class="col-sm-6 form-group">
+
+            </div>
+            <div class="col-sm-6 form-group">
+              <label for="feature1">Beklenen Temel Foksiyonlar</label>
+              <textarea
+                type="text"
+                class="form-control "
+                name="Pname"
+                id="feature1"
+                formControlName="feature1"
+                style="resize: none;"
+                required
+              ></textarea>
+            </div>
+            <div class="col-sm-6 form-group">
+              <label for="feature2">Foksiyonel ve Teknik Özellikler</label>
+              <textarea
+                type="search"
+                class="form-control "
+                name="Pname"
+                id="feature2"
+                formControlName="feature2"
+                style="resize: none;"
+                required
+              ></textarea>
+            </div>
+            <div class="col-sm-6 form-group">
+              <label for="feature3">Mekanik Özellikler</label>
+              <textarea
+                type="search"
+                class="form-control "
+                name="Pname"
+                id="feature3"
+                formControlName="feature3"
+                style="resize: none;"
+
+              ></textarea>
+
+            </div>
+            <div class="col-sm-6 form-group">
+              <label for="feature4">Elektriksel Özellikler</label>
+              <textarea
+                type="search"
+                class="form-control "
+                name="Pname"
+                id="feature4"
+                formControlName="feature4"
+                style="resize: none;"
+
+              ></textarea>
+
+            </div>
+            <div class="col-sm-6 form-group">
+              <label for="feature5">İlgili Standartlar</label>
+              <textarea
+                type="search"
+                class="form-control "
+                name="Pname"
+                id="feature5"
+                formControlName="feature5"
+                style="resize: none;"
+
+              ></textarea>
+
+            </div>
+            <div class="col-sm-6 form-group">
+              <label for="feature6">Elektrik komponentleri ile ilgili detaylı bilgi</label>
+              <textarea
+                type="search"
+                class="form-control "
+                name="Pname"
+                id="feature6"
+                formControlName="feature6"
+                style="resize: none;"
+
+              ></textarea>
+
+            </div>
+
+            <div class="col-sm-3 form-group ">
+              <button class="btn float-right" (click)="demandSave()" style="background-color: #94c11f; color: white; width: 100%;">Kaydet</button>
+            </div>
+            <div class="col-sm-3 form-group ">
+              <button class="btn float-left " (click)="demandRemove()" style="background-color: red; color: white; width: 100%;" >Sil</button>
+            </div>
+            <div class="col-sm-6 form-group ">
+              <button class="btn btn-primary float-right" (click)="demandAdd()"  style="color: white;">Gönder</button>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>

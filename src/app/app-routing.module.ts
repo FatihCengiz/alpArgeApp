@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DemandAddComponent } from './ui/components/demands/demand-add/demand-add.component';
 import { DemandsComponent } from './ui/components/demands/demands.component';
 import { HomeComponent } from './ui/components/home/home.component';
 import { LayoutComponent } from './ui/layout/layout.component';
@@ -14,6 +15,7 @@ const routes: Routes = [
     {path:'',component:HomeComponent,loadChildren:()=> import('./ui/components/home/home.module').then(m=>m.HomeModule)},
     {path:'home',component:HomeComponent,loadChildren:()=> import('./ui/components/home/home.module').then(m=>m.HomeModule)},
     {path:'demands',component:DemandsComponent,loadChildren:()=> import('./ui/components/demands/demands.module').then(m=>m.DemandsModule)},
+    {path:'demands/add',component:DemandAddComponent,loadChildren:()=>import('./ui/components/demands/demand-add/demand-add.module').then(m=>m.DemandAddModule)}
   ]},
   {path:'login',component:LoginComponent,canActivateChild:[AuthGuard],loadChildren:()=> import('./ui/login/login.module').then(m=>m.LoginModule)},
   {path:'workSpace',component:WorkSpaceComponent}

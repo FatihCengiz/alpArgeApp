@@ -6,9 +6,11 @@
   </div>
   <div class="menu-sidebar2__content">
     <div class="account2">
-      <div class="image img-cir img-120">
-        <img src="./assets/images/admin.jpeg" alt="John Doe" />
+      <a routerLink="/"routerLinkActive="active">
+      <div router class="image img-cir img-120">
+      <img router src="./assets/images/admin.jpeg" alt="John Doe" />
       </div>
+    </a>
       <h4 class="name"> Fatih Cengiz</h4>
       <a href="" (click)="logout()" >Sign out</a>
     </div>
@@ -44,11 +46,8 @@
         </mdb-accordion-item>
 
         <div class="without-accordion-item m-3">
-
-            <a href="inbox.html"> <i class="fas fa-chart-bar mr-3 ml-1"></i>Talepler</a>
+            <a routerLink="/demands" routerLinkActive="active"> <i class="fas fa-chart-bar mr-3 ml-1"></i>Talepler</a>
             <span class="inbox-num" >3</span>
-
-
         </div>
 
         <mdb-accordion-item>

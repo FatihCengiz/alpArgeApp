@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 export class AuthService {
   possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,./;'[]\=-)(*&^%$#@!~`";
   lengthOfCode:number = 40;
-
   constructor( @Inject("apiUrl") private apiUrl:string, private httpClient:HttpClient,private router:Router) { }
 
   login(userName:string,password:string){

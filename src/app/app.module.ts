@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { UiModule } from './ui/ui.module';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgxSpinnerModule } from "ngx-spinner";
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
+    NgxSpinnerModule.forRoot({ type: 'ball-atom' }),
+    ToastrModule.forRoot({closeButton:true,progressBar:true}),
     UiModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

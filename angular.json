@@ -41,8 +41,8 @@
               "src/assets/vendor/css-hamburgers/hamburgers.min.css",
               "src/assets/vendor/slick/slick.css",
               "src/assets/vendor/select2/select2.min.css",
-              "node_modules/ngx-spinner/animations/ball-scale-multiple.css" 
-
+              "node_modules/ngx-spinner/animations/ball-atom.css" ,
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
 
@@ -120,5 +120,7 @@
       }
     }
   },
-  "defaultProject": "alpArgeApp"
+  "cli": {
+    "analytics": false
+  }
 }
