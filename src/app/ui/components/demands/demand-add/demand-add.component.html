@@ -2,8 +2,8 @@
   <section class="statistic">
     <div class="section__content section__content--p30">
       <div class="container-fluid">
-        <form  [formGroup]="demandForm" autocomplete="off">
-          <h2 class="text-center mb-4">Talep Oluştur</h2>
+        <form  [formGroup]="demandForm"  *ngIf="this.demandForm"  autocomplete="off" >
+          <h2 class="text-center mb-4">{{projectNameHeader}}</h2>
           <div class="row">
             <div class="col-sm-6 form-group">
               <label for="name-p">Proje Adı</label>
@@ -13,6 +13,7 @@
                 name="Pname"
                 id="name-p"
                 formControlName="projectName"
+
                 required
               />
 
@@ -28,8 +29,8 @@
             <div class="col-sm-2 form-group">
               <label for="type-d">Talep Şekli</label>
               <select formControlName="demandType" class="form-control custom-select browser-default">
-                <option value="1">Müşteri Talebi</option>
-                <option value="2">İşletme Talebi</option>
+                <option value="Müşteri Talebi">Müşteri Talebi</option>
+                <option value="İşletme Talebi">İşletme Talebi</option>
               </select>
             </div>
 
@@ -75,8 +76,8 @@
                 class="form-control browser-default custom-select"
                 formControlName="facilityCode"
               >
-                <option value="male">10</option>
-                <option value="female">20</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
               </select>
             </div>
             <div class="col-sm-3 form-group">
@@ -169,15 +170,20 @@
               ></textarea>
 
             </div>
+            <div>
 
-            <div class="col-sm-3 form-group ">
+            </div>
+            <div class="col-sm-3 form-group"
+            [class]="{'btn-visible':btnVisible}">
               <button class="btn float-right" (click)="demandSave()" style="background-color: #94c11f; color: white; width: 100%;">Kaydet</button>
             </div>
-            <div class="col-sm-3 form-group ">
+            <div class="col-sm-3 form-group"
+            [class]="{'btn-visible':btnVisible}">
               <button class="btn float-left " (click)="demandRemove()" style="background-color: red; color: white; width: 100%;" >Sil</button>
             </div>
-            <div class="col-sm-6 form-group ">
-              <button class="btn btn-primary float-right" (click)="demandAdd()"  style="color: white;">Gönder</button>
+            <div class="col-sm-6 form-group"
+            [class]="{'btn-visible':btnVisible}">
+              <button class="btn btn-primary float-right" (click)="demandAdd()" style="color: white;">Gönder</button>
             </div>
 
           </div>

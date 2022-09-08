@@ -2,18 +2,22 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,./;'[]\=-)(*&^%$#@!~`";
   lengthOfCode:number = 40;
+
   constructor( @Inject("apiUrl") private apiUrl:string, private httpClient:HttpClient,private router:Router) { }
 
-  login(userName:string,password:string){
-    let api = this.apiUrl + "/api_get_user.php?" +"userName="+ userName +"&password="+ password+"&developer_mode_key=AlpArge_Dev_Key_GET"  ;
-    return this.httpClient.get(api);
+  login(form:any){;
+    console.log(form)
+    let api = this.apiUrl + "/api_login.php";
+    return this.httpClient.post(api,form);
   }
+
   logout(){
     localStorage.removeItem("token");
     this.router.navigate(['\login']);

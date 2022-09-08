@@ -16,8 +16,11 @@
     </div>
     <nav class="navbar-sidebar2" >
       <mdb-accordion [flush]="true" class="list-unstyled navbar__list" >
+        <div class="without-accordion-item m-3">
+          <a routerLink="/" routerLinkActive="active"  style="color:#76922f;"> <i class="fas fa-chart-bar mr-3 ml-1" ></i>Anasayfa</a>
+      </div>
         <mdb-accordion-item>
-          <ng-template mdbAccordionItemHeader> <i class="fas fa-tachometer-alt mr-3"></i><a class="js-arrow" href="#">Dashboard
+          <ng-template mdbAccordionItemHeader> <i class="fa-solid fa-diagram-project mr-3"></i><a class="js-arrow" href="#">Proje Yönetimi
           </a> </ng-template>
           <ng-template mdbAccordionItemBody>
             <ul class="list-unstyled">
@@ -27,17 +30,17 @@
                 >
               </li>
               <li>
-                <a href="index2.html">
+                <a href="index.html">
                   <i class="fas fa-tachometer-alt"></i>Dashboard 2</a
                 >
               </li>
               <li>
-                <a href="index3.html">
+                <a href="index.html">
                   <i class="fas fa-tachometer-alt"></i>Dashboard 3</a
                 >
               </li>
               <li>
-                <a href="index4.html">
+                <a href="index.html">
                   <i class="fas fa-tachometer-alt"></i>Dashboard 4</a
                 >
               </li>
@@ -47,15 +50,10 @@
 
         <div class="without-accordion-item m-3">
             <a routerLink="/demands" routerLinkActive="active"> <i class="fas fa-chart-bar mr-3 ml-1"></i>Talepler</a>
-            <span class="inbox-num" >3</span>
+            <span class="inbox-num" >{{demandQuantity}}</span>
         </div>
 
-        <mdb-accordion-item>
-          <ng-template mdbAccordionItemHeader>Accordion Item #3</ng-template>
-          <ng-template mdbAccordionItemBody>
 
-          </ng-template>
-        </mdb-accordion-item>
       </mdb-accordion>
 <!--
       <ul class="list-unstyled navbar__list">

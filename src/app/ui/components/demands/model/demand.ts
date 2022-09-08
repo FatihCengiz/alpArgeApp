@@ -1,0 +1,20 @@
+export class Demands{
+  ProjectNumber:Number;
+  ProjectName:string;
+  ProjectType:string;
+  DemandType:string;
+  Customer:string;
+  DemandDate:string;
+  DeliveryDate:string;
+  FacilityCode:string;
+  Quantity:number;
+  Feature1:string;
+  Feature2:string;
+  Feature3:string;
+  Feature4:string;
+  Feature5:string;
+  Feature6:string;
+  ProjectStatus:number;
+  Responsible:number;
+  Checked:boolean;
+}

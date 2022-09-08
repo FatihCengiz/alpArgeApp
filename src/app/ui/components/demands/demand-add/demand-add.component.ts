@@ -1,10 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl,
+} from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { Demands } from '../model/demand-model';
+import { Demands } from '../model/demand';
 import { DemandService } from '../service/demand.service';
 import { timeout } from 'rxjs/operators';
 import Swal from 'sweetalert2';
+import { ActivatedRoute } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-demand-add',
@@ -16,15 +23,23 @@ export class DemandAddComponent implements OnInit {
   public demandForm: FormGroup;
   dataDemand: any;
   get;
+  projectNumber: any;
+  projectNameHeader:any;
+  btnVisible:any;
 
   ngOnInit(): void {}
 
   constructor(
     public formBuilder: FormBuilder,
     private toastr: ToastrService,
-    private demandService: DemandService
+    private demandService: DemandService,
+    private route: ActivatedRoute,
+
   ) {
+    this.demandService.spinnerShow();
+    this.projectNumber = this.route.snapshot.paramMap.get('id');
     this.formFill();
+    console.log(this.projectNumber);
   }
   demandAdd() {
     if (this.demandForm.valid) {
@@ -72,10 +87,37 @@ export class DemandAddComponent implements OnInit {
     });
   }
   formFill() {
-    if (localStorage.getItem('demand')) {
+
+    if (this.projectNumber != null) {
+      this.btnVisible=true;
+      this.demandService
+        .getDemandById(this.projectNumber)
+        .subscribe((response) => {
+          this.get = response['demand_list'];
+          this.projectNameHeader=this.get[0].ProjectName;
+          this.demandForm = this.formBuilder.group({
+            projectNumber: [this.projectNumber],
+            projectName: [this.get[0].ProjectName],
+            projectType: [this.get[0].ProjectType],
+            demandType: [this.get[0].DemandType],
+            customer: [this.get[0].Customer],
+            demandDate: ['2022-08-17'],
+            deliveryDate: ['2022-08-17'],
+            facilityCode: [this.get[0].FacilityCode],
+            quantity: [this.get[0].Quantity],
+            feature1: [this.get[0].Feature1],
+            feature2: [this.get[0].Feature2],
+            feature3: [this.get[0].Feature3],
+            feature4: [this.get[0].Feature4],
+            feature5: [this.get[0].Feature5],
+            feature6: [this.get[0].Feature6],
+          });
+        });
+    } else if (localStorage.getItem('demand')) {
+      this.btnVisible=false;
       this.dataDemand = localStorage.getItem('demand');
       var data = JSON.parse(this.dataDemand);
-
+      this.projectNameHeader="Talep Oluştur";
       this.demandForm = this.formBuilder.group({
         projectNumber: [data.projectNumber],
         projectName: [data.projectName],
@@ -94,6 +136,8 @@ export class DemandAddComponent implements OnInit {
         feature6: [data.feature6],
       });
     } else {
+      this.btnVisible=false;
+      this.projectNameHeader="Talep Oluştur";
       this.demandForm = this.formBuilder.group({
         projectNumber: [0],
         projectName: ['', [Validators.required]],
@@ -112,5 +156,8 @@ export class DemandAddComponent implements OnInit {
         feature6: [''],
       });
     }
+  }
+  getDemandFormValue() {
+    return this.demandService.getDemandById(this.projectNumber);
   }
 }

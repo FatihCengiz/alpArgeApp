@@ -1,69 +1,67 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { Demands } from '../model/demand';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DemandService {
-  get: any;
-  bool: any;
+  get;
+
   constructor(
     @Inject('apiUrl') private apiUrl: string,
     private httpClient: HttpClient,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService
   ) {}
+
   async add(form: FormGroup) {
-    let bool;
+    let Form = JSON.stringify(form.value);
     let api =
       this.apiUrl +
-      '/api_demand.php?ID=1&projectNumber=' +
-      form.getRawValue().projectNumber +
-      '&projectName=' +
-      form.getRawValue().projectName +
-      '&projectType=' +
-      form.getRawValue().projectType +
-      '&demandType=' +
-      form.getRawValue().demandType +
-      '&customer=' +
-      form.getRawValue().customer +
-      '&demandDate=' +
-      form.getRawValue().demandDate +
-      '&deliveryDate=' +
-      form.getRawValue().deliveryDate +
-      '&facilityCode=' +
-      form.getRawValue().facilityCode +
-      '&quantity=' +
-      form.getRawValue().quantity +
-      '&feature1=' +
-      form.getRawValue().feature1 +
-      '&feature2=' +
-      form.getRawValue().feature2 +
-      '&feature3=' +
-      form.getRawValue().feature3 +
-      '&feature4=' +
-      form.getRawValue().feature4 +
-      '&feature5=' +
-      form.getRawValue().feature5 +
-      '&feature6=' +
-      form.getRawValue().feature6 +
-      '&developer_mode_key=AlpArge_Dev_Key_GET';
-
-    this.httpClient.get(api).subscribe(
+      '/api_demand.php';
+    console.log("form");
+    console.log(form);
+    this.httpClient.post(api,Form).subscribe(
       (response) => {
-        this.get = response;
+        this.get =response;
+        console.log(this.get);
         if (!this.get.error) {
           localStorage.removeItem("demand");
           Swal.fire('', 'Talep Açma İşlemi Başarılı', 'success');
         } else {
-          Swal.fire('', 'Talep Açma İşlemi Başarısız', 'error');
+          Swal.fire('', 'Talep Açma İşlemi Başarısız1', 'error');
         }
       },
       (err) => {
-        Swal.fire('', 'Talep Açma İşlemi Başarısız', 'error');
+        Swal.fire('', 'Talep Açma İşlemi Başarısız ', 'error');
+        console.log(err);
       }
     );
   }
+   getDemands(){
+    let api = this.apiUrl+'/api_get_demands.php?all&developer_mode_key=AlpArge_Dev_Key_GET' ;
+    return  this.httpClient.get<Demands[]>(api);
+  }
+  getDemandById(id:string){
+    let api = this.apiUrl+"/api_get_demands.php?projectNumber="+id+"&developer_mode_key=AlpArge_Dev_Key_GET" ;
+    return  this.httpClient.get<Demands[]>(api);
+  }
+   selectedDemandPost(selectedDemand:any){
+    console.log(selectedDemand);
+    let api = this.apiUrl+'/api_demand_update.php' ;
+    return  this.httpClient.post(api,selectedDemand);
+   }
+   spinnerShow(){
+    this.spinner.show().then(() => {
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 1000);
+
+    });
+   }
 }
