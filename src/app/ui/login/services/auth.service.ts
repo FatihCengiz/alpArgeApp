@@ -13,7 +13,6 @@ export class AuthService {
   constructor( @Inject("apiUrl") private apiUrl:string, private httpClient:HttpClient,private router:Router) { }
 
   login(form:any){;
-    console.log(form)
     let api = this.apiUrl + "/api_login.php";
     return this.httpClient.post(api,form);
   }
@@ -22,6 +21,10 @@ export class AuthService {
     localStorage.removeItem("token");
     this.router.navigate(['\login']);
   }
+  getUser(guid:string){
+    let api = this.apiUrl + "/api_get_user.php?id="+guid+"&developer_mode_key=AlpArge_Dev_Key_GET";
+    return this.httpClient.get(api);
+  }
   isAuth(){
     if(localStorage.getItem("token")){
       return true
@@ -29,6 +32,7 @@ export class AuthService {
       return false;
     }
   }
+
    makeRandom(lengthOfCode: number, possible: string) {
     let text = "";
     for (let i = 0; i < lengthOfCode; i++) {

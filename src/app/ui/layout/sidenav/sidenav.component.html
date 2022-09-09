@@ -11,7 +11,7 @@
       <img router src="./assets/images/admin.jpeg" alt="John Doe" />
       </div>
     </a>
-      <h4 class="name"> Fatih Cengiz</h4>
+      <h4 class="name"> {{userName}}</h4>
       <a href="" (click)="logout()" >Sign out</a>
     </div>
     <nav class="navbar-sidebar2" >
@@ -23,15 +23,15 @@
           <ng-template mdbAccordionItemHeader> <i class="fa-solid fa-diagram-project mr-3"></i><a class="js-arrow" href="#">Proje Yönetimi
           </a> </ng-template>
           <ng-template mdbAccordionItemBody>
-            <ul class="list-unstyled">
+            <ul  *ngFor="let item of authorityArray" class="list-unstyled" >
               <li>
                 <a href="index.html">
-                  <i class="fas fa-tachometer-alt"></i>Dashboard 1</a
+                  <i class="fas fa-tachometer-alt"></i>{{item}}</a
                 >
               </li>
-              <li>
+              <!-- <li>
                 <a href="index.html">
-                  <i class="fas fa-tachometer-alt"></i>Dashboard 2</a
+                  <i class="fas fa-tachometer-alt"></i>Bütçe Planlama</a
                 >
               </li>
               <li>
@@ -43,7 +43,7 @@
                 <a href="index.html">
                   <i class="fas fa-tachometer-alt"></i>Dashboard 4</a
                 >
-              </li>
+              </li> -->
             </ul>
           </ng-template>
         </mdb-accordion-item>

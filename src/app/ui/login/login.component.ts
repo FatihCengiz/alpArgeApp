@@ -12,6 +12,7 @@ import { AuthService } from './services/auth.service';
 })
 export class LoginComponent implements OnInit {
   get: any;
+  userInformation:any;
 
   user: Users = { userName: '', password: '' };
   constructor(
@@ -27,35 +28,6 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['home']);
     }
   }
-  // login(userName: string, password: string) {
-  //   this.spinner.show().then(() => {
-  //     setTimeout(() => {
-  //       this.authService.login(userName, password).subscribe(
-  //         (response) => {
-  //           this.get = response;
-  //           if (!this.get.error) {
-  //             this.toastr.success('Giriş İşlemi Başarılı');
-  //             localStorage.setItem(
-  //               'token',
-  //               this.authService.makeRandom(
-  //                 this.authService.lengthOfCode,
-  //                 this.authService.possible
-  //               )
-  //             );
-  //             this.router.navigate(['home']);
-  //           } else {
-  //             this.toastr.error('Kullancı adı veya şifre yanlış');
-  //           }
-  //           this.spinner.hide();
-  //         },
-  //         (err) => {
-  //           this.toastr.error('Giriş İşlemi Başarısız');
-  //           this.spinner.hide();
-  //         }
-  //       );
-  //     }, 1000);
-  //   });
-  // }
   login(form: any) {
     this.spinner.show().then(() => {
       setTimeout(()=>{
@@ -65,7 +37,12 @@ export class LoginComponent implements OnInit {
             console.log(this.get);
             if (!this.get.error) {
               this.toastr.success('Giriş İşlemi Başarılı');
-              localStorage.setItem('token',this.authService.makeRandom(this.authService.lengthOfCode,this.authService.possible));
+              localStorage.setItem('token',this.get.guid);
+
+             console.log(this.authService.getUser(this.get.guid).subscribe((response)=>{
+              this.userInformation=response;
+              console.log( this.userInformation);
+             }))
               this.router.navigate(['home']);
             } else {
               form.reset();

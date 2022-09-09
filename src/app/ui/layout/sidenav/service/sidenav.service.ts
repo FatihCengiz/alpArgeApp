@@ -14,4 +14,8 @@ export class SidenavService {
     let api = this.apiUrl+'/api_get_demands.php?all&developer_mode_key=AlpArge_Dev_Key_GET' ;
     return  this.httpClient.get<Demands[]>(api);
   }
+  getUser(guid:string){
+    let api = this.apiUrl + "/api_get_user.php?id="+guid+"&developer_mode_key=AlpArge_Dev_Key_GET";
+    return this.httpClient.get(api);
+  }
 }
