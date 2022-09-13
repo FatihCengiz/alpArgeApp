@@ -1,7 +1,9 @@
 <div class="page-container2">
-
+  <h4 style="text-align: center;">TALEPLER</h4>
   <section class="statistic">
-    <div class="section__content section__content--p30">
+
+
+    <div class="section__content section__content--p30" style="margin-top: -30px;">
       <div class="container-fluid">
         <div class="table-responsive table-responsive-data2">
           <table class="table table-data2">
@@ -23,8 +25,8 @@
             <tbody>
               <tr id="demandTr" class="tr-shadow"  *ngFor="let demand of demands let i = index"
               [class]="{'bg-true':demand.Checked,'bg-false':!demand.Checked}">
-                <td>
-                  <label class="au-checkbox">
+                <td >
+                  <label class="au-checkbox" [class]="{'bg-responsible':!responsibleVisible}">
                     <input type="checkbox" (change)="checkBoxControl($event)" id="chckBx{{i}}" />
                     <span class="au-checkmark"></span>
                   </label>
@@ -42,9 +44,10 @@
                 <td>2022-09-27</td>
 
                 <td  >
-                  <span style="font-size: 15px;" [class]="{'bg-responsible':!responsibleVisible}" >Fatih Cengiz</span>
-                  <select id="cmbBx{{i}}" class="form-control custom-select browser-default" [class]="{'bg-responsible':responsibleVisible}" >
-                     <option  value="{{engineer.id}}" *ngFor="let engineer of responsibleEngineer" >{{engineer.name}}</option>
+                  <span style="font-size: 15px; font-weight: 500;" [class]="{'bg-responsible':responsibleVisible}" >{{ demand.Engineer }}</span>
+
+                  <select id="cmbBx{{i}}" class="form-control custom-select browser-default" [class]="{'bg-responsible':!responsibleVisible}" >
+                     <option  value="{{engineer.ID}}" *ngFor="let engineer of getUserAllResponse" >{{engineer.Name}} {{engineer.Surname}}</option>
 
 
                   </select>
@@ -259,7 +262,7 @@
             </tbody>
           </table>
 
-          <div class="top-config">
+          <div class="top-config" [class]="{'bg-responsible':!responsibleVisible}">
             <input id="chckBxAll" type="checkbox" (change)="selectAll()" />
             <label for="ac" style="margin-left: 5px; font-weight: 600;" class="mr-3">Tümünü Seç</label>
             <button type="button" class="btn btn-square btn-success mr-3" (click)="selectedDemandConfirm(2,'Seçili proje talepleri onaylanacak emin misiniz ?','Talepler Onaylandı !')" >Onayla</button>

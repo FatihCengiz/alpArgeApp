@@ -4,23 +4,22 @@ import { FormGroup } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
-import { Demands } from '../model/demand';
+import { Demands } from '../../demands/model/demand';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class DemandService {
-  get;
-
-
+export class ProjectService {
+get:any;
   constructor(
     @Inject('apiUrl') private apiUrl: string,
     private httpClient: HttpClient,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService
-  ) {}
+  ) {
 
-  async add(form: FormGroup) {
+   }
+   async add(form: FormGroup) {
     let Form = JSON.stringify(form.value);
     let api =
       this.apiUrl +
@@ -54,7 +53,7 @@ export class DemandService {
   }
    selectedDemandPost(selectedDemand:any){
     console.log(selectedDemand);
-    let api = this.apiUrl+'/api_demand_update.php' ;
+    let api = this.apiUrl+'/api_project_update.php' ;
     return  this.httpClient.post(api,selectedDemand);
    }
    getUser(guid:string){

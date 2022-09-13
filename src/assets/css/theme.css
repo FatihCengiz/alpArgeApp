@@ -4242,9 +4242,7 @@ section {
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
-    -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
-    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
+
 }
 
 .table-earning thead th {
@@ -4276,7 +4274,7 @@ section {
 }
 
 .table-earning tbody tr:hover td {
-    color: #555;
+    color: #92be21;
     cursor: pointer;
 }
 
@@ -4491,7 +4489,13 @@ section {
     .table-responsive-data2 {
         overflow: visible;
     }
+
 }
+@media (min-width: 1200px) {
+
+
+}
+
 
 .table-data2 {
     border-collapse: collapse;
@@ -6228,7 +6232,7 @@ section {
     padding-left: 30px;
 }
 
-.m-b-30 {
+.table-responsive {
     margin-bottom: 30px;
 }
 

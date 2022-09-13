@@ -20,30 +20,42 @@
           <a routerLink="/" routerLinkActive="active"  style="color:#76922f;"> <i class="fas fa-chart-bar mr-3 ml-1" ></i>Anasayfa</a>
       </div>
         <mdb-accordion-item>
-          <ng-template mdbAccordionItemHeader> <i class="fa-solid fa-diagram-project mr-3"></i><a class="js-arrow" href="#">Proje Yönetimi
+          <ng-template mdbAccordionItemHeader> <i class="fa-solid fa-diagram-project mr-3"></i><a class="js-arrow" >Proje Yönetimi
           </a> </ng-template>
           <ng-template mdbAccordionItemBody>
-            <ul  *ngFor="let item of authorityArray" class="list-unstyled" >
-              <li>
-                <a href="index.html">
-                  <i class="fas fa-tachometer-alt"></i>{{item}}</a
+            <ul   class="list-unstyled" >
+              <li [class]="{'authority':!authorityArray[0]}">
+                <a (click)="navigation1()">
+                  <i class="fas fa-tachometer-alt"></i>Talep Açma</a
                 >
               </li>
-              <!-- <li>
-                <a href="index.html">
+              <li [class]="{'authority':!authorityArray[1]}">
+                <a (click)="navigation2()">
+                  <i class="fas fa-tachometer-alt"></i>Bütçe Onaylama</a
+                >
+              </li>
+              <li [class]="{'authority':!authorityArray[2]}">
+                <a (click)="navigation3()">
                   <i class="fas fa-tachometer-alt"></i>Bütçe Planlama</a
                 >
               </li>
-              <li>
-                <a href="index.html">
-                  <i class="fas fa-tachometer-alt"></i>Dashboard 3</a
+
+              <li [class]="{'authority':!authorityArray[3]}">
+                <a (click)="navigation4()">
+                  <i class="fas fa-tachometer-alt"></i>Proje Kapatma</a
                 >
               </li>
-              <li>
-                <a href="index.html">
-                  <i class="fas fa-tachometer-alt"></i>Dashboard 4</a
+              <li [class]="{'authority':!authorityArray[4]}">
+                <a (click)="navigation5()">
+                  <i class="fas fa-tachometer-alt"></i>Projelerim</a
                 >
-              </li> -->
+              </li>
+              <li [class]="{'authority':!authorityArray[5]}">
+                <a (click)="navigation6()">
+                  <i class="fas fa-tachometer-alt"></i>Tüm Projeler</a
+                >
+              </li>
+
             </ul>
           </ng-template>
         </mdb-accordion-item>

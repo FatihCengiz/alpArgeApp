@@ -1,0 +1,102 @@
+<div class="page-container2">
+  <h4 style="text-align: center;">Bütçe Planlama</h4>
+  <section class="statistic">
+
+
+    <div class="section__content section__content--p30" style="margin-top: -50px;">
+      <div class="container-fluid">
+        <div class="table-responsive table-responsive-data2">
+          <table class="table table-data2">
+            <thead>
+              <tr>
+                <th>
+                  <label class="au-checkbox"> </label>
+                </th>
+                <th><h6>Proje Kodu</h6></th>
+                <th><h6>Proje Adı</h6></th>
+                <th><h6>Proje Tipi</h6></th>
+                <th><h6>Müşteri</h6></th>
+                <th><h6>Talep Eden</h6></th>
+                <th><h6>Talep Tarihi</h6></th>
+                <th><h6>Sorumlu</h6></th>
+
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="demandTr" class="tr-shadow"  *ngFor="let demand of demands let i = index"
+              [class]="{'bg-true':demand.Checked,'bg-false':!demand.Checked}">
+                <td >
+
+                </td>
+                <td projectNumber="" style="font-weight: 500"  routerLink="">{{ demand.ProjectNumber }}
+                </td>
+                <td routerLink="">
+                  <span class="desc"  >{{ demand.ProjectName }}</span>
+                </td>
+                <td class="desc"  routerLink="" >Yazılım</td>
+                <td>2018-09-27</td>
+                <td>
+                  <span class="status--process"  routerLink="">Processed</span>
+                </td>
+                <td>2022-09-27</td>
+
+                <td  >
+                  <span style="font-size: 15px; font-weight: 500;" [class]="{'bg-responsible':responsibleVisible}" >{{ demand.Engineer }}</span>
+                </td>
+
+                <td>
+                  <div class="table-data-feature  mr-3">
+                    <button
+                      (click)="navigationToProjectPlannigForm($event)"
+                      class="item mr-3"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Bütçe Planlaması"
+                      >
+
+                      <i class="zmdi zmdi-long-arrow-right" id="confirmBtn{{i}}"></i>
+                    </button>
+
+                       <!--
+                    <button
+                      class="item mr-3 item-negative"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Reddet"
+
+                    >
+
+                    </button> -->
+                    <!-- <button
+                      class="item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Delete"
+                    >
+                      <i class="zmdi zmdi-delete"></i>
+                    </button>
+                    <button
+                      class="item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="More"
+                    >
+                      <i class="zmdi zmdi-more"></i>
+                    </button> -->
+                  </div>
+                </td>
+
+              </tr>
+              <tr class="spacer"></tr>
+
+            </tbody>
+          </table>
+
+
+
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

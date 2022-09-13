@@ -1,0 +1,109 @@
+<p>project-closing works!</p>
+<div class="page-container2">
+  <h4 style="text-align: center;">Bütçe Onaylama</h4>
+  <section class="statistic">
+
+
+    <div class="section__content section__content--p30" style="margin-top: -50px;">
+      <div class="container-fluid">
+        <div class="table-responsive table-responsive-data2">
+          <table class="table table-data2">
+            <thead>
+              <tr>
+                <th>
+                  <label class="au-checkbox"> </label>
+                </th>
+                <th><h6>Proje Kodu</h6></th>
+                <th><h6>Proje Adı</h6></th>
+                <th><h6>Proje Tipi</h6></th>
+                <th><h6>Müşteri</h6></th>
+                <th><h6>Talep Eden</h6></th>
+                <th><h6>Talep Tarihi</h6></th>
+                <th><h6>Sorumlu</h6></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="demandTr" class="tr-shadow"  *ngFor="let demand of demands let i = index"
+              [class]="{'bg-true':demand.Checked,'bg-false':!demand.Checked}">
+                <td >
+                  <label class="au-checkbox" [class]="{'bg-responsible':!responsibleVisible}">
+                    <input type="checkbox" (change)="checkBoxControl($event)" id="chckBx{{i}}" />
+                    <span class="au-checkmark"></span>
+                  </label>
+                </td>
+                <td projectNumber="" style="font-weight: 500"  routerLink="">{{ demand.ProjectNumber }}
+                </td>
+                <td routerLink="">
+                  <span class="desc"  >{{ demand.ProjectName }}</span>
+                </td>
+                <td class="desc"  routerLink="" >Yazılım</td>
+                <td>2018-09-27</td>
+                <td>
+                  <span class="status--process"  routerLink="">Processed</span>
+                </td>
+                <td>2022-09-27</td>
+
+                <td  >
+                  <span style="font-size: 15px; font-weight: 500;" [class]="{'bg-responsible':responsibleVisible}" >{{ demand.Engineer }}</span>
+                </td>
+
+                <td>
+                  <div class="table-data-feature">
+                    <!-- <button
+                      class="item mr-3"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Onayla"
+
+                      (click)="demandConfirm($event,2,'Seçili proje talepleri onaylanacak emin misiniz ?','Talepler Onaylandı !')"
+                    >
+                      <i class="zmdi zmdi-check"></i>
+                    </button>
+                    <button
+                      class="item mr-3 item-negative"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Reddet"
+
+                    >
+                      <i class="zmdi zmdi-close"></i>
+                    </button> -->
+                    <!-- <button
+                      class="item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="Delete"
+                    >
+                      <i class="zmdi zmdi-delete"></i>
+                    </button>
+                    <button
+                      class="item"
+                      data-toggle="tooltip"
+                      data-placement="top"
+                      title="More"
+                    >
+                      <i class="zmdi zmdi-more"></i>
+                    </button> -->
+                  </div>
+                </td>
+
+              </tr>
+              <tr class="spacer"></tr>
+
+            </tbody>
+          </table>
+
+          <div class="top-config" [class]="{'bg-responsible':!responsibleVisible}">
+            <input id="chckBxAll" type="checkbox" (change)="selectAll()" />
+            <label for="ac" style="margin-left: 5px; font-weight: 600;" class="mr-3">Tümünü Seç</label>
+            <button type="button" class="btn btn-square btn-success mr-3" (click)="selectedDemandConfirm(4,'Seçili bütçe planları onaylacak emin misiniz ?','Bütçe Planları Onaylandı !')" >Bütçe Onaylama</button>
+            <button type="button" class="btn btn-square btn-danger mr-3" (click)="selectedDemandConfirm(2,'Seçili bütçe planları reddedilecek emin misiniz ?','Bütçe Planları Reddedildi !')" >Bütçe Reddet</button>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

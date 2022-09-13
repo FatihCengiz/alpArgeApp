@@ -1,0 +1,189 @@
+<div class="page-container2">
+  <h4 style="text-align: center;">Bütçe Planlama</h4>
+  <section class="statistic">
+    <div class="container-fluid container-fluid-css mb-5">
+      <div class="row">
+        <div class="col-sm-6 form-group">
+        <label for="DateD">Proje No</label>
+        <input
+          type="text"
+          class="form-control"
+          id="DateD"
+          formControlName="demandDate"
+          value="1707166"
+          required
+          disabled
+        />
+      </div>
+
+      <div class="col-sm-6 form-group">
+        <label for="DateD">Proje Adı</label>
+        <input
+          type="text"
+          class="form-control"
+          id="DateD"
+          formControlName="demandDate"
+          value="ALPASİST KIOSK SERİ PORT BAĞLANTISI İÇİN KART GELİŞTİRİLMESİ"
+          required
+          disabled
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 form-group">
+      <label for="DateD">Proje Tipi</label>
+      <input
+        type="text"
+        class="form-control"
+        id="DateD"
+        formControlName="demandDate"
+        value="Yazılım"
+        required
+        disabled
+      />
+    </div>
+
+    <div class="col-sm-6 form-group">
+      <label for="DateD">Müşteri</label>
+      <input
+        type="text"
+        class="form-control"
+        id="DateD"
+        formControlName="demandDate"
+        value="LANDIRENZOSPA"
+        required
+        disabled
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 form-group">
+    <label for="DateD">Talep Eden</label>
+    <input
+      type="text"
+      class="form-control"
+      id="DateD"
+      formControlName="demandDate"
+      value="Yazılım"
+      required
+      disabled
+    />
+  </div>
+
+  <div class="col-sm-6 form-group">
+    <label for="DateD">Proje Sorumlusu</label>
+    <input
+      type="text"
+      class="form-control"
+      id="DateD"
+      formControlName="demandDate"
+      value="Mehmet"
+      required
+      disabled
+    />
+  </div>
+</div>
+      <div class="row">
+        <div class="col-sm-6 form-group">
+        <label for="DateD">Talep Tarihi</label>
+        <input
+          type="Text"
+          name="dob"
+          class="form-control"
+          id="DateD"
+          formControlName="demandDate"
+          placeholder=""
+          required
+          disabled
+        />
+      </div>
+
+      <div class="col-sm-6 form-group">
+        <label for="DateD">Teslim Tarihi</label>
+        <input
+          type="Text"
+          name="dob"
+          class="form-control"
+          id="DateD"
+          formControlName="demandDate"
+          placeholder=""
+          required
+          disabled
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 form-group">
+      <label for="DateD">Planlanan Talep Tarihi</label>
+      <input
+        type="Date"
+        name="dob"
+        class="form-control"
+        id="DateD"
+        formControlName="demandDate"
+        placeholder=""
+        required
+      />
+    </div>
+
+    <div class="col-sm-3 form-group">
+      <label for="DateD">&nbsp;</label>
+      <button class="btn " style="background-color: #94c11f; color: white; width: 100%;">Kaydet</button>
+    </div>
+    <div class="col-sm-3 form-group">
+      <label for="DateD">&nbsp;</label>
+      <button class="btn btn-primary" style=" width: 100%;">Gönder</button>
+    </div>
+  </div>
+
+  </div>
+    <c-nav variant="tabs">
+      <c-nav-item class="tab">
+        <a [active]="true" [cTabContent]="tabContent" [routerLink] [tabPaneIdx]="0" cNavLink>
+          Proje Planı
+        </a>
+      </c-nav-item>
+      <c-nav-item  class="">
+        <a [cTabContent]="tabContent" [routerLink] [tabPaneIdx]="1" cNavLink>
+         Gider Kalemleri
+        </a>
+      </c-nav-item >
+      <c-nav-item  class="">
+        <a [cTabContent]="tabContent" [routerLink] [tabPaneIdx]="2" cNavLink>
+          Proje Bilgleri
+        </a>
+      </c-nav-item>
+      <c-nav-item  class="">
+        <a [cTabContent]="tabContent" [routerLink] [tabPaneIdx]="3" cNavLink>
+          Bütçe
+        </a>
+      </c-nav-item>
+    </c-nav>
+    <c-tab-content #tabContent="cTabContent" [activeTabPaneIdx]="1">
+      <c-tab-pane class="p-3">
+        <div class="container-fluid container-fluid-tab mt-2">
+          <div class="row" id="textcreate1">
+            <button class="btn btn-primary" style=" width: 20%;" (click)="createText()">Gönder</button>
+          </div>
+        </div>
+      </c-tab-pane>
+      <c-tab-pane class="p-3">
+        This is some placeholder content the <strong>Profile</strong> tab's associated content. Clicking another
+        tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the
+        content visibility and styling. You can use it with tabs, pills, and any other .nav-powered navigation.
+      </c-tab-pane>
+      <c-tab-pane class="p-3">
+        This is some placeholder content the <strong>Profile</strong> tab's associated content. Clicking another
+        tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the
+        content visibility and styling. You can use it with tabs, pills, and any other .nav-powered navigation.
+      </c-tab-pane>
+      <!-- example: *ngIf activeTabPaneIdx === 0 disables third cNavLink -->
+      <c-tab-pane  class="p-3">
+        This is some placeholder content the <strong>Contact</strong> tab's associated content. Clicking another tab will
+        toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility
+        and styling. You can use it with tabs, pills, and any other .nav-powered navigation.
+      </c-tab-pane>
+    </c-tab-content>
+
+  </section>
+</div>

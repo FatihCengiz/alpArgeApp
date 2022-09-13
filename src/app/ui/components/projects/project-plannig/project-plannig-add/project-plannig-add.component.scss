@@ -1,0 +1,26 @@
+.tab:nth-child(1) {
+  margin-left: 30%;
+}
+.container-fluid-css {
+  margin-top: -20px;
+  width: 90%;
+  background-color: #ddd;
+  border-radius: 10px;
+  border-color: #aaa;
+  border: 2px solid #cfd2cf;
+}
+.container-fluid-tab {
+  margin-top: -20px;
+  width: 95%;
+  background-color: rgb(228, 228, 228);
+  border-radius: 10px;
+  border-color: #aaa;
+  border: 1px solid #cfd2cf;
+}
+
+@media (max-width: 436px) {
+  .tab:nth-child(1) {
+    margin-left: 0%;
+    background-color: red;
+  }
+}

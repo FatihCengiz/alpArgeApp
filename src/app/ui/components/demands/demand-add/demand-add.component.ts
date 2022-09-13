@@ -9,9 +9,10 @@ import { ToastrService } from 'ngx-toastr';
 import { Demands } from '../model/demand';
 import { DemandService } from '../service/demand.service';
 import { timeout } from 'rxjs/operators';
-import Swal from 'sweetalert2';
+
 import { ActivatedRoute } from '@angular/router';
-import { NgxSpinnerService } from 'ngx-spinner';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-demand-add',
@@ -36,7 +37,7 @@ export class DemandAddComponent implements OnInit {
     private route: ActivatedRoute,
 
   ) {
-    this.demandService.spinnerShow();
+ //   this.demandService.spinnerShow();
     this.projectNumber = this.route.snapshot.paramMap.get('id');
     this.formFill();
     console.log(this.projectNumber);

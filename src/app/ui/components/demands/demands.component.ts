@@ -12,7 +12,10 @@ import { SelectedDemands } from './model/selected-demand';
 })
 export class DemandsComponent implements OnInit {
   get: any;
+  getUserResponse: any;
+  getUserAllResponse: any;
   demands: Demands[] = [];
+  message:string;
   selectedDemands: SelectedDemands = {
     responsible: [],
     projectNumber: [],
@@ -28,30 +31,57 @@ export class DemandsComponent implements OnInit {
   demandList: any[] = [];
   responsibleVisible: boolean;
 
-  constructor(private demandService: DemandService) {}
+  constructor(private demandService: DemandService) {
+
+
+  }
   ngOnInit(): void {
+    this.demandService.spinnerShow();
+    this.getUser()
+    this.getAllUser();
     this.getList();
   }
+
 
   getList() {
     this.demands = [];
     this.demandService.getDemands().subscribe((response) => {
       this.get = response;
+
       for (let i = 0; i < this.get.demand_list.length; i++) {
-        if (this.get.demand_list[i].ProjectStatus == 1) {
+        if (this.get.demand_list[i].ProjectStatus == 1 ) {
           this.demands.push(this.get.demand_list[i]);
-        } else {
-          //this.demands.push(this.get.demand_list[i]);
         }
+
       }
-      this.responsibleVisible = false;
 
       console.log(this.demands);
       this.demands.forEach((element) => {
         element.Checked = false;
       });
     });
+
   }
+  getUser():any {
+    let id = localStorage.getItem('token');
+    if (id != undefined) {
+      this.demandService.getUser(id?.toString()).subscribe((response) => {
+        this.getUserResponse = response['user']['0'];
+        if (this.getUserResponse.GroupID == 1) {
+          this.responsibleVisible = true;
+        } else {
+          this.responsibleVisible = false;
+        }
+      });
+    }
+
+  }
+  getAllUser(){
+    this.demandService.getAllUser().subscribe((response) => {
+      this.getUserAllResponse=response['user'];
+      console.log(this.getUserAllResponse);
+  });
+}
 
   checkBoxControl(e: Event) {
     if (e.target != null) {
@@ -111,7 +141,6 @@ export class DemandsComponent implements OnInit {
           checkedCount = 0;
         this.demands.forEach((element) => {
           if (element.Checked == true) {
-
             var elementCmbBx = document.getElementById(
               'cmbBx' + arrayCount.toString()
             ) as HTMLInputElement;
@@ -135,7 +164,7 @@ export class DemandsComponent implements OnInit {
               spaceControl = true;
             }
             checkedControl = true;
-            
+
             checkedCount++;
           }
           arrayCount++;
@@ -147,31 +176,38 @@ export class DemandsComponent implements OnInit {
         } else if (!checkedControl) {
           Swal.fire('', 'Lütfen talep seçiniz', 'warning');
         } else {
-          this.demandService.selectedDemandPost(this.selectedDemands).subscribe(
-            (response) => {
-              console.log(response);
-              this.get = response;
-              if (!this.get.error) {
-                this.selectedDemands = {
-                  responsible: [],
-                  projectNumber: [],
-                  projectStatus: 1,
-                };
-                setTimeout(() => {
-                  Swal.fire('', message, 'success').then(() => {
-                    checkedControl = false;
-                    this.getList();
-                  });
-                }, 1000);
-              } else {
-                Swal.fire('', 'Talep Onaylama İşlemi Başarısız !', 'error');
-              }
-            },
-            (err) => {
-              console.log(err);
-              Swal.fire('', 'Talep Onaylama İşlemi Başarısız !', 'error');
-            }
-          );
+          if (this.responsibleVisible) {
+            this.demandService
+              .selectedDemandPost(this.selectedDemands)
+              .subscribe(
+                (response) => {
+                  console.log(response);
+                  this.get = response;
+                  if (!this.get.error) {
+                    this.selectedDemands = {
+                      responsible: [],
+                      projectNumber: [],
+                      projectStatus: 1,
+                    };
+                    setTimeout(() => {
+                      Swal.fire('', message, 'success').then(() => {
+                        checkedControl = false;
+                        this.getList();
+                      });
+                    }, 1000);
+                  } else {
+                    Swal.fire('', 'Talep Onaylama İşlemi Başarısız !', 'error');
+                  }
+                },
+                (err) => {
+                  console.log(err);
+                  Swal.fire('', 'Talep Onaylama İşlemi Başarısız !', 'error');
+                }
+              );
+          }
+          else{
+            Swal.fire('', 'Yetkiniz yok !', 'error');
+          }
         }
       }
     });
