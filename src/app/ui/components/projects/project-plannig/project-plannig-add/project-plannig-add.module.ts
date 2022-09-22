@@ -1,25 +1,25 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, CurrencyPipe } from '@angular/common';
 import { ProjectPlannigAddComponent } from './project-plannig-add.component';
 import { NavModule, TabsModule } from '@coreui/angular';
 import { RouterModule } from '@angular/router';
 
 
-
-
-
 @NgModule({
   declarations: [
-    ProjectPlannigAddComponent
+    ProjectPlannigAddComponent,
   ],
   imports: [
     CommonModule,
     NavModule,
     TabsModule,
-    RouterModule
+    RouterModule,
+
   ],
   exports:[
     ProjectPlannigAddComponent
+  ],providers:[
+    CurrencyPipe
   ]
 })
 export class ProjectPlannigAddModule { }

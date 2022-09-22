@@ -17,5 +17,6 @@ export class Demands{
   ProjectStatus:number;
   Responsible:number;
   Checked:boolean;
+  Requester:string;
   Engineer:string;
 }

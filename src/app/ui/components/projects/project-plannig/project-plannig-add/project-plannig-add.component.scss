@@ -3,7 +3,7 @@
 }
 .container-fluid-css {
   margin-top: -20px;
-  width: 90%;
+  width: 93%;
   background-color: #ddd;
   border-radius: 10px;
   border-color: #aaa;
@@ -21,6 +21,24 @@
 @media (max-width: 436px) {
   .tab:nth-child(1) {
     margin-left: 0%;
-    background-color: red;
   }
+}
+.myBtn{
+  width: 150px;
+  background-color: green;
+}
+.mystyle {
+  width: 100%;
+  padding: 25px;
+  background-color: coral;
+  color: white;
+  font-size: 25px;
+  box-sizing: border-box;
+}
+textarea {
+  height: 150px;
+  background-color: white!important;
+}
+input {
+  background-color: white!important;
 }

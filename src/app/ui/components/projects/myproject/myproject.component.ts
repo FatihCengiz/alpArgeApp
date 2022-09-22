@@ -35,7 +35,7 @@ export class MyprojectComponent implements OnInit {
       this.get = response;
 
       for (let i = 0; i < this.get.demand_list.length; i++) {
-        if (this.get.demand_list[i].ProjectStatus == 2  && this.getUserResponse.ID==this.get.demand_list[i].Responsible) {
+        if (this.get.demand_list[i].ProjectStatus >=4 && this.get.demand_list[i].ProjectStatus <=8  && this.getUserResponse.ID==this.get.demand_list[i].Responsible) {
           this.demands.push(this.get.demand_list[i]);
         }
       }
@@ -64,7 +64,10 @@ export class MyprojectComponent implements OnInit {
       this.getUserAllResponse = response['user'];
     });
   }
-
+getEvent(event:Event){
+  var projectNumber=((event.target) as HTMLInputElement).parentElement?.childNodes[1].textContent;
+  this.router.navigate(['/projects/project-plannig-add/'+projectNumber])
+}
 
 
 

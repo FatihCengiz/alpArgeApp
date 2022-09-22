@@ -8,10 +8,9 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { Demands } from '../model/demand';
 import { DemandService } from '../service/demand.service';
-import { timeout } from 'rxjs/operators';
-
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -24,9 +23,13 @@ export class DemandAddComponent implements OnInit {
   public demandForm: FormGroup;
   dataDemand: any;
   get;
+  getCustomerResponse;
   projectNumber: any;
   projectNameHeader:any;
   btnVisible:any;
+  user:any;
+  myDate = new Date();
+  date:string;
 
   ngOnInit(): void {}
 
@@ -35,12 +38,16 @@ export class DemandAddComponent implements OnInit {
     private toastr: ToastrService,
     private demandService: DemandService,
     private route: ActivatedRoute,
-
+    private datePipe: DatePipe
   ) {
  //   this.demandService.spinnerShow();
     this.projectNumber = this.route.snapshot.paramMap.get('id');
-    this.formFill();
-    console.log(this.projectNumber);
+    var date = this.datePipe.transform(this.myDate, 'yyyy-MM-dd')?.toString();
+    if(date!=undefined)
+    this.date=date;
+    console.log(date)
+    this.getUser();
+    this.getCustomer();
   }
   demandAdd() {
     if (this.demandForm.valid) {
@@ -88,30 +95,31 @@ export class DemandAddComponent implements OnInit {
     });
   }
   formFill() {
-
     if (this.projectNumber != null) {
       this.btnVisible=true;
       this.demandService
         .getDemandById(this.projectNumber)
         .subscribe((response) => {
-          this.get = response['demand_list'];
-          this.projectNameHeader=this.get[0].ProjectName;
+          this.get = response['demand_list'][0];
+          console.log(this.get.DemandDate.substring(0,10));
+          this.projectNameHeader=this.get.ProjectName;
           this.demandForm = this.formBuilder.group({
             projectNumber: [this.projectNumber],
-            projectName: [this.get[0].ProjectName],
-            projectType: [this.get[0].ProjectType],
-            demandType: [this.get[0].DemandType],
-            customer: [this.get[0].Customer],
-            demandDate: ['2022-08-17'],
-            deliveryDate: ['2022-08-17'],
-            facilityCode: [this.get[0].FacilityCode],
-            quantity: [this.get[0].Quantity],
-            feature1: [this.get[0].Feature1],
-            feature2: [this.get[0].Feature2],
-            feature3: [this.get[0].Feature3],
-            feature4: [this.get[0].Feature4],
-            feature5: [this.get[0].Feature5],
-            feature6: [this.get[0].Feature6],
+            projectName: [this.get.ProjectName],
+            projectType: [this.get.ProjectType],
+            demandType: [this.get.DemandType],
+            customer: [this.get.Customer],
+            demandDate: [this.get.DemandDate],
+            deliveryDate: [this.get.DeliveryDate],
+            facilityCode: [this.get.FacilityCode],
+            quantity: [this.get.Quantity],
+            feature1: [this.get.Feature1],
+            feature2: [this.get.Feature2],
+            feature3: [this.get.Feature3],
+            feature4: [this.get.Feature4],
+            feature5: [this.get.Feature5],
+            feature6: [this.get.Feature6],
+            requester:[this.user],
           });
         });
     } else if (localStorage.getItem('demand')) {
@@ -135,6 +143,7 @@ export class DemandAddComponent implements OnInit {
         feature4: [data.feature4],
         feature5: [data.feature5],
         feature6: [data.feature6],
+        requester:[this.user],
       });
     } else {
       this.btnVisible=false;
@@ -145,7 +154,7 @@ export class DemandAddComponent implements OnInit {
         projectType: ['', [Validators.required]],
         demandType: ['', [Validators.required]],
         customer: ['', [Validators.required]],
-        demandDate: ['', [Validators.required]],
+        demandDate: [this.date, [Validators.required]],
         deliveryDate: ['', [Validators.required]],
         facilityCode: ['', [Validators.required]],
         quantity: [0],
@@ -155,10 +164,29 @@ export class DemandAddComponent implements OnInit {
         feature4: [''],
         feature5: [''],
         feature6: [''],
+        requester:[this.user]
       });
     }
   }
   getDemandFormValue() {
     return this.demandService.getDemandById(this.projectNumber);
+  }
+  getUser(){
+    let id = localStorage.getItem('token');
+    if (id != undefined) {
+       this.demandService.getUser(id).subscribe((response)=>{
+          this.user=response['user'][0].Name +" "+response['user'][0].Surname;
+          console.log(this.user);
+          this.formFill();
+
+     })
+    }
+  }
+  getCustomer(){
+    this.demandService.getCustomer().subscribe((response)=>{
+
+      this.getCustomerResponse=response['customer'];
+      console.log(this.getCustomerResponse);
+    })
   }
 }

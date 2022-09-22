@@ -25,33 +25,33 @@
           <ng-template mdbAccordionItemBody>
             <ul   class="list-unstyled" >
               <li [class]="{'authority':!authorityArray[0]}">
-                <a (click)="navigation1()">
+                <a routerLink="/demands/add">
                   <i class="fas fa-tachometer-alt"></i>Talep Açma</a
                 >
               </li>
               <li [class]="{'authority':!authorityArray[1]}">
-                <a (click)="navigation2()">
+                <a  routerLink="/projects/project-confirmation">
                   <i class="fas fa-tachometer-alt"></i>Bütçe Onaylama</a
                 >
               </li>
               <li [class]="{'authority':!authorityArray[2]}">
-                <a (click)="navigation3()">
+                <a routerLink="/projects/project-plannig">
                   <i class="fas fa-tachometer-alt"></i>Bütçe Planlama</a
                 >
               </li>
 
               <li [class]="{'authority':!authorityArray[3]}">
-                <a (click)="navigation4()">
+                <a routerLink="/projects/project-closing">
                   <i class="fas fa-tachometer-alt"></i>Proje Kapatma</a
                 >
               </li>
               <li [class]="{'authority':!authorityArray[4]}">
-                <a (click)="navigation5()">
+                <a routerLink="/projects/myproject">
                   <i class="fas fa-tachometer-alt"></i>Projelerim</a
                 >
               </li>
               <li [class]="{'authority':!authorityArray[5]}">
-                <a (click)="navigation6()">
+                <a routerLink="/projects">
                   <i class="fas fa-tachometer-alt"></i>Tüm Projeler</a
                 >
               </li>

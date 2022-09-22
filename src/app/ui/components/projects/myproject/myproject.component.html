@@ -1,4 +1,3 @@
-<p>project-closing works!</p>
 <div class="page-container2">
   <h4 style="text-align: center;">Projelerim</h4>
   <section class="statistic">
@@ -25,67 +24,28 @@
               </tr>
             </thead>
             <tbody>
-              <tr id="demandTr" class="tr-shadow"  *ngFor="let demand of demands let i = index"
-              [class]="{'bg-true':demand.Checked,'bg-false':!demand.Checked}">
+              <tr id="demandTr" class="tr-shadow"   (click)="getEvent($event)" *ngFor="let demand of demands let i = index"
+              [class]="{'bg-true':demand.Checked,'bg-false':!demand.Checked}" style="cursor:pointer;" >
                 <td >
 
                 </td>
-                <td projectNumber="" style="font-weight: 500"  routerLink="">{{ demand.ProjectNumber }}
+                <td projectNumber="" style="font-weight: 500" >{{ demand.ProjectNumber }}
                 </td>
-                <td routerLink="">
-                  <span class="desc"  >{{ demand.ProjectName }}</span>
+                <td >
+                 {{ demand.ProjectName }}
                 </td>
-                <td class="desc"  routerLink="" >Yazılım</td>
-                <td>2018-09-27</td>
-                <td>
-                  <span class="status--process"  routerLink="">Processed</span>
+                <td class="desc"  >{{ demand.ProjectType }}</td>
+                <td>{{ demand.Customer }}</td>
+                <td class="status--process">{{ demand.Requester }}
                 </td>
-                <td>2022-09-27</td>
+                <td>{{ demand.DemandDate }}</td>
 
-                <td  >
-                  <span style="font-size: 15px; font-weight: 500;" [class]="{'bg-responsible':responsibleVisible}" >{{ demand.Engineer }}</span>
+                <td style="font-size: 15px; font-weight: 500;" >
+                 {{ demand.Engineer }}
                 </td>
 
                 <td>
                   <div class="table-data-feature  mr-3">
-                    <!-- <button
-                      (click)="navigationToProjectPlannigForm($event)"
-                      class="item mr-3"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Bütçe Planlaması"
-
-                      >
-
-                      <i class="zmdi zmdi-long-arrow-right" id="confirmBtn{{i}}"></i>
-                    </button> -->
-
-                       <!--
-                    <button
-                      class="item mr-3 item-negative"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Reddet"
-
-                    >
-
-                    </button> -->
-                    <!-- <button
-                      class="item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Delete"
-                    >
-                      <i class="zmdi zmdi-delete"></i>
-                    </button>
-                    <button
-                      class="item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="More"
-                    >
-                      <i class="zmdi zmdi-more"></i>
-                    </button> -->
                   </div>
                 </td>
 

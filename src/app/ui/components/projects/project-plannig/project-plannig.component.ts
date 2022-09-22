@@ -36,7 +36,8 @@ export class ProjectPlannigComponent implements OnInit {
 
       for (let i = 0; i < this.get.demand_list.length; i++) {
         if (
-          this.get.demand_list[i].ProjectStatus == 2 &&
+          this.get.demand_list[i].ProjectStatus >= 2 &&
+          this.get.demand_list[i].ProjectStatus <= 3 &&
           this.getUserResponse.ID == this.get.demand_list[i].Responsible
         ) {
           this.demands.push(this.get.demand_list[i]);
@@ -51,7 +52,7 @@ export class ProjectPlannigComponent implements OnInit {
     let id = localStorage.getItem('token');
     if (id != undefined) {
       this.projectService.getUser(id?.toString()).subscribe((response) => {
-        this.getUserResponse = response['user']['0'];
+        this.getUserResponse = response['user'][0];
         if (this.getUserResponse.GroupID == 2) {
           this.responsibleVisible = true;
         } else {

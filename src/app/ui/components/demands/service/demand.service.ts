@@ -26,7 +26,7 @@ export class DemandService {
       this.apiUrl +
       '/api_demand.php';
     console.log("form");
-    console.log(form);
+    console.log(form.value);
     this.httpClient.post(api,Form).subscribe(
       (response) => {
         this.get =response;
@@ -63,6 +63,10 @@ export class DemandService {
   }
   getAllUser(){
     let api = this.apiUrl + "/api_get_user.php?all&developer_mode_key=AlpArge_Dev_Key_GET";
+    return this.httpClient.get(api);
+  }
+  getCustomer(){
+    let api = this.apiUrl + "/api_get_customer.php?all&developer_mode_key=AlpArge_Dev_Key_GET";
     return this.httpClient.get(api);
   }
    spinnerShow(){

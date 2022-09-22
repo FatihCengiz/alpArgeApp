@@ -34,12 +34,12 @@
                 <td routerLink="">
                   <span class="desc"  >{{ demand.ProjectName }}</span>
                 </td>
-                <td class="desc"  routerLink="" >Yazılım</td>
-                <td>2018-09-27</td>
+                <td class="desc"  routerLink="" >{{ demand.ProjectType }}</td>
+                <td>{{ demand.Customer }}</td>
                 <td>
-                  <span class="status--process"  routerLink="">Processed</span>
+                  <span class="status--process"  routerLink="">{{ demand.Requester }}</span>
                 </td>
-                <td>2022-09-27</td>
+                <td>{{ demand.DemandDate }}</td>
 
                 <td  >
                   <span style="font-size: 15px; font-weight: 500;" [class]="{'bg-responsible':responsibleVisible}" >{{ demand.Engineer }}</span>

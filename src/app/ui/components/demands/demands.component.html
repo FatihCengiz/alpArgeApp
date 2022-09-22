@@ -36,10 +36,10 @@
                 <td routerLink="/demands/add/{{demand.ProjectNumber}}">
                   <span class="desc"  >{{ demand.ProjectName }}</span>
                 </td>
-                <td class="desc"  routerLink="/demands/add/{{demand.ProjectNumber}}" >Yazılım</td>
-                <td>2018-09-27</td>
+                <td class="desc"  routerLink="/demands/add/{{demand.ProjectNumber}}" >{{ demand.ProjectType }}</td>
+                <td>{{ demand.Customer }}</td>
                 <td>
-                  <span class="status--process"  routerLink="/demands/add/{{demand.ProjectNumber}}">Processed</span>
+                  <span class="status--process"  routerLink="/demands/add/{{demand.ProjectNumber}}">{{ demand.Requester }}</span>
                 </td>
                 <td>2022-09-27</td>
 
@@ -47,6 +47,7 @@
                   <span style="font-size: 15px; font-weight: 500;" [class]="{'bg-responsible':responsibleVisible}" >{{ demand.Engineer }}</span>
 
                   <select id="cmbBx{{i}}" class="form-control custom-select browser-default" [class]="{'bg-responsible':!responsibleVisible}" >
+                    <option  value="0" disabled selected hidden> </option>
                      <option  value="{{engineer.ID}}" *ngFor="let engineer of getUserAllResponse" >{{engineer.Name}} {{engineer.Surname}}</option>
 
 

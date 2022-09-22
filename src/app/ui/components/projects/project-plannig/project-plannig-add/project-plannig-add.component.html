@@ -1,19 +1,19 @@
 <div class="page-container2">
   <h4 style="text-align: center;">Bütçe Planlama</h4>
   <section class="statistic">
-    <div class="container-fluid container-fluid-css mb-5">
+    <div class="container-fluid container-fluid-css mb-5" id="form1">
       <div class="row">
         <div class="col-sm-6 form-group">
         <label for="DateD">Proje No</label>
         <input
           type="text"
           class="form-control"
-          id="DateD"
-          formControlName="demandDate"
-          value="1707166"
+          id="form1text1"
+          formControlName="projectNumber1"
           required
           disabled
         />
+
       </div>
 
       <div class="col-sm-6 form-group">
@@ -21,9 +21,8 @@
         <input
           type="text"
           class="form-control"
-          id="DateD"
+          id="form1text2"
           formControlName="demandDate"
-          value="ALPASİST KIOSK SERİ PORT BAĞLANTISI İÇİN KART GELİŞTİRİLMESİ"
           required
           disabled
         />
@@ -35,9 +34,8 @@
       <input
         type="text"
         class="form-control"
-        id="DateD"
+        id="form1text3"
         formControlName="demandDate"
-        value="Yazılım"
         required
         disabled
       />
@@ -48,9 +46,8 @@
       <input
         type="text"
         class="form-control"
-        id="DateD"
+        id="form1text4"
         formControlName="demandDate"
-        value="LANDIRENZOSPA"
         required
         disabled
       />
@@ -62,9 +59,9 @@
     <input
       type="text"
       class="form-control"
-      id="DateD"
+      id="form1text5"
       formControlName="demandDate"
-      value="Yazılım"
+
       required
       disabled
     />
@@ -75,9 +72,8 @@
     <input
       type="text"
       class="form-control"
-      id="DateD"
+      id="form1text6"
       formControlName="demandDate"
-      value="Mehmet"
       required
       disabled
     />
@@ -87,10 +83,10 @@
         <div class="col-sm-6 form-group">
         <label for="DateD">Talep Tarihi</label>
         <input
-          type="Text"
+          type="Date"
           name="dob"
           class="form-control"
-          id="DateD"
+          id="form1text7"
           formControlName="demandDate"
           placeholder=""
           required
@@ -101,10 +97,10 @@
       <div class="col-sm-6 form-group">
         <label for="DateD">Teslim Tarihi</label>
         <input
-          type="Text"
+          type="Date"
           name="dob"
           class="form-control"
-          id="DateD"
+          id="form1text8"
           formControlName="demandDate"
           placeholder=""
           required
@@ -119,7 +115,7 @@
         type="Date"
         name="dob"
         class="form-control"
-        id="DateD"
+        id="form1text9"
         formControlName="demandDate"
         placeholder=""
         required
@@ -128,11 +124,11 @@
 
     <div class="col-sm-3 form-group">
       <label for="DateD">&nbsp;</label>
-      <button class="btn " style="background-color: #94c11f; color: white; width: 100%;">Kaydet</button>
+      <button class="btn success" [disabled]="isActive" [hidden]="isVisible" (click)="save()" style="background-color: #94c11f; color: white; width: 100%;">Kaydet</button>
     </div>
     <div class="col-sm-3 form-group">
       <label for="DateD">&nbsp;</label>
-      <button class="btn btn-primary" style=" width: 100%;">Gönder</button>
+      <button class="btn btn-primary"  [disabled]="isActive" [hidden]="isVisible" (click)="send()" style=" width: 100%;">Onaya Gönder</button>
     </div>
   </div>
 
@@ -160,28 +156,514 @@
       </c-nav-item>
     </c-nav>
     <c-tab-content #tabContent="cTabContent" [activeTabPaneIdx]="1">
-      <c-tab-pane class="p-3">
+      <c-tab-pane class="p-3" #tab1>
         <div class="container-fluid container-fluid-tab mt-2">
-          <div class="row" id="textcreate1">
-            <button class="btn btn-primary" style=" width: 20%;" (click)="createText()">Gönder</button>
+          <div class="mt-3" id="mainDiv" >
+           <div class="mb-1 row" id="projectPlannigRow" style="background-color: #F2F2F2; padding-top: 15px;">
+
+         <div class="col-sm-2 form-group">
+          <select
+            id="form2text1"
+            class="form-control browser-default custom-select"
+            formControlName="taskType"
+            placeholder="Görev Türü"
+            (change)="form2Control($event.target)"
+          >  <option value="0" disabled selected hidden>Görev Türü</option>
+            <option value="Tasarım">Tasarım</option>
+            <option value="Tedarik">Tedarik</option>
+            <option value="Üretim">Üretim</option>
+          </select>
+        </div>
+
+        <div class="col-sm-2 form-group">
+          <select
+            id="form2text2"
+            class="form-control browser-default custom-select"
+            formControlName="taskType"
+            placeholder="Görev Tipi"
+            (change)="form2Control($event.target)"
+          >  <option value="0" disabled selected hidden>Görev Tipi</option>
+          <option value="{{task.HourPrice}}" *ngFor="let task of getTaskTypeResponse">{{task.Source}}</option>
+          </select>
+        </div>
+        <div class="col-sm-1 form-group">
+          <select
+            autocomplete="off"
+            type="Text"
+            name="cnf-password"
+            class="form-control browser-default custom-select"
+            id="form2text3"
+            formControlName="quantity"
+            placeholder="Kaynak"
+            required>
+            <option value="0" disabled selected hidden>Kaynak</option>
+            <option value="{{user.ID}}" *ngFor="let user of getUser">{{user.Name}} {{user.Surname}}</option>
+
+          </select>
+
+        </div>
+        <div class="col-sm-1 form-group">
+          <input
+            autocomplete="off"
+            type="Number"
+            name="cnf-password"
+            class="form-control"
+            id="form2text4"
+            formControlName="quantity"
+            placeholder="Süre(Sa)"
+            required
+          />
+        </div>
+
+        <div class="col-sm-2 form-group">
+          <input
+            type="Date"
+            name="dob"
+            class="form-control"
+            id="form2text5"
+            formControlName="demandDate"
+            value=""
+            required
+          />
+        </div>
+        <div class="col-sm-2 form-group" >
+          <input
+            type="Date"
+            name="dob"
+            class="form-control"
+            id="form2text6"
+            formControlName="demandDate"
+            placeholder="data"
+            value=""
+            required
+          />
+        </div>
+
+        <div class="col-sm-1 form-group" >
+          <input
+            type="number"
+            name="dob"
+            class="form-control"
+            id="form2text7"
+            formControlName="demandDate"
+            placeholder="Ücret"
+            required
+            disabled
+          />
+        </div>
+
+        <div class="col-sm-1 form-group" >
+          <input
+            type="number"
+            name="dob"
+            class="form-control"
+            id="form2text8"
+            formControlName="demandDate"
+            placeholder="Toplam Ücret"
+            required
+            disabled
+
+          />
+        </div>
+            </div>
+          </div>
+          <div class="row mt-3 mb-3" id="textcreate1">
+            <button class="btn btn-primary ml-3" style=" width: 40px; font-size: 25px; padding: 0px;"  (click)="createRow('projectPlannigRow','mainDiv')">+</button>
+            <button class="btn btn-danger ml-3" style=" width: 40px; font-size: 25px; padding: 0px; "  (click)="deleteRow('mainDiv','projectPlannigRow',8)">-</button>
+            <button class="btn btn-success ml-3" style=" width: 120px; font-size: 17px; font-weight: 600; padding: 0px;" (click)="hourPriceCalculate()">Hesapla</button>
+
+          </div>
+
+        </div>
+      </c-tab-pane>
+
+      <c-tab-pane class="p-3"  #tab2>
+        <div class="container-fluid container-fluid-tab mt-2">
+          <div class="mt-3" id="mainDivTab2" >
+            <div class="mb-1 row" id="projectExpense" style="background-color: #F2F2F2; padding-top: 15px;">
+
+         <div class="col-sm-2 form-group">
+          <select
+            id="form3text1"
+            class="form-control browser-default custom-select"
+            formControlName="taskType"
+            placeholder="Görev Türü"
+            (change)="form3Control($event.target)"
+          >  <option value="0" disabled selected hidden>Maliyet Tipi</option>
+            <option value="1">Malzeme</option>
+            <option value="2">Ekipman/Yazılım</option>
+            <option value="3">Üretim</option>
+          </select>
+        </div>
+        <div class="col-sm-2 form-group">
+          <input
+            autocomplete="off"
+            type="Text"
+            name="cnf-password"
+            class="form-control"
+            id="form3text2"
+            formControlName="quantity"
+            placeholder="Açıklama"
+            required
+          />
+        </div>
+
+        <div class="col-sm-1 form-group">
+          <input
+            autocomplete="off"
+            type="Number"
+            name="cnf-password"
+            class="form-control"
+            id="form3text3"
+            formControlName="quantity"
+            placeholder="Miktar"
+            required
+          />
+        </div>
+
+        <div class="col-sm-1 form-group">
+          <select
+            id="form3text4"
+            class="form-control browser-default custom-select"
+            formControlName="taskType"
+            placeholder="Birim"
+          >  <option value="0" disabled selected hidden>Birim</option>
+            <option value="1">Adet</option>
+            <option value="2">Kg</option>
+          </select>
+        </div>
+
+        <div class="col-sm-1 form-group">
+          <select
+            id="form3text5"
+            class="form-control browser-default custom-select"
+            formControlName="taskType"
+            placeholder="Birim"
+          >  <option value="0" disabled selected hidden>Döviz</option>
+            <option value="1">EUR</option>
+            <option value="2">USD</option>
+            <option value="3">TL</option>
+          </select>
+        </div>
+
+        <div class="col-sm-1 form-group">
+          <input
+            autocomplete="off"
+            type="Number"
+            name="cnf-password"
+            class="form-control"
+            id="form3text6"
+            formControlName="quantity"
+            placeholder="Fiyat"
+            required
+          />
+        </div>
+
+        <div class="col-sm-2 form-group">
+          <input
+            type="Text"
+            name="cnf-password"
+            class="form-control"
+            id="form3text7"
+            formControlName="quantity"
+            placeholder="TL Fiyat"
+            disabled
+            required
+
+          />
+         <!-- value="{{tlPrice | currency: 'TRY'}}" -->
+        </div>
+
+        <div class="col-sm-2 form-group">
+          <input
+            type="Text"
+            name="cnf-password"
+            class="form-control"
+            id="form3text8"
+            formControlName="quantity"
+            placeholder="Toplam Tutar"
+            disabled
+            required
+          />
+            <!-- value="{{totalPrice | currency: 'TRY': ''}}" -->
+        </div>
+
+            </div>
+          </div>
+          <div class="row mt-3 mb-3" id="textcreate1">
+            <button class="btn btn-primary ml-3" style=" width: 40px; font-size: 25px; padding: 0px;"  (click)="createRow('projectExpense','mainDivTab2')">+</button>
+            <button class="btn btn-danger ml-3" style=" width: 40px; font-size: 25px; padding: 0px; "  (click)="deleteRow('mainDivTab2','projectExpense',7)">-</button>
+            <button class="btn btn-success ml-3" style=" width: 120px; font-size: 17px; font-weight: 600; padding: 0px; "  (click)="currencyCalculate()">Hesapla</button>
+          </div>
+
+        </div>
+      </c-tab-pane>
+
+      <c-tab-pane class="p-3" #tab3>
+        <div class="container-fluid container-fluid-tab mt-2">
+          <div class="mt-3" id="form4MainDiv" >
+            <div class="row">
+              <div class="col-sm-6 form-group">
+                <label for="feature1">Beklenen Temel Foksiyonlar</label>
+                <textarea
+                  type="text"
+                  class="form-control "
+                  name="Pname"
+                  id="form4text1"
+                  formControlName="feature1"
+                  style="resize: none;"
+                  required
+                  disabled
+                ></textarea>
+              </div>
+              <div class="col-sm-6 form-group">
+                <label for="feature2">Foksiyonel ve Teknik Özellikler</label>
+                <textarea
+                  type="search"
+                  class="form-control "
+                  name="Pname"
+                  id="form4text2"
+                  formControlName="feature2"
+                  style="resize: none;"
+                  required
+                  disabled
+                ></textarea>
+              </div>
+            </div>
+            <div class="row">
+            <div class="col-sm-6 form-group">
+              <label for="feature3">Mekanik Özellikler</label>
+              <textarea
+                type="search"
+                class="form-control "
+                name="Pname"
+                id="form4text3"
+                formControlName="feature3"
+                style="resize: none;"
+                disabled
+              ></textarea>
+
+            </div>
+            <div class="col-sm-6 form-group">
+              <label for="feature4">Elektriksel Özellikler</label>
+              <textarea
+                type="search"
+                class="form-control "
+                name="Pname"
+                id="form4text4"
+                formControlName="feature4"
+                style="resize: none;"
+                disabled
+              ></textarea>
+            </div>
+          </div>
+          <div class="row">
+
+
+            <div class="col-sm-6 form-group">
+              <label for="feature5">İlgili Standartlar</label>
+              <textarea
+                type="search"
+                class="form-control "
+                name="Pname"
+                id="form4text5"
+                formControlName="feature5"
+                style="resize: none;"
+                disabled
+              ></textarea>
+
+            </div>
+            <div class="col-sm-6 form-group">
+              <label for="feature6">Elektrik komponentleri ile ilgili detaylı bilgi</label>
+              <textarea
+                type="search"
+                class="form-control "
+                name="Pname"
+                id="form4text6"
+                formControlName="feature6"
+                style="resize: none;"
+                disabled
+              ></textarea>
+
+            </div>
+          </div>
           </div>
         </div>
       </c-tab-pane>
-      <c-tab-pane class="p-3">
-        This is some placeholder content the <strong>Profile</strong> tab's associated content. Clicking another
-        tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the
-        content visibility and styling. You can use it with tabs, pills, and any other .nav-powered navigation.
-      </c-tab-pane>
-      <c-tab-pane class="p-3">
-        This is some placeholder content the <strong>Profile</strong> tab's associated content. Clicking another
-        tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the
-        content visibility and styling. You can use it with tabs, pills, and any other .nav-powered navigation.
-      </c-tab-pane>
       <!-- example: *ngIf activeTabPaneIdx === 0 disables third cNavLink -->
       <c-tab-pane  class="p-3">
-        This is some placeholder content the <strong>Contact</strong> tab's associated content. Clicking another tab will
-        toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility
-        and styling. You can use it with tabs, pills, and any other .nav-powered navigation.
+        <div class="container-fluid container-fluid-tab mt-2">
+          <div class="mt-3" id="form5MainDiv" >
+            <div class="row">
+              <div class="col-sm-6 form-group" >
+              <label for="DateD">Arge Proje Maliyeti</label>
+              <input
+                type="text"
+                class="form-control"
+                id="form5text1"
+                formControlName="demandDate"
+                value="0"
+                required disabled
+              />
+            </div>
+
+            <div class="col-sm-6 form-group">
+              <label for="DateD">İşçilik Maliyeti</label>
+              <input
+                type="text"
+                class="form-control"
+                id="form5text2"
+                formControlName="demandDate"
+                value="0"
+                required disabled
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-6 form-group">
+            <label for="DateD">Malzeme Maliyeti</label>
+            <input
+              type="text"
+              class="form-control"
+              id="form5text3"
+              formControlName="demandDate"
+              value="0"
+              required disabled
+            />
+          </div>
+
+          <div class="col-sm-6 form-group">
+            <label for="DateD">Ekipman/Yazılım/Yayın Maliyeti</label>
+            <input
+              type="text"
+              class="form-control"
+              id="form5text4"
+              formControlName="demandDate"
+              value="0"
+              required disabled
+            />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6 form-group">
+          <label for="DateD">Test/Validasyon Maliyeti</label>
+          <input
+            type="text"
+            class="form-control"
+            id="form5text5"
+            formControlName="demandDate"
+            value="0"
+            required disabled
+          />
+        </div>
+
+        <div class="col-sm-6 form-group">
+          <label for="DateD">Hizmet/Danışmanlık Maliyeti</label>
+          <input
+            type="text"
+            class="form-control"
+            id="form5text6"
+            formControlName="demandDate"
+            value="0"
+            required disabled
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6 form-group">
+        <label for="DateD">Seyahat Maliyeti</label>
+        <input
+          type="text"
+          class="form-control"
+          id="form5text7"
+          formControlName="demandDate"
+          value="0"
+          required disabled
+        />
+      </div>
+
+      <div class="col-sm-6 form-group">
+        <label for="DateD">Eğitim Maliyeti</label>
+        <input
+          type="text"
+          class="form-control"
+          id="form5text8"
+          formControlName="demandDate"
+          value="0"
+          required disabled
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6 form-group">
+      <label for="DateD">Patent/Yayın Maliyeti</label>
+      <input
+        type="text"
+        class="form-control"
+        id="form5text9"
+        formControlName="demandDate"
+        value="0"
+        required disabled
+      />
+    </div>
+
+    <div class="col-sm-6 form-group">
+      <label for="DateD">Nakliye Maliyeti</label>
+      <input
+        type="text"
+        class="form-control"
+        id="form5text10"
+        formControlName="demandDate"
+        value="0"
+        required disabled
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 form-group">
+    <label for="DateD">Toplam Maliyet</label>
+    <input
+      type="text"
+      class="form-control"
+      id="form5text11"
+      formControlName="demandDate"
+      value="0"
+      required disabled
+    />
+  </div>
+
+  <div class="col-sm-6 form-group">
+    <label for="DateD">Satış Bedeli</label>
+    <input
+      type="text"
+      class="form-control"
+      id="form5text12"
+      formControlName="demandDate"
+      value="0"
+      required disabled
+    />
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6 form-group">
+  <label for="DateD">Hedeflenen Kar</label>
+  <input
+    type="text"
+    class="form-control"
+    id="form5text13"
+    formControlName="demandDate"
+    value="0"
+    required disabled
+  />
+</div>
+</div>
+          </div>
+        </div>
       </c-tab-pane>
     </c-tab-content>
 

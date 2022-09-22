@@ -21,13 +21,6 @@ export class DemandsComponent implements OnInit {
     projectNumber: [],
     projectStatus: 1,
   };
-  responsibleEngineer: any[] = [
-    { id: 0, name: '' },
-    { id: 1, name: 'Fatih Cengiz' },
-    { id: 2, name: 'Mehmet Karatokuş' },
-    { id: 3, name: 'Serkan Baki' },
-    { id: 4, name: 'Mahmut Yasak' },
-  ];
   demandList: any[] = [];
   responsibleVisible: boolean;
 
@@ -47,7 +40,7 @@ export class DemandsComponent implements OnInit {
     this.demands = [];
     this.demandService.getDemands().subscribe((response) => {
       this.get = response;
-
+      console.log(this.get.demand_list);
       for (let i = 0; i < this.get.demand_list.length; i++) {
         if (this.get.demand_list[i].ProjectStatus == 1 ) {
           this.demands.push(this.get.demand_list[i]);
@@ -55,7 +48,7 @@ export class DemandsComponent implements OnInit {
 
       }
 
-      console.log(this.demands);
+
       this.demands.forEach((element) => {
         element.Checked = false;
       });
@@ -79,7 +72,7 @@ export class DemandsComponent implements OnInit {
   getAllUser(){
     this.demandService.getAllUser().subscribe((response) => {
       this.getUserAllResponse=response['user'];
-      console.log(this.getUserAllResponse);
+      // console.log(this.getUserAllResponse);
   });
 }
 
@@ -181,7 +174,7 @@ export class DemandsComponent implements OnInit {
               .selectedDemandPost(this.selectedDemands)
               .subscribe(
                 (response) => {
-                  console.log(response);
+                  // console.log(response);
                   this.get = response;
                   if (!this.get.error) {
                     this.selectedDemands = {

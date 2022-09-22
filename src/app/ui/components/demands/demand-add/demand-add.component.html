@@ -22,24 +22,32 @@
               <label for="type-p">Proje Tipi</label>
               <select  formControlName="projectType" class="form-control custom-select browser-default">
                 <option value="Bilister Kalıbı">Bilister Kalıbı</option>
-                <option value="Test Jigi">Test Jigi</option>
+                <option value="Elektronik Kart">Elektronik Kart</option>
+                <option value="Fikstür / Aparat">Fikstür / Aparat</option>
+                <option value="Makina / Cihaz">Makina / Cihaz</option>
+                <option value="Mekanik Tasarım">Mekanik Tasarım</option>
+                <option value="Patent Projesi">Patent Projesi</option>
+                <option value="Revizyon İsteği">Revizyon İsteği</option>
+                <option value="Taşıma Arabası">Taşıma Arabası</option>
+                <option value="Temel Araştırma">Temel Araştırma</option>
+                <option value="TestJigi">TestJigi</option>
                 <option value="Yazılım">Yazılım</option>
+
               </select>
             </div>
             <div class="col-sm-2 form-group">
               <label for="type-d">Talep Şekli</label>
               <select formControlName="demandType" class="form-control custom-select browser-default">
-                <option value="Müşteri Talebi">Müşteri Talebi</option>
-                <option value="İşletme Talebi">İşletme Talebi</option>
+                <option value="1">Müşteri Talebi</option>
+                <option value="2">İşletme Talebi</option>
               </select>
             </div>
 
             <div class="col-sm-4 form-group">
               <label for="customer">Müşteri Adı ve Kodu</label>
               <select formControlName="customer" class="form-control custom-select browser-default">
-                <option value="1">10T - ALPPLAS BOLU</option>
-                <option value="Åland Islands">B</option>
-                <option value="Zimbabwe">C</option>
+                <option value="{{customer.Customer}}" *ngFor="let customer of getCustomerResponse">{{customer.Customer}}</option>
+
               </select>
             </div>
 
@@ -53,6 +61,7 @@
                 formControlName="demandDate"
                 placeholder=""
                 required
+                readonly
               />
             </div>
             <div class="col-sm-3 form-group">
@@ -76,8 +85,15 @@
                 class="form-control browser-default custom-select"
                 formControlName="facilityCode"
               >
+                <option value="01">01</option>
                 <option value="10">10</option>
-                <option value="20">20</option>
+                <option value="20">15</option>
+                <option value="01">20</option>
+                <option value="10">30</option>
+                <option value="20">35</option>
+                <option value="01">50</option>
+                <option value="10">ACR</option>
+                <option value="20">ARG</option>
               </select>
             </div>
             <div class="col-sm-3 form-group">
@@ -166,9 +182,19 @@
                 id="feature6"
                 formControlName="feature6"
                 style="resize: none;"
-
               ></textarea>
 
+            </div>
+            <div class="col-sm-3 form-group">
+              <input
+                type="Text"
+                name="dob"
+                class="form-control"
+                id="DeliveryD"
+                formControlName="requester"
+                required
+                hidden
+              />
             </div>
             <div>
 
@@ -179,7 +205,7 @@
             </div>
             <div class="col-sm-3 form-group"
             [class]="{'btn-visible':btnVisible}">
-              <button class="btn float-left " (click)="demandRemove()" style="background-color: red; color: white; width: 100%;" >Sil</button>
+              <button class="btn btn-danger float-left " (click)="demandRemove()" style="color: white; width: 100%;" >Sil</button>
             </div>
             <div class="col-sm-6 form-group"
             [class]="{'btn-visible':btnVisible}">
@@ -187,6 +213,7 @@
             </div>
 
           </div>
+
         </form>
       </div>
     </div>

@@ -34,15 +34,16 @@ export class LoginComponent implements OnInit {
         this.authService.login(this.user).subscribe(
           (response) => {
             this.get = response;
+            console.log("login");
             console.log(this.get);
             if (!this.get.error) {
               this.toastr.success('Giriş İşlemi Başarılı');
               localStorage.setItem('token',this.get.guid);
 
-             console.log(this.authService.getUser(this.get.guid).subscribe((response)=>{
+             this.authService.getUser(this.get.guid).subscribe((response)=>{
               this.userInformation=response;
-              console.log( this.userInformation);
-             }))
+            //  console.log( this.userInformation);
+             })
               this.router.navigate(['home']);
             } else {
               form.reset();
