@@ -19,4 +19,6 @@ export class Demands{
   Checked:boolean;
   Requester:string;
   Engineer:string;
+  PlannedDeliveryDate:string;
+  Status:string;
 }

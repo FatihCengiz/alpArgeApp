@@ -42,3 +42,12 @@ textarea {
 input {
   background-color: white!important;
 }
+.project-closing-button {
+  display: none;
+}
+
+@media (max-width: 744px) {
+  #headerProjectPlan{
+    display: none;
+  }
+}

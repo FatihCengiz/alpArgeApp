@@ -1,12 +1,48 @@
 <div class="page-container2">
-<section class="statistic">
-  <div class="section__content section__content--p30">
-      <div class="container-fluid">
+  <section class="statistic" style="background-color: #f1f1f1;">
+    <div class="section__content section__content--p30" >
+      <div class="container-fluid ">
+        <div class="row ">
+          <div class="col-md-6 col-lg-3">
+            <div class="statistic__item">
+              <h2 class="number">{{pendingApproval}}</h2>
+              <span class="desc">Onay Bekleyen</span>
+              <div class="icon">
+                 <i class="zmdi zmdi-repeat-one"></i>
+              </div>
+            </div>
+          </div>
 
-        <h1>Home</h1>
-
+          <div class="col-md-6 col-lg-3">
+            <div class="statistic__item">
+              <h2 class="number">{{active}}</h2>
+              <span class="desc">Aktif</span>
+              <div class="icon">
+                <i class="zmdi zmdi-chart-donut"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="statistic__item">
+              <h2 class="number">{{complated
+                }}</h2>
+              <span class="desc">Tamamlanan Projeler</span>
+              <div class="icon">
+                <i class="zmdi zmdi-assignment-check"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="statistic__item">
+              <h2 class="number">{{totalDemand}}</h2>
+              <span class="desc">Tüm Projeler</span>
+              <div class="icon">
+                <i class="zmdi zmdi-calendar-note"></i>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-  </div>
-</section>
+    </div>
+  </section>
 </div>
-

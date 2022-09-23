@@ -15,6 +15,7 @@ export class SidenavComponent implements OnInit {
   userName;
   projectManager:boolean=false;
   authorityList = {bütçePalanlama: false, bütçeOnaylama: false,projelerim: false, projeler: false, projeKapatma:false };
+  headerUser:string;
 
   authorityArray:any []=[false,false,false,false,false,false];// talepAçma,bütçeOnaylama,bütçePalanlama,projeKapatma,projelerim, projeler,
 
@@ -35,7 +36,7 @@ export class SidenavComponent implements OnInit {
       this.sidenavService.getUser(id?.toString()).subscribe((response)=>{
         this.get=response;
        this.userName=this.get.user[0].Name + " " + this.get.user[0].Surname;
-
+       this.headerUser=this.get.user[0].Name.substring(0,1)+this.get.user[0].Surname.substring(0,1);
        if(this.get.user[0].GroupID==1){
         this.authorityArray=[true,true,false,true,false,true];
 
@@ -44,13 +45,12 @@ export class SidenavComponent implements OnInit {
 
        }else if(this.get.user[0].GroupID==3){
         this.authorityArray=[true,false,false,false,true,false];
-
        }
 
       });
     }
   }
-  
+
   logout(){
     this.authService.logout();
   }

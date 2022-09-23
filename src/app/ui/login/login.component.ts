@@ -29,13 +29,11 @@ export class LoginComponent implements OnInit {
     }
   }
   login(form: any) {
-    this.spinner.show().then(() => {
-      setTimeout(()=>{
+    // this.spinner.show().then(() => {
+    //   setTimeout(()=>{
         this.authService.login(this.user).subscribe(
           (response) => {
             this.get = response;
-            console.log("login");
-            console.log(this.get);
             if (!this.get.error) {
               this.toastr.success('Giriş İşlemi Başarılı');
               localStorage.setItem('token',this.get.guid);
@@ -53,11 +51,11 @@ export class LoginComponent implements OnInit {
           },
           (err) => {
             this.toastr.error('Giriş İşlemi Başarısız');
-            this.spinner.hide();
+            //this.spinner.hide();
           }
         );
-      },1000);
-    });
+    //   },1000);
+    // });
 
 
   }

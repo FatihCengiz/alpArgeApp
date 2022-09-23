@@ -25,12 +25,11 @@ export class DemandService {
     let api =
       this.apiUrl +
       '/api_demand.php';
-    console.log("form");
-    console.log(form.value);
+    //console.log(form.value);
     this.httpClient.post(api,Form).subscribe(
       (response) => {
         this.get =response;
-        console.log(this.get);
+       // console.log(this.get);
         if (!this.get.error) {
           localStorage.removeItem("demand");
           Swal.fire('', 'Talep Açma İşlemi Başarılı', 'success');
@@ -40,7 +39,6 @@ export class DemandService {
       },
       (err) => {
         Swal.fire('', 'Talep Açma İşlemi Başarısız ', 'error');
-        console.log(err);
       }
     );
   }
@@ -53,7 +51,6 @@ export class DemandService {
     return  this.httpClient.get<Demands[]>(api);
   }
    selectedDemandPost(selectedDemand:any){
-    console.log(selectedDemand);
     let api = this.apiUrl+'/api_demand_update.php' ;
     return  this.httpClient.post(api,selectedDemand);
    }

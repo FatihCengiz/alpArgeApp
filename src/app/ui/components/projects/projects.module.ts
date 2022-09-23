@@ -5,29 +5,32 @@ import { MyprojectModule } from './myproject/myproject.module';
 import { ProjectConfirmationModule } from './project-confirmation/project-confirmation.module';
 import { ProjectPlannigModule } from './project-plannig/project-plannig.module';
 import { ProjectClosingModule } from './project-closing/project-closing.module';
-
-
-
+import { FormsModule } from '@angular/forms';
+import { SearchPipe } from './search.pipe';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 
 
 @NgModule({
   declarations: [
-    ProjectsComponent
+    ProjectsComponent,
+    SearchPipe
   ],
   imports: [
     CommonModule,
     MyprojectModule,
     ProjectConfirmationModule,
     ProjectPlannigModule,
-    ProjectClosingModule
+    ProjectClosingModule,
+    FormsModule,
+    Ng2SearchPipeModule
   ],
   exports:[
     ProjectsComponent,
     MyprojectModule,
     ProjectConfirmationModule,
     ProjectPlannigModule,
-    ProjectClosingModule
+    ProjectClosingModule,
   ]
 })
 export class ProjectsModule { }

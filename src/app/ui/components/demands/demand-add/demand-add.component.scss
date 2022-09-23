@@ -5,6 +5,9 @@ label {
 textarea{
   height: 150px;
 }
+input ,select,textarea{
+  background-color: white !important;
+}
 .btn-primary {
   width: 50%;
 }

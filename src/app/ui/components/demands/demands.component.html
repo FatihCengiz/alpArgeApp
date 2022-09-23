@@ -37,11 +37,11 @@
                   <span class="desc"  >{{ demand.ProjectName }}</span>
                 </td>
                 <td class="desc"  routerLink="/demands/add/{{demand.ProjectNumber}}" >{{ demand.ProjectType }}</td>
-                <td>{{ demand.Customer }}</td>
+                <td  routerLink="/demands/add/{{demand.ProjectNumber}}">{{ demand.Customer }}</td>
                 <td>
                   <span class="status--process"  routerLink="/demands/add/{{demand.ProjectNumber}}">{{ demand.Requester }}</span>
                 </td>
-                <td>2022-09-27</td>
+                <td  routerLink="/demands/add/{{demand.ProjectNumber}}">{{ demand.DemandDate }}</td>
 
                 <td  >
                   <span style="font-size: 15px; font-weight: 500;" [class]="{'bg-responsible':responsibleVisible}" >{{ demand.Engineer }}</span>

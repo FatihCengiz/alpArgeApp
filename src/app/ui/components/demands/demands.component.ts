@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { FormGroup } from '@angular/forms';
 import { SelectedDemands } from './model/selected-demand';
 
+
 @Component({
   selector: 'app-demands',
   templateUrl: './demands.component.html',
@@ -40,7 +41,7 @@ export class DemandsComponent implements OnInit {
     this.demands = [];
     this.demandService.getDemands().subscribe((response) => {
       this.get = response;
-      console.log(this.get.demand_list);
+      //console.log(this.get.demand_list);
       for (let i = 0; i < this.get.demand_list.length; i++) {
         if (this.get.demand_list[i].ProjectStatus == 1 ) {
           this.demands.push(this.get.demand_list[i]);
@@ -193,7 +194,7 @@ export class DemandsComponent implements OnInit {
                   }
                 },
                 (err) => {
-                  console.log(err);
+                //  console.log(err);
                   Swal.fire('', 'Talep Onaylama İşlemi Başarısız !', 'error');
                 }
               );

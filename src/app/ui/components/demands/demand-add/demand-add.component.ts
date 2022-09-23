@@ -30,6 +30,7 @@ export class DemandAddComponent implements OnInit {
   user:any;
   myDate = new Date();
   date:string;
+  isActive:boolean=false;
 
   ngOnInit(): void {}
 
@@ -45,9 +46,9 @@ export class DemandAddComponent implements OnInit {
     var date = this.datePipe.transform(this.myDate, 'yyyy-MM-dd')?.toString();
     if(date!=undefined)
     this.date=date;
-    console.log(date)
     this.getUser();
     this.getCustomer();
+
   }
   demandAdd() {
     if (this.demandForm.valid) {
@@ -95,13 +96,13 @@ export class DemandAddComponent implements OnInit {
     });
   }
   formFill() {
+
     if (this.projectNumber != null) {
       this.btnVisible=true;
       this.demandService
         .getDemandById(this.projectNumber)
         .subscribe((response) => {
           this.get = response['demand_list'][0];
-          console.log(this.get.DemandDate.substring(0,10));
           this.projectNameHeader=this.get.ProjectName;
           this.demandForm = this.formBuilder.group({
             projectNumber: [this.projectNumber],
@@ -121,6 +122,7 @@ export class DemandAddComponent implements OnInit {
             feature6: [this.get.Feature6],
             requester:[this.user],
           });
+          this.demandForm.disable();
         });
     } else if (localStorage.getItem('demand')) {
       this.btnVisible=false;
@@ -166,7 +168,9 @@ export class DemandAddComponent implements OnInit {
         feature6: [''],
         requester:[this.user]
       });
+
     }
+
   }
   getDemandFormValue() {
     return this.demandService.getDemandById(this.projectNumber);
@@ -176,7 +180,6 @@ export class DemandAddComponent implements OnInit {
     if (id != undefined) {
        this.demandService.getUser(id).subscribe((response)=>{
           this.user=response['user'][0].Name +" "+response['user'][0].Surname;
-          console.log(this.user);
           this.formFill();
 
      })
@@ -186,7 +189,6 @@ export class DemandAddComponent implements OnInit {
     this.demandService.getCustomer().subscribe((response)=>{
 
       this.getCustomerResponse=response['customer'];
-      console.log(this.getCustomerResponse);
     })
   }
 }

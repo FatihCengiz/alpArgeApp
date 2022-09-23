@@ -25,6 +25,11 @@ updateDemand = {
   projectNumber: [0],
   projectStatus: 3,
 };
+closingDemand = {
+  responsible: [0],
+  projectNumber: [0],
+  projectStatus: 5,
+};
   selectedDemands = {
     form1: []
   };
@@ -47,27 +52,27 @@ updateDemand = {
   tlPrice:string;
   totalPrice:string;
   isActive:boolean;
-  isVisible:boolean;
+  isVisible:boolean=true;
+  isClosing:boolean=true;
 
   constructor(private route: ActivatedRoute,private projectService:ProjectService,private cp:CurrencyPipe,private toastr:ToastrService) {
 
     this.projectNumber = this.route.snapshot.paramMap.get('id');
-    console.log(this.projectNumber);
     this.getBudgetPlan();
     this.getCurrency();
     this.getAllUser();
     this.getTaskType();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+
+  }
   onTabChange($event: number) {
     this.activePane = $event;
-    console.log('onTabChange', $event);
   }
   getAllUser(){
     this.projectService.getAllUser().subscribe((response)=>{
       this.getUser=response['user'];
-      console.log(this.getUser)
       this.source = Object.keys(response['user']).map(key => ({value: response['user'][key]}));
     })
   }
@@ -77,7 +82,6 @@ updateDemand = {
         this.currency=response;
         this.dolar=this.currency.USD.Satış.trim().replace(",",".");
         this.euro=this.currency.EUR.Satış.trim().replace(",",".");
-         console.log(this.euro);
       }else{
         Swal.fire('', 'Kur bilgisi çekilemedi !', 'error');
       }
@@ -135,7 +139,7 @@ if(!this.isActive){
 
 let result=this.emptyControl('projectPlannigRow',indexChild1,2) ;
 let result2=this.emptyControl('projectExpense',indexChild2,3) ;
-console.log("1 "+result +" 2 "+result2);
+
 
   if(this.emptyControl('projectPlannigRow',indexChild1,2)){
     Swal.fire('', 'Lütfen proje planı sekmesindeki boşlukları kontrol ediniz !', 'error');
@@ -143,6 +147,8 @@ console.log("1 "+result +" 2 "+result2);
   if(this.emptyControl('projectExpense',indexChild2,3) ){
     Swal.fire('', 'Lütfen gider kalemlerindeki sekmesindeki boşlukları kontrol ediniz !', 'error');
   }else{
+    this.currencyCalculate();
+    this.hourPriceCalculate();
     this.saveToPlannedDeliveryDate();
     this.saveToList1(Number(index),Number(indexChild1));
     this.saveToList2(Number(index2),Number(indexChild2));
@@ -211,10 +217,6 @@ getBudgetTab(){
   this.budgetPlan.form5Elements.push(form5Element1);
   this.budgetPlan.form5Elements.push(form5Element2);
   this.budgetPlan.form5Elements.push(form5Element3);
-  console.log(form5Element1);
-  console.log(form5Element2);
-  console.log(form5Element3);
-  console.log(this.budgetPlan.form5Elements)
 }
 
 emptyControl(parentID,childIndex,formID):boolean{
@@ -254,17 +256,10 @@ form3Control(event) {
   }
 }
 
-get1(){
-  let id="projectPlannigRow";
-  var x=document.getElementById(id);
-  console.log((x?.children[0].children[0] as HTMLInputElement).value)
-  console.log((x?.children[1].children[0] as HTMLInputElement).value)
-  console.log((x?.children[2].children[0] as HTMLInputElement).value)
-}
 getBudgetPlan(){
   this.projectService.getDemandById(this.projectNumber).subscribe((response)=>{
     this.getDemandResponse=response['demand_list'][0];
-    console.log(this.getDemandResponse);
+   // console.log(this.getDemandResponse);
 
     var form1=(document.getElementById('form1') as HTMLInputElement);
     var form1Element1=form1.children[0].childNodes[0].childNodes[1] as HTMLInputElement;
@@ -287,7 +282,12 @@ getBudgetPlan(){
       this.isActive=true;
     }else if(this.getDemandResponse.ProjectStatus==4){
       this.isVisible=true;
+      this.isClosing=false;
+    }else if(this.getDemandResponse.ProjectStatus==2){
+      this.isVisible=false;
     }
+
+
 
     var form4=(document.getElementById('form4MainDiv') as HTMLInputElement);
     var form4Element1=form4.children[0].childNodes[0].childNodes[1] as HTMLInputElement;
@@ -306,7 +306,6 @@ getBudgetPlan(){
   });
   this.projectService.getBudgetPlanByID(this.projectNumber).subscribe((response)=>{
     this.getPlanProjectResponse=response;
-    console.log(this.getPlanProjectResponse);
 
     if(!this.getPlanProjectResponse.error2){
       var form1=(document.getElementById('form1') as HTMLInputElement);
@@ -366,7 +365,6 @@ getBudgetPlan(){
     }
 
     if(!this.getPlanProjectResponse.error4){
-      console.log(this.getPlanProjectResponse['budget_list'][0]);
       var parent=document.getElementById("form5MainDiv");
       var form5Element1=(parent?.children[0].children[0].children[1] as HTMLInputElement);
       var form5Element2=(parent?.children[1].children[0].children[1] as HTMLInputElement);
@@ -387,7 +385,6 @@ var price:any=(element.childNodes[5].childNodes[0] as HTMLInputElement).value;
 var tlPrice=(element.childNodes[6].childNodes[0] as HTMLInputElement);
 var totalPrice=(element.childNodes[7].childNodes[0] as HTMLInputElement);
 if(quantiy!=""){
-  console.log(foreignCurrency);
   if(foreignCurrency=="1"){
     var priceEURCurrency:any= this.cp.transform(this.euro*price,'TRY ','symbol','');
     tlPrice.value=priceEURCurrency;
@@ -467,7 +464,6 @@ send(){
         this.updateDemand.responsible[0]=Number(responsible);
         this.updateDemand.projectNumber[0]=Number(this.projectNumber);
         this.projectService.selectedDemandPost(this.updateDemand).subscribe((response) => {
-          console.log(response);
           if(!response["error"]){
             this.isActive=true;
             Swal.fire('', 'Onaya Gönderildi !', 'success');
@@ -480,6 +476,35 @@ send(){
     Swal.fire('', 'Lütfen planlanan talep tarihini boş bırakmayınız !', 'warning');
   }
 
+}
+sendClosing(){
+  var plannedDate=(document.getElementById('form1text9') as HTMLInputElement).value;
+  if(!this.isClosing && plannedDate!=""){
+    Swal.fire({
+      title: '',
+      text: 'Kapatma onaya gönderilecek emin misiniz ?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Evet',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        var responsible=(document.getElementById('form1text6') as HTMLInputElement).value;
+        this.closingDemand.responsible[0]=Number(responsible);
+        this.closingDemand.projectNumber[0]=Number(this.projectNumber);
+        this.projectService.selectedDemandPost(this.closingDemand).subscribe((response) => {
+          if(!response["error"]){
+           this.isClosing=true;
+            Swal.fire('', 'Onaya Gönderildi !', 'success');
+          }
+
+        });
+      }
+    })
+  }else{
+    Swal.fire('', 'Lütfen planlanan talep tarihini boş bırakmayınız !', 'warning');
+  }
 }
 
   numberWithCommas(x) {

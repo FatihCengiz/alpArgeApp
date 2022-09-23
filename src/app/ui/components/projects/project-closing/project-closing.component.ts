@@ -42,7 +42,6 @@ export class ProjectClosingComponent implements OnInit {
 
       }
 
-      console.log(this.demands);
       this.demands.forEach((element) => {
         element.Checked = false;
       });
@@ -67,7 +66,7 @@ export class ProjectClosingComponent implements OnInit {
   getAllUser(){
     this.projectService.getAllUser().subscribe((response) => {
       this.getUserAllResponse=response['user'];
-      console.log(this.getUserAllResponse);
+    //  console.log(this.getUserAllResponse);
   });
 }
 
@@ -140,7 +139,6 @@ export class ProjectClosingComponent implements OnInit {
               .selectedDemandPost(this.selectedProject)
               .subscribe(
                 (response) => {
-                  console.log(response);
                   this.get = response;
                   if (!this.get.error) {
                     this.selectedProject = {
@@ -158,7 +156,6 @@ export class ProjectClosingComponent implements OnInit {
                   }
                 },
                 (err) => {
-                  console.log(err);
                   Swal.fire('', 'Proje Kapatma İşlemi Başarısız !', 'error');
                 }
               );

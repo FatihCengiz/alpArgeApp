@@ -65,6 +65,7 @@ export class MyprojectComponent implements OnInit {
     });
   }
 getEvent(event:Event){
+  this.projectService.spinnerShow();
   var projectNumber=((event.target) as HTMLInputElement).parentElement?.childNodes[1].textContent;
   this.router.navigate(['/projects/project-plannig-add/'+projectNumber])
 }

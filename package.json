@@ -25,6 +25,7 @@
     "@coreui/icons": "^2.1.0",
     "@coreui/icons-angular": "^4.2.0",
     "mdb-angular-ui-kit": "^2.3.0",
+    "ng2-search-filter": "^0.5.1",
     "ngx-spinner": "^14.0.0",
     "ngx-toastr": "^15.0.0",
     "rxjs": "~7.5.0",

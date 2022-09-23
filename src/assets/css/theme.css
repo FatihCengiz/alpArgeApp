@@ -2150,7 +2150,7 @@ section {
     padding: 0 35px;
 }
 
-@media (max-width: 991px) {
+/* @media (max-width: 991px) {
     .menu-sidebar2 {
         top: 0;
         right: -300px;
@@ -2163,6 +2163,24 @@ section {
     .menu-sidebar2.show-sidebar {
         right: 0;
     }
+} */
+@media (max-width: 990px) {
+  .menu-sidebar2 {
+    display: block;
+    top: 0;
+    right: 0px;
+    left: auto;
+    -webkit-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
+}
+.menu-sidebar2.show-sidebar {
+  right: 0;
+}
+#menu-sidebar2-visible{
+  display: none !important;
+}
+
 }
 
 .account2 {
@@ -4769,6 +4787,7 @@ section {
     text-align: center;
     padding: 60px 0;
     padding-top: 20px;
+
 }
 
 .copyright p {
