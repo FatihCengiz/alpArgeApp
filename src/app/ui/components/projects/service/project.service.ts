@@ -58,6 +58,11 @@ export class ProjectService {
     let api = this.apiUrl + '/api_project_update.php';
     return this.httpClient.post(api, selectedDemand);
   }
+  selectedDemandClosingPost(selectedDemand: any) {
+    console.log(selectedDemand);
+    let api = this.apiUrl + '/api_demand_close.php';
+    return this.httpClient.post(api, selectedDemand);
+  }
   getUser(guid: string) {
     let api =
       this.apiUrl +
@@ -118,5 +123,10 @@ export class ProjectService {
     let api =   this.apiUrl +
     '/api_get_task_type.php?all&developer_mode_key=AlpArge_Dev_Key_GET';
     return this.httpClient.get(api);
+  }
+  getProjectPlanByID(id: string) {
+    let api =this.apiUrl +'/api_get_project_plan.php?projectNumber='+id+'&developer_mode_key=AlpArge_Dev_Key_GET';
+    console.log(api);
+  return this.httpClient.get(api);
   }
 }

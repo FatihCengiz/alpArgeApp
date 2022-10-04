@@ -114,7 +114,7 @@
               <label for="feature1">Beklenen Temel Foksiyonlar</label>
               <textarea
                 type="text"
-                class="form-control "
+                class="form-control"
                 name="Pname"
                 id="feature1"
                 formControlName="feature1"
@@ -213,7 +213,26 @@
               <button class="btn btn-primary float-right" (click)="demandAdd()" style="color: white;">Gönder</button>
             </div>
 
-          </div>
+            <div class="row" [hidden]="isVisible">
+              <div class="col-sm-2 form-group ">
+                <label for="type-d">Sorumlu</label>
+                <select  id="selectResponsible" class="form-control custom-select browser-default">
+                  <option  value="0" disabled selected hidden> </option>
+                  <option  value="{{engineer.ID}}" *ngFor="let engineer of getUserAllResponse" >{{engineer.Name}} {{engineer.Surname}}</option>
+
+                </select>
+              </div>
+              <div class="col-sm-2 form-group">
+                <button class="btn btn-success" (click)="assigntResposible()"  style="color: white; margin-top: 30px; width: 220px;">Onayla</button>
+              </div>
+              <div class="col-sm-2 form-group">
+                <button class="btn btn-danger mt-res" (click)="demandReject()"  style="color: white; margin-top: 30px; width: 220px;">Reddet</button>
+              </div>
+            </div>
+            </div>
+
+
+
 
         </form>
       </div>

@@ -40,12 +40,11 @@ export class LoginComponent implements OnInit {
 
              this.authService.getUser(this.get.guid).subscribe((response)=>{
               this.userInformation=response;
-            //  console.log( this.userInformation);
              })
               this.router.navigate(['home']);
             } else {
-              form.reset();
               this.toastr.error('Kullancı adı veya şifre yanlış');
+              this.user.password="";
             }
             this.spinner.hide();
           },

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectClosingComponent } from './project-closing.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -9,7 +10,8 @@ import { ProjectClosingComponent } from './project-closing.component';
     ProjectClosingComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule.forChild([{path:'projects/project-closing',component:ProjectClosingComponent}]),
   ],
   exports:[
     ProjectClosingComponent

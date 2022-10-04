@@ -1,0 +1,63 @@
+.tab:nth-child(1) {
+  margin-left: 5%;
+}
+.container-fluid-css {
+  margin-top: -20px;
+  width: 93%;
+  background-color: #ddd;
+  border-radius: 10px;
+  border-color: #aaa;
+  border: 2px solid #cfd2cf;
+}
+.container-fluid-tab {
+  margin-top: -20px;
+  width: 99%;
+  background-color: rgb(228, 228, 228);
+  border-radius:5px;
+  border-color: #aaa;
+  border: 1px solid #cfd2cf;
+}
+
+@media (max-width: 436px) {
+  .tab:nth-child(1) {
+    margin-left: 0%;
+  }
+}
+.myBtn{
+  width: 150px;
+  background-color: green;
+}
+.mystyle {
+  width: 100%;
+  padding: 25px;
+  background-color: coral;
+  color: white;
+  font-size: 25px;
+  box-sizing: border-box;
+}
+textarea {
+  height: 150px;
+  background-color: white!important;
+}
+input {
+  background-color: white!important;
+}
+
+@media (max-width: 744px) {
+  #headerProjectPlan{
+    display: none;
+  }
+}
+.form-control2 {
+  font-family: system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.5;
+  display: grid;
+  grid-template-columns: 1em auto;
+  gap: 0.5em;
+  background-color: transparent;
+}
+.project-closing-button{
+  display: none;
+}

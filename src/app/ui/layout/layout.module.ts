@@ -12,7 +12,7 @@ import { MdbAccordionModule } from 'mdb-angular-ui-kit/accordion';
     LayoutComponent,
     SidenavComponent,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
   ],
   imports: [
     CommonModule,

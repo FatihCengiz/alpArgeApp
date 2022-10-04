@@ -11,6 +11,7 @@ import { DemandService } from '../service/demand.service';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
+import { SelectedDemands } from '../model/selected-demand';
 
 
 @Component({
@@ -31,6 +32,14 @@ export class DemandAddComponent implements OnInit {
   myDate = new Date();
   date:string;
   isActive:boolean=false;
+  getUserAllResponse: any;
+  isVisible:boolean=true;
+
+  selectedDemands: SelectedDemands = {
+    responsible: [],
+    projectNumber: [],
+    projectStatus: 2,
+  };
 
   ngOnInit(): void {}
 
@@ -48,6 +57,7 @@ export class DemandAddComponent implements OnInit {
     this.date=date;
     this.getUser();
     this.getCustomer();
+    this.getAllUser();
 
   }
   demandAdd() {
@@ -123,6 +133,11 @@ export class DemandAddComponent implements OnInit {
             requester:[this.user],
           });
           this.demandForm.disable();
+          if(this.get.ProjectStatus==1){
+            this.isVisible=false;
+          }else{
+            this.isVisible=true;
+          }
         });
     } else if (localStorage.getItem('demand')) {
       this.btnVisible=false;
@@ -147,6 +162,7 @@ export class DemandAddComponent implements OnInit {
         feature6: [data.feature6],
         requester:[this.user],
       });
+      this.isVisible=true;
     } else {
       this.btnVisible=false;
       this.projectNameHeader="Talep Oluştur";
@@ -168,7 +184,7 @@ export class DemandAddComponent implements OnInit {
         feature6: [''],
         requester:[this.user]
       });
-
+      this.isVisible=true;
     }
 
   }
@@ -187,8 +203,47 @@ export class DemandAddComponent implements OnInit {
   }
   getCustomer(){
     this.demandService.getCustomer().subscribe((response)=>{
-
       this.getCustomerResponse=response['customer'];
     })
+  }
+  getAllUser(){
+    this.demandService.getAllUser().subscribe((response) => {
+      this.getUserAllResponse=response['user'];
+   });
+  }
+  assigntResposible(){
+    var selectValue=(document.getElementById('selectResponsible') as HTMLInputElement).value;
+    if(selectValue!="0"){
+      this.selectedDemands.projectNumber[0]=this.projectNumber;
+      this.selectedDemands.responsible[0]=Number(selectValue);
+      this.demandService.selectedDemandPost(this.selectedDemands).subscribe((response)=>{
+        if(!response['error']){
+          Swal.fire('', 'Talep Onaylandı !', 'success');
+        }else{
+          Swal.fire('', 'Talep Onaylama İşlemi Başarısız !', 'error');
+        }
+      },(err)=>{
+        Swal.fire('', 'Talep Onaylama İşlemi Başarısız !', 'error');
+      })
+
+    }else{
+      Swal.fire('', 'Lütfen sorumlu bölümünü boş bırakmayınız', 'warning');
+    }
+
+  }
+  demandReject(){
+    this.selectedDemands.projectNumber[0]=this.projectNumber;
+    this.selectedDemands.responsible[0]=0;
+    this.selectedDemands.projectStatus=9;
+    this.demandService.selectedDemandPost(this.selectedDemands).subscribe((response)=>{
+      if(!response['error']){
+        Swal.fire('', 'Talep Reddedildi !', 'success');
+      }else{
+        Swal.fire('', 'Talep Onaylama İşlemi Başarısız !', 'error');
+      }
+    },(err)=>{
+      Swal.fire('', 'Talep Onaylama İşlemi Başarısız !', 'error');
+    })
+
   }
 }

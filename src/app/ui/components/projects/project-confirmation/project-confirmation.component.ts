@@ -187,4 +187,7 @@ export class ProjectConfirmationComponent implements OnInit {
       }
     }
   }
+  getEvent(event:Event){
+    this.projectService.spinnerShow();
+  }
 }

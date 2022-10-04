@@ -21,4 +21,5 @@ export class Demands{
   Engineer:string;
   PlannedDeliveryDate:string;
   Status:string;
+  ActualDeliveryDate:string;
 }

@@ -1,9 +1,10 @@
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { SelectedProject } from '../../model/selected-project';
 import { ProjectService } from '../../service/project.service';
 
 @Component({
@@ -24,15 +25,18 @@ updateDemand = {
   responsible: [0],
   projectNumber: [0],
   projectStatus: 3,
+  actualDeliveryDate:""
 };
 closingDemand = {
-  responsible: [0],
   projectNumber: [0],
   projectStatus: 5,
+  actualDeliveryDate:""
+
 };
-  selectedDemands = {
-    form1: []
-  };
+selectedProject: SelectedProject = {
+  projectNumber: [],
+  projectStatus: 1,
+};
   // { form1Element2: 'Profile 02' },
   // { form1Element3: 'Contact 03'},
   // { form1Element4: 'Disabled 04' }, form1Elements:{data1:"",data2:"",data3:"",data4:"",data5:"",data6:"",data7:"",data8:"",data9:""} }
@@ -45,6 +49,7 @@ closingDemand = {
   getDemandResponse:any;
   getPlanProjectResponse:any;
   getUser:any;
+  getUserResponse:any;
   getTaskTypeResponse:any;
   currency:any;
   dolar:any;
@@ -54,14 +59,22 @@ closingDemand = {
   isActive:boolean;
   isVisible:boolean=true;
   isClosing:boolean=true;
+  isManager:boolean=false;
+  myDate = new Date();
+  date:string;
 
-  constructor(private route: ActivatedRoute,private projectService:ProjectService,private cp:CurrencyPipe,private toastr:ToastrService) {
+  constructor(private route: ActivatedRoute,private projectService:ProjectService,private cp:CurrencyPipe,private toastr:ToastrService,private datePipe: DatePipe) {
 
     this.projectNumber = this.route.snapshot.paramMap.get('id');
+    this.getAllUser();
     this.getBudgetPlan();
     this.getCurrency();
-    this.getAllUser();
     this.getTaskType();
+    var date = this.datePipe.transform(this.myDate, 'yyyy-MM-dd')?.toString();
+    if(date!=undefined)
+    this.date=date;
+
+
   }
 
   ngOnInit(): void {
@@ -74,7 +87,21 @@ closingDemand = {
     this.projectService.getAllUser().subscribe((response)=>{
       this.getUser=response['user'];
       this.source = Object.keys(response['user']).map(key => ({value: response['user'][key]}));
+
     })
+  }
+  getUserByID():any {
+    let id = localStorage.getItem('token');
+    if (id != undefined) {
+      this.projectService.getUser(id?.toString()).subscribe((response) => {
+        this.getUserResponse = response['user']['0'];
+        if(this.getUserResponse.GroupID==1)
+        this.isManager=true;
+
+        console.log("c "+this.isManager);
+      });
+    }
+
   }
   getCurrency(){
     this.projectService.getCurrency().subscribe((response)=>{
@@ -279,14 +306,18 @@ getBudgetPlan(){
     form1Element7.value=this.getDemandResponse.DemandDate;
     form1Element8.value=this.getDemandResponse.DeliveryDate;
     if(this.getDemandResponse.ProjectStatus==3){
+      this.getUserByID();
       this.isActive=true;
+      this.isClosing=false;
     }else if(this.getDemandResponse.ProjectStatus==4){
       this.isVisible=true;
       this.isClosing=false;
+      this.isManager=false;
     }else if(this.getDemandResponse.ProjectStatus==2){
-      this.isVisible=false;
-    }
-
+        this.isManager=false;
+        this.isClosing=true;
+        this.isVisible=false;
+      }
 
 
     var form4=(document.getElementById('form4MainDiv') as HTMLInputElement);
@@ -369,9 +400,9 @@ getBudgetPlan(){
       var form5Element1=(parent?.children[0].children[0].children[1] as HTMLInputElement);
       var form5Element2=(parent?.children[1].children[0].children[1] as HTMLInputElement);
       var form5Element3=(parent?.children[5].children[0].children[1] as HTMLInputElement);
-      form5Element1.value=this.getPlanProjectResponse['budget_list'][0]['R&DProjectCost'];
-      form5Element2.value=this.getPlanProjectResponse['budget_list'][0]['MaterialCost'];
-      form5Element3.value=this.getPlanProjectResponse['budget_list'][0]['TotalCost'];
+      form5Element1.value=this.getPlanProjectResponse['budget_list'][0]['R&DProjectCost'] +" TRY";
+      form5Element2.value=this.getPlanProjectResponse['budget_list'][0]['MaterialCost']+" TRY";
+      form5Element3.value=this.getPlanProjectResponse['budget_list'][0]['TotalCost']+" TRY";
     }
   });
 }
@@ -477,38 +508,36 @@ send(){
   }
 
 }
-sendClosing(){
-  var plannedDate=(document.getElementById('form1text9') as HTMLInputElement).value;
-  if(!this.isClosing && plannedDate!=""){
-    Swal.fire({
-      title: '',
-      text: 'Kapatma onaya gönderilecek emin misiniz ?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Evet',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        var responsible=(document.getElementById('form1text6') as HTMLInputElement).value;
-        this.closingDemand.responsible[0]=Number(responsible);
-        this.closingDemand.projectNumber[0]=Number(this.projectNumber);
-        this.projectService.selectedDemandPost(this.closingDemand).subscribe((response) => {
-          if(!response["error"]){
-           this.isClosing=true;
-            Swal.fire('', 'Onaya Gönderildi !', 'success');
-          }
 
-        });
+  budgetSend(){
+    this.selectedProject.projectNumber[0]=this.projectNumber;
+    this.selectedProject.projectStatus=4;
+    this.projectService.selectedDemandPost(this.selectedProject).subscribe((response)=>{
+      if(!response['error']){
+        Swal.fire('', "Bütçe Planı Onaylandı !", 'success');
+      }else{
+        Swal.fire('', 'Bütçe Onaylama İşlemi Başarısız !', 'error');
       }
-    })
-  }else{
-    Swal.fire('', 'Lütfen planlanan talep tarihini boş bırakmayınız !', 'warning');
+    },(err)=>{
+      Swal.fire('', 'Bütçe Onaylama İşlemi Başarısız !', 'error');
+    });
   }
-}
+  budgetReject(){
+    this.selectedProject.projectNumber[0]=this.projectNumber;
+    this.selectedProject.projectStatus=2;
+    this.projectService.selectedDemandPost(this.selectedProject).subscribe((response)=>{
+      if(!response['error']){
+        Swal.fire('', "Bütçe Planı Reddedildi !", 'success');
+      }else{
+        Swal.fire('', 'Bütçe Onaylama İşlemi Başarısız !', 'error');
+      }
+    },(err)=>{
+      Swal.fire('', 'Bütçe Onaylama İşlemi Başarısız !', 'error');
+    });
+  }
+
 
   numberWithCommas(x) {
-
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 }

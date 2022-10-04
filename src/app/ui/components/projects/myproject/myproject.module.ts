@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MyprojectComponent } from './myproject.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -9,7 +10,8 @@ import { MyprojectComponent } from './myproject.component';
     MyprojectComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule.forChild([{path:'projects/myproject',component:MyprojectComponent}]),
   ],
   exports:[
     MyprojectComponent

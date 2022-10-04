@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, CurrencyPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { ProjectPlannigAddComponent } from './project-plannig-add.component';
 import { NavModule, TabsModule } from '@coreui/angular';
 import { RouterModule } from '@angular/router';
@@ -19,7 +19,8 @@ import { RouterModule } from '@angular/router';
   exports:[
     ProjectPlannigAddComponent
   ],providers:[
-    CurrencyPipe
+    CurrencyPipe,
+    DatePipe
   ]
 })
 export class ProjectPlannigAddModule { }

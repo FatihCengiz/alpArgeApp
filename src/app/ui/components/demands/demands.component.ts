@@ -73,7 +73,6 @@ export class DemandsComponent implements OnInit {
   getAllUser(){
     this.demandService.getAllUser().subscribe((response) => {
       this.getUserAllResponse=response['user'];
-      // console.log(this.getUserAllResponse);
   });
 }
 
@@ -225,45 +224,5 @@ export class DemandsComponent implements OnInit {
       }
     }
   }
-  // demandConfirm(
-  //   e: Event,
-  //   projectStatusIndex: number,
-  //   title: string,
-  //   message: string
-  // ) {
-  //   if (e.target != null) {
-  //     let spaceControl: boolean = false;
-  //     this.selectedDemands = {
-  //       responsible: [],
-  //       projectNumber: [],
-  //       projectStatus: 1,
-  //     };
-  //     Swal.fire({
-  //       title: title,
-  //       text: '',
-  //       icon: 'warning',
-  //       showCancelButton: true,
-  //       confirmButtonColor: '#3085d6',
-  //       cancelButtonColor: '#d33',
-  //       confirmButtonText: 'Evet',
-  //     }).then((result) => {
-  //       if (result.isConfirmed) {
-  //         var elementCmbBx;
-  //         var elementCmbBxID;
 
-  //         elementCmbBxID = (e.target as HTMLInputElement).parentElement?.parentElement?.parentElement?.parentElement?.children[7]
-  //           .children[0].id;
-
-  //         if (elementCmbBxID != undefined) {
-  //           elementCmbBx = document.getElementById(
-  //             elementCmbBxID.toString()
-  //           ) as HTMLInputElement;
-  //           var elementProjectNumber = (e.target as HTMLInputElement)
-  //             .parentElement?.parentElement?.parentElement?.parentElement?.children[1].textContent;
-  //         } else {
-  //         }
-  //       }
-  //     });
-  //   }
-  // }
 }

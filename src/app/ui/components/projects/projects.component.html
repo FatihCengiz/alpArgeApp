@@ -20,8 +20,8 @@
             <tr >
               <th>Proje Kodu</th>
               <th>Proje tipi</th>
-              <th>Proje Adı</th>
               <th>Durum</th>
+              <th>Proje Adı</th>
               <th>Talep Eden</th>
               <th>Sorumlu</th>
               <th>Talep tarihi</th>
@@ -34,8 +34,8 @@
             <tr *ngFor="let demand of demandList | filter:search" (click)="showDemand($event)">
               <td>{{demand.ProjectNumber}}</td>
               <td>{{demand.ProjectType}}</td>
-              <td>{{demand.ProjectName}}</td>
               <td>{{demand.Status}}</td>
+              <td>{{demand.ProjectName}}</td>
               <td>{{demand.Requester}}</td>
               <td>{{demand.Engineer}}</td>
               <td>{{demand.DemandDate}}</td>

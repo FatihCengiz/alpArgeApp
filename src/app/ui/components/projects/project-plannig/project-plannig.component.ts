@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Demands } from '../../demands/model/demand';
-import { SelectedProject } from '../model/selected-project';
 import { ProjectService } from '../service/project.service';
 
 @Component({
@@ -16,10 +15,7 @@ export class ProjectPlannigComponent implements OnInit {
   getUserAllResponse: any;
   demands: Demands[] = [];
   message: string;
-  selectedProject: SelectedProject = {
-    projectNumber: [],
-    projectStatus: 1,
-  };
+
   responsibleVisible: boolean;
 
   constructor(private projectService: ProjectService, private router: Router) {}
@@ -69,13 +65,8 @@ export class ProjectPlannigComponent implements OnInit {
     });
   }
 
-  navigationToProjectPlannigForm(e: Event) {
-    var element = (e.target as HTMLInputElement).id;
-
-    var elementProjectNumber = (
-      document.getElementById(element) as HTMLInputElement
-    ).parentElement?.parentElement?.parentElement?.parentElement?.children[1]
-      .textContent;
-    this.router.navigate(["projects/project-plannig-add/"+elementProjectNumber?.toString()]);
+  navigationToProjectPlannigForm(projectNumber:any) {
+    var number=(projectNumber as HTMLInputElement).childNodes[0].textContent;
+    this.router.navigate(["projects/project-plannig-add/"+number]);
   }
 }

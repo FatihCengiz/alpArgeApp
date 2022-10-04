@@ -4,6 +4,8 @@ import { DemandAddComponent } from './ui/components/demands/demand-add/demand-ad
 import { DemandsComponent } from './ui/components/demands/demands.component';
 import { HomeComponent } from './ui/components/home/home.component';
 import { MyprojectComponent } from './ui/components/projects/myproject/myproject.component';
+import { ProjectClosingProcessAddComponent } from './ui/components/projects/project-closing-process/project-closing-process-add/project-closing-process-add.component';
+import { ProjectClosingProcessComponent } from './ui/components/projects/project-closing-process/project-closing-process.component';
 import { ProjectClosingComponent } from './ui/components/projects/project-closing/project-closing.component';
 import { ProjectConfirmationComponent } from './ui/components/projects/project-confirmation/project-confirmation.component';
 import { ProjectPlannigAddComponent } from './ui/components/projects/project-plannig/project-plannig-add/project-plannig-add.component';
@@ -13,6 +15,7 @@ import { LayoutComponent } from './ui/layout/layout.component';
 import { AuthGuard } from './ui/login/guard/auth.guard';
 import { LoginGuard } from './ui/login/guard/login.guard';
 import { LoginComponent } from './ui/login/login.component';
+import { NotfoundComponent } from './ui/notfound/notfound.component';
 import { WorkSpaceComponent } from './ui/work-space/work-space.component';
 
 
@@ -29,9 +32,12 @@ const routes: Routes = [
     {path:'projects/project-plannig',component:ProjectPlannigComponent,loadChildren:()=> import('./ui/components/projects/project-plannig/project-plannig.module').then(m=>m.ProjectPlannigModule)},
     {path:'projects/project-closing',component:ProjectClosingComponent,loadChildren:()=> import('./ui/components/projects/project-closing/project-closing.module').then(m=>m.ProjectClosingModule)},
     {path:'projects/project-plannig-add/:id',component:ProjectPlannigAddComponent,loadChildren:()=> import('./ui/components/projects/project-plannig/project-plannig-add/project-plannig-add.module').then(m=>m.ProjectPlannigAddModule)},
+    {path:'projects/project-closing-process',component:ProjectClosingProcessComponent,loadChildren:()=> import('./ui/components/projects/project-closing-process/project-closing-process.module').then(m=>m.ProjectClosingProcessModule)},
+    {path:'projects/project-closing-process/add/:id',component:ProjectClosingProcessAddComponent,loadChildren:()=> import('./ui/components/projects/project-closing-process/project-closing-process-add/project-closing-process-add.module').then(m=>m.ProjectClosingProcessAddModule)},
   ]},
   {path:'login',component:LoginComponent,canActivateChild:[AuthGuard],loadChildren:()=> import('./ui/login/login.module').then(m=>m.LoginModule)},
-  {path:'workSpace',component:WorkSpaceComponent}
+  {path:'workSpace',component:WorkSpaceComponent},
+  {path:'**',component:NotfoundComponent}
 ];
 
 @NgModule({

@@ -13,35 +13,41 @@
                   <label class="au-checkbox"> </label>
                 </th>
                 <th><h6>Proje Kodu</h6></th>
-                <th><h6>Proje Adı</h6></th>
                 <th><h6>Proje Tipi</h6></th>
+                <th><h6>Durum</h6></th>
+                <th><h6>Proje Adı</h6></th>
                 <th><h6>Müşteri</h6></th>
                 <th><h6>Talep Eden</h6></th>
                 <th><h6>Talep Tarihi</h6></th>
-                <th><h6>Sorumlu</h6></th>
+                <th><h6>İstenen Talep Tarihi</h6></th>
 
                 <th></th>
               </tr>
             </thead>
             <tbody>
-              <tr id="demandTr" class="tr-shadow"   (click)="getEvent($event)" *ngFor="let demand of demands let i = index"
-              [class]="{'bg-true':demand.Checked,'bg-false':!demand.Checked}" style="cursor:pointer;" >
+              <tr id="demandTr" class="tr-shadow"  *ngFor="let demand of demands let i = index"
+              routerLink="/projects/project-plannig-add/{{demand.ProjectNumber}}"
+              [class]="{'bg-true':demand.Checked,'bg-false':!demand.Checked}" >
                 <td >
 
                 </td>
-                <td projectNumber="" style="font-weight: 500" >{{ demand.ProjectNumber }}
+                <td projectNumber="" style="font-weight: 500; color: #2192FF;" (click)="getEvent($event)">{{ demand.ProjectNumber }}
                 </td>
+                <td ><span class="status--process">{{ demand.ProjectType }}</span></td>
                 <td >
+                  {{ demand.Status }}
+                 </td>
+                <td (click)="getEvent($event)" >
                  {{ demand.ProjectName }}
                 </td>
-                <td class="desc"  >{{ demand.ProjectType }}</td>
+
                 <td>{{ demand.Customer }}</td>
                 <td class="status--process">{{ demand.Requester }}
                 </td>
                 <td>{{ demand.DemandDate }}</td>
 
                 <td style="font-size: 15px; font-weight: 500;" >
-                 {{ demand.Engineer }}
+                 {{demand.DeliveryDate}}
                 </td>
 
                 <td>

@@ -1,5 +1,6 @@
 import { NgModule,CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import {HashLocationStrategy,LocationStrategy} from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,7 +25,8 @@ import { ToastrModule } from 'ngx-toastr';
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
-    {provide:'apiUrl',useValue:'http://192.168.0.41/alpArgeAPIs'}
+    {provide:LocationStrategy,useClass:HashLocationStrategy},
+    {provide:'apiUrl',useValue:'http://192.168.0.41/alpArgeAPIs'},
   ],
   bootstrap: [AppComponent]
 })

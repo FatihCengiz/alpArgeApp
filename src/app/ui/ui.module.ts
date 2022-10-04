@@ -4,12 +4,14 @@ import { LayoutModule } from './layout/layout.module';
 import { ComponentsModule } from './components/components.module';
 import { WorkSpaceComponent } from './work-space/work-space.component';
 import { LoginModule } from './login/login.module';
+import { NotfoundComponent } from './notfound/notfound.component';
 
 
 
 @NgModule({
   declarations: [
-    WorkSpaceComponent
+    WorkSpaceComponent,
+    NotfoundComponent
   ],
   imports: [
     CommonModule,
@@ -23,6 +25,7 @@ import { LoginModule } from './login/login.module';
     ComponentsModule,
     LoginModule,
     WorkSpaceComponent,
+    NotfoundComponent
 
   ]
 })

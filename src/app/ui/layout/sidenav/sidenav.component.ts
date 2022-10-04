@@ -14,10 +14,10 @@ export class SidenavComponent implements OnInit {
   get;
   userName;
   projectManager:boolean=false;
-  authorityList = {bütçePalanlama: false, bütçeOnaylama: false,projelerim: false, projeler: false, projeKapatma:false };
+  authorityList = {bütçePalanlama: false, bütçeOnaylama: false,projeler: false,projelerim: false, projeKapatma:false,projeKapatmaIslem:false };
   headerUser:string;
 
-  authorityArray:any []=[false,false,false,false,false,false];// talepAçma,bütçeOnaylama,bütçePalanlama,projeKapatma,projelerim, projeler,
+  authorityArray:any []=[false,false,false,false,false,false,false];// talepAçma,bütçeOnaylama,bütçePalanlama,projeKapatma,projelerim, projeler,proje kapatma,
 
   constructor(private authService:AuthService, private sidenavService:SidenavService,private router:Router) {
     this.sidenavService.getDemands().subscribe((response)=>{
@@ -38,13 +38,13 @@ export class SidenavComponent implements OnInit {
        this.userName=this.get.user[0].Name + " " + this.get.user[0].Surname;
        this.headerUser=this.get.user[0].Name.substring(0,1)+this.get.user[0].Surname.substring(0,1);
        if(this.get.user[0].GroupID==1){
-        this.authorityArray=[true,true,false,true,false,true];
+        this.authorityArray=[true,false,true,true,false,true,false];// talepAçma,projeler,projelerim,bütçeOnaylama,bütçePalanlama,projeKapatma,
 
        }else if(this.get.user[0].GroupID==2){
-        this.authorityArray=[true,false,true,false,true,true];
+        this.authorityArray=[true,true,true,false,true,false,true];
 
        }else if(this.get.user[0].GroupID==3){
-        this.authorityArray=[true,false,false,false,true,false];
+        this.authorityArray=[true,false,true,false,false,false,false];
        }
 
       });

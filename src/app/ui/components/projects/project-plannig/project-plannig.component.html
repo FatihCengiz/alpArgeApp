@@ -12,9 +12,11 @@
                 <th>
                   <label class="au-checkbox"> </label>
                 </th>
+
                 <th><h6>Proje Kodu</h6></th>
-                <th><h6>Proje Adı</h6></th>
                 <th><h6>Proje Tipi</h6></th>
+                <th><h6>Durum</h6></th>
+                <th><h6>Proje Adı</h6></th>
                 <th><h6>Müşteri</h6></th>
                 <th><h6>Talep Eden</h6></th>
                 <th><h6>Talep Tarihi</h6></th>
@@ -25,30 +27,35 @@
             </thead>
             <tbody>
               <tr id="demandTr" class="tr-shadow"  *ngFor="let demand of demands let i = index"
-              [class]="{'bg-true':demand.Checked,'bg-false':!demand.Checked}">
+              [class]="{'bg-true':demand.Checked,'bg-false':!demand.Checked}" style="cursor: auto;">
                 <td >
 
                 </td>
-                <td projectNumber="" style="font-weight: 500"  routerLink="">{{ demand.ProjectNumber }}
+                <td #projectNumber style="font-weight: 500"  routerLink="">{{ demand.ProjectNumber }}
                 </td>
+                <td  routerLink="" >{{ demand.ProjectType }}</td>
+
+                <td>{{ demand.Status }}</td>
                 <td routerLink="">
                   <span class="desc"  >{{ demand.ProjectName }}</span>
                 </td>
-                <td class="desc"  routerLink="" >{{ demand.ProjectType }}</td>
+
                 <td>{{ demand.Customer }}</td>
+
                 <td>
-                  <span class="status--process"  routerLink="">{{ demand.Requester }}</span>
+                  <span  routerLink="">{{ demand.Requester }}</span>
                 </td>
                 <td>{{ demand.DemandDate }}</td>
 
                 <td  >
-                  <span style="font-size: 15px; font-weight: 500;" [class]="{'bg-responsible':responsibleVisible}" >{{ demand.Engineer }}</span>
+                  <span class="status--process" style="font-size: 15px; font-weight: 500;" [class]="{'bg-responsible':responsibleVisible}" >{{ demand.Engineer }}</span>
                 </td>
+
 
                 <td>
                   <div class="table-data-feature  mr-3">
                     <button
-                      (click)="navigationToProjectPlannigForm($event)"
+                      (click)="navigationToProjectPlannigForm( projectNumber )"
                       class="item mr-3"
                       data-toggle="tooltip"
                       data-placement="top"
@@ -58,32 +65,6 @@
                       <i class="zmdi zmdi-long-arrow-right" id="confirmBtn{{i}}"></i>
                     </button>
 
-                       <!--
-                    <button
-                      class="item mr-3 item-negative"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Reddet"
-
-                    >
-
-                    </button> -->
-                    <!-- <button
-                      class="item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="Delete"
-                    >
-                      <i class="zmdi zmdi-delete"></i>
-                    </button>
-                    <button
-                      class="item"
-                      data-toggle="tooltip"
-                      data-placement="top"
-                      title="More"
-                    >
-                      <i class="zmdi zmdi-more"></i>
-                    </button> -->
                   </div>
                 </td>
 

@@ -110,7 +110,7 @@
     </div>
     <div class="row">
       <div class="col-sm-6 form-group">
-      <label for="DateD">Planlanan Talep Tarihi</label>
+      <label for="DateD">Planlanan Teslim Tarihi</label>
       <input
         type="Date"
         name="dob"
@@ -130,10 +130,17 @@
       <label for="DateD">&nbsp;</label>
       <button class="btn btn-primary"  [disabled]="isActive" [hidden]="isVisible" (click)="send()" style=" width: 100%;">Onaya Gönder</button>
     </div>
-    <div class="col-sm-3 form-group" [ngClass]="{'project-closing-button': isClosing}">
+
+
+    <div class="col-sm-3 form-group" [ngClass]="{'project-closing-button': !isManager}">
       <label for="DateD">&nbsp;</label>
-      <button class="btn btn-danger"  (click)="sendClosing()" style=" width: 100%;">Proje Kapatma</button>
+      <button class="btn btn-success"  (click)="budgetSend()" style=" width: 100%;">Bütçe Onayla</button>
     </div>
+    <div class="col-sm-3 form-group" [ngClass]="{'project-closing-button': !isManager}">
+      <label for="DateD">&nbsp;</label>
+      <button class="btn btn-danger"  (click)="budgetReject()" style=" width: 100%;">Bütçe Reddet</button>
+    </div>
+
   </div>
 
   </div>
@@ -285,7 +292,7 @@
         </div>
             </div>
           </div>
-          <div class="row mt-3 mb-3" id="textcreate1">
+          <div class="row mt-3 mb-3" id="textcreate1" [ngClass]="{'project-closing-button': !isClosing}">
             <button class="btn btn-primary ml-3" style=" width: 40px; font-size: 25px; padding: 0px;"  (click)="createRow('projectPlannigRow','mainDiv')">+</button>
             <button class="btn btn-danger ml-3" style=" width: 40px; font-size: 25px; padding: 0px; "  (click)="deleteRow('mainDiv','projectPlannigRow',8)">-</button>
             <button class="btn btn-success ml-3" style=" width: 120px; font-size: 17px; font-weight: 600; padding: 0px;" (click)="hourPriceCalculate()">Hesapla</button>
@@ -424,7 +431,7 @@
 
             </div>
           </div>
-          <div class="row mt-3 mb-3" id="textcreate1">
+          <div class="row mt-3 mb-3" id="textcreate1" [ngClass]="{'project-closing-button': !isClosing}">
             <button class="btn btn-primary ml-3" style=" width: 40px; font-size: 25px; padding: 0px;"  (click)="createRow('projectExpense','mainDivTab2')">+</button>
             <button class="btn btn-danger ml-3" style=" width: 40px; font-size: 25px; padding: 0px; "  (click)="deleteRow('mainDivTab2','projectExpense',7)">-</button>
             <button class="btn btn-success ml-3" style=" width: 120px; font-size: 17px; font-weight: 600; padding: 0px; "  (click)="currencyCalculate()">Hesapla</button>

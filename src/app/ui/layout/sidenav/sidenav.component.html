@@ -17,8 +17,8 @@
     </div>
     <nav class="navbar-sidebar2" >
       <mdb-accordion [flush]="true" class="list-unstyled navbar__list" >
-        <div class="without-accordion-item m-3">
-          <a routerLink="/" routerLinkActive="active"  style="color:#76922f;"> <i class="fas fa-chart-bar mr-3 ml-1" ></i>Anasayfa</a>
+        <div routerLink="/" routerLinkActive="active" style="cursor: pointer;" class="without-accordion-item m-3">
+          <a   style="color:#76922f;"> <i class="fas fa-chart-bar mr-3 ml-1" ></i>Anasayfa</a>
       </div>
         <mdb-accordion-item>
           <ng-template mdbAccordionItemHeader> <i class="fa-solid fa-diagram-project mr-3"></i><a class="js-arrow" >Proje Yönetimi
@@ -31,38 +31,45 @@
                 >
               </li>
               <li [class]="{'authority':!authorityArray[1]}">
+                <a routerLink="/projects/myproject">
+                  <i class="fas fa-tachometer-alt"></i>Projelerim</a
+                >
+              </li>
+              <li [class]="{'authority':!authorityArray[2]}">
+                <a routerLink="/projects">
+                  <i class="fas fa-tachometer-alt"></i>Tüm Projeler</a
+                >
+              </li>
+              <li [class]="{'authority':!authorityArray[3]}">
                 <a  routerLink="/projects/project-confirmation">
                   <i class="fas fa-tachometer-alt"></i>Bütçe Onaylama</a
                 >
               </li>
-              <li [class]="{'authority':!authorityArray[2]}">
+              <li [class]="{'authority':!authorityArray[4]}">
                 <a routerLink="/projects/project-plannig">
                   <i class="fas fa-tachometer-alt"></i>Bütçe Planlama</a
                 >
               </li>
 
-              <li [class]="{'authority':!authorityArray[3]}">
+              <li [class]="{'authority':!authorityArray[5]}">
                 <a routerLink="/projects/project-closing">
                   <i class="fas fa-tachometer-alt"></i>Proje Kapatma</a
                 >
               </li>
-              <li [class]="{'authority':!authorityArray[4]}">
-                <a routerLink="/projects/myproject">
-                  <i class="fas fa-tachometer-alt"></i>Projelerim</a
+              <li [class]="{'authority':!authorityArray[6]}">
+                <a routerLink="/projects/project-closing-process">
+                  <i class="fas fa-tachometer-alt"></i>Proje Kapatma İşl.</a
                 >
               </li>
-              <li [class]="{'authority':!authorityArray[5]}">
-                <a routerLink="/projects">
-                  <i class="fas fa-tachometer-alt"></i>Tüm Projeler</a
-                >
-              </li>
+
+
 
             </ul>
           </ng-template>
         </mdb-accordion-item>
 
-        <div class="without-accordion-item m-3">
-            <a routerLink="/demands" routerLinkActive="active"> <i class="fas fa-chart-bar mr-3 ml-1"></i>Talepler</a>
+        <div routerLink="/demands" routerLinkActive="active" style="cursor: pointer;" class="without-accordion-item m-3">
+            <a > <i class="fas fa-chart-bar mr-3 ml-1"></i>Talepler</a>
             <span class="inbox-num" >{{demandQuantity}}</span>
         </div>
 
@@ -213,7 +220,7 @@
     </div>
     <div class="menu-sidebar2__content">
       <div class="account2">
-        <a routerLink="/"routerLinkActive="active">
+        <a routerLink="/" routerLinkActive="active">
         <div router class="image img-cir img-120" style="background-color: #92be2191; text-align: center;">
           <h4 style="color: white; font-size: 70px;  margin-top: 15%;">{{headerUser}}</h4>
         <!-- <img router src="./assets/images/admin.jpeg" alt="John Doe" /> -->

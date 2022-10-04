@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-navbar',
@@ -25,6 +26,9 @@ menu:any;
     }else{
       this.menu.setAttribute("id","menu-sidebar2");
     }
+  }
+  showMessage(){
+    Swal.fire('','Çok yakın zamanda eklenecek...','info')
   }
 
 }

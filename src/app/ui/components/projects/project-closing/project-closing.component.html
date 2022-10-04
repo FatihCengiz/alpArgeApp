@@ -19,6 +19,7 @@
                 <th><h6>Talep Eden</h6></th>
                 <th><h6>Talep Tarihi</h6></th>
                 <th><h6>Sorumlu</h6></th>
+                <th><h6>Fiili Teslim</h6></th>
                 <th></th>
               </tr>
             </thead>
@@ -31,22 +32,23 @@
                     <span class="au-checkmark"></span>
                   </label>
                 </td>
-                <td projectNumber="" style="font-weight: 500"  routerLink="">{{ demand.ProjectNumber }}
+                <td routerLink="/projects/project-closing-process/add/{{demand.ProjectNumber}}" style="font-weight: 500; color: #2192FF;" (click)="getEvent($event)" >{{ demand.ProjectNumber }}
                 </td>
-                <td routerLink="">
-                  <span class="desc"  >{{ demand.ProjectName }}</span>
+                <td routerLink="/projects/project-closing-process/add/{{demand.ProjectNumber}}">
+                  <span >{{ demand.ProjectName }}</span>
                 </td>
-                <td class="desc"  routerLink="" >Yazılım</td>
-                <td>2018-09-27</td>
+                <td routerLink="/projects/project-closing-process/add/{{demand.ProjectNumber}}" >{{demand.ProjectType}}</td>
+                <td routerLink="/projects/project-closing-process/add/{{demand.ProjectNumber}}">{{demand.Customer}}</td>
                 <td>
-                  <span class="status--process"  routerLink="">Processed</span>
+                  <span routerLink="/projects/project-closing-process/add/{{demand.ProjectNumber}}">{{demand.Requester}}</span>
                 </td>
-                <td>2022-09-27</td>
+                <td routerLink="/projects/project-closing-process/add/{{demand.ProjectNumber}}">{{demand.DemandDate}}</td>
 
-                <td  >
-                  <span style="font-size: 15px; font-weight: 500;" [class]="{'bg-responsible':responsibleVisible}" >{{ demand.Engineer }}</span>
+
+                <td routerLink="/projects/project-closing-process/add/{{demand.ProjectNumber}}" >
+                  <span class="status--process" style="font-size: 15px; font-weight: 500;" [class]="{'bg-responsible':responsibleVisible}" >{{ demand.Engineer }}</span>
                 </td>
-
+                <td  routerLink="/projects/project-closing-process/add/{{demand.ProjectNumber}}">{{demand.ActualDeliveryDate}}</td>
                 <td>
                   <div class="table-data-feature">
                     <!-- <button
@@ -96,7 +98,7 @@
           <div class="top-config" [class]="{'bg-responsible':!responsibleVisible}">
             <input id="chckBxAll" type="checkbox" (change)="selectAll()" />
             <label for="ac" style="margin-left: 5px; font-weight: 600;" class="mr-3 mt-1">Tümünü Seç</label>
-            <button type="button" class="btn btn-square btn-primary mr-3 mt-1" (click)="selectedDemandConfirm(6,'Seçili projeler kapatılacak emin misiniz ?','Projeler Onaylandı !')" >Proje Kapatma</button>
+            <button type="button" class="btn btn-square btn-primary mr-3 mt-1" (click)="selectedDemandConfirm(6,'Seçili projeler kapatılacak emin misiniz ?','Projeler Onaylandı !')" >Projeyi Kapat</button>
             <button type="button" class="btn btn-square btn-warning mr-3 mt-1" style="color: white;" (click)="selectedDemandConfirm(4,'Seçili projeler geliştirme sürecine geri gönderilecek emin misiniz ?','Projeler Geri Gönderildi !')" >Geliştirme Sürecine Geri Gönder</button>
 
           </div>

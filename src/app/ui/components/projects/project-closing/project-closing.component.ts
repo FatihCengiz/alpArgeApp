@@ -6,7 +6,7 @@ import { SelectedProject } from '../model/selected-project';
 import { ProjectService } from '../service/project.service';
 
 @Component({
-  selector: 'app-project-closing',
+  selector: 'project-closing',
   templateUrl: './project-closing.component.html',
   styleUrls: ['./project-closing.component.scss']
 })
@@ -185,5 +185,11 @@ export class ProjectClosingComponent implements OnInit {
         this.demands[i].Checked = false;
       }
     }
+  }
+  getEvent(event:Event){
+    this.projectService.spinnerShow();
+    // var projectNumber=((event.target)as HTMLInputElement).childNodes[0].textContent;
+    // this.router.navigate(["projects/project-closing-process/add/"+projectNumber?.toString()]);
+
   }
 }
