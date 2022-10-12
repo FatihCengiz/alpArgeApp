@@ -1,5 +1,5 @@
 <div class="page-container2">
-  <h4 style="text-align: center;">TALEPLER</h4>
+  <h4 style="text-align: center;">{{header}}</h4>
   <section class="statistic">
 
 
@@ -13,12 +13,14 @@
                   <label class="au-checkbox"> </label>
                 </th>
                 <th><h6>Proje Kodu</h6></th>
+                <th><h6>Durum</h6></th>
                 <th><h6>Proje Adı</h6></th>
                 <th><h6>Proje Tipi</h6></th>
                 <th><h6>Müşteri</h6></th>
                 <th><h6>Talep Eden</h6></th>
                 <th><h6>Talep Tarihi</h6></th>
                 <th><h6>Sorumlu</h6></th>
+
                 <th></th>
               </tr>
             </thead>
@@ -33,6 +35,7 @@
                 </td>
                 <td projectNumber="" style="font-weight: 500"  routerLink="/demands/add/{{demand.ProjectNumber}}">{{ demand.ProjectNumber }}
                 </td>
+                <td  routerLink="/demands/add/{{demand.ProjectNumber}}">{{ demand.Status}}</td>
                 <td routerLink="/demands/add/{{demand.ProjectNumber}}">
                   <span class="desc"  >{{ demand.ProjectName }}</span>
                 </td>
@@ -96,7 +99,7 @@
 
               </tr>
               <tr class="spacer"></tr>
-   
+
             </tbody>
           </table>
 

@@ -24,6 +24,7 @@ export class DemandsComponent implements OnInit {
   };
   demandList: any[] = [];
   responsibleVisible: boolean;
+  header:string;
 
   constructor(private demandService: DemandService) {
 
@@ -33,7 +34,7 @@ export class DemandsComponent implements OnInit {
     this.demandService.spinnerShow();
     this.getUser()
     this.getAllUser();
-    this.getList();
+
   }
 
 
@@ -41,15 +42,28 @@ export class DemandsComponent implements OnInit {
     this.demands = [];
     this.demandService.getDemands().subscribe((response) => {
       this.get = response;
-      //console.log(this.get.demand_list);
       for (let i = 0; i < this.get.demand_list.length; i++) {
         if (this.get.demand_list[i].ProjectStatus == 1 ) {
           this.demands.push(this.get.demand_list[i]);
         }
-
       }
+      this.demands.forEach((element) => {
+        element.Checked = false;
+      });
+    });
 
+  }
+  myList(requester:any) {
+    this.demands = [];
 
+    this.demandService.getDemands().subscribe((response) => {
+      this.get = response;
+      for (let i = 0; i < this.get.demand_list.length; i++) {
+
+        if (this.get.demand_list[i].ProjectStatus == 1 && this.get.demand_list[i].Requester == requester ) {
+          this.demands.push(this.get.demand_list[i]);
+        }
+      }
       this.demands.forEach((element) => {
         element.Checked = false;
       });
@@ -62,9 +76,13 @@ export class DemandsComponent implements OnInit {
       this.demandService.getUser(id?.toString()).subscribe((response) => {
         this.getUserResponse = response['user']['0'];
         if (this.getUserResponse.GroupID == 1) {
+          this.header="TALEPLER";
           this.responsibleVisible = true;
+          this.getList();
         } else {
+          this.header="TALEPLERİM";
           this.responsibleVisible = false;
+          this.myList(this.getUserResponse.Name+" "+this.getUserResponse.Surname);
         }
       });
     }

@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <form  [formGroup]="demandForm"  *ngIf="this.demandForm"  autocomplete="off" >
           <h2 class="text-center mb-4">{{projectNameHeader}}</h2>
-          <div class="row">
+          <div class="row" id="demandForm">
             <div class="col-sm-6 form-group">
               <label for="name-p">Proje Adı</label>
               <input
@@ -108,7 +108,16 @@
               />
             </div>
             <div class="col-sm-6 form-group">
-
+              <h6 hidden>empty</h6>
+              <input
+              type="Number"
+              name="cnf-password"
+              class="form-control"
+              id="quantity"
+              formControlName="quantity"
+              required
+              hidden
+            />
             </div>
             <div class="col-sm-6 form-group">
               <label for="feature1">Beklenen Temel Foksiyonlar</label>
@@ -223,10 +232,10 @@
                 </select>
               </div>
               <div class="col-sm-2 form-group">
-                <button class="btn btn-success" (click)="assigntResposible()"  style="color: white; margin-top: 30px; width: 220px;">Onayla</button>
+                <button class="btn btn-success" (click)="assigntResposible()"  style="color: white; margin-top: 30px; width: 100%;">Onayla</button>
               </div>
               <div class="col-sm-2 form-group">
-                <button class="btn btn-danger mt-res" (click)="demandReject()"  style="color: white; margin-top: 30px; width: 220px;">Reddet</button>
+                <button class="btn btn-danger mt-res" (click)="demandReject()"  style="color: white; margin-top: 30px; width: 100%;">Reddet</button>
               </div>
             </div>
             </div>

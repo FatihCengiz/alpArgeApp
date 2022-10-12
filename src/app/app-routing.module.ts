@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AccountComponent } from './ui/components/account/account.component';
 import { DemandAddComponent } from './ui/components/demands/demand-add/demand-add.component';
 import { DemandsComponent } from './ui/components/demands/demands.component';
 import { HomeComponent } from './ui/components/home/home.component';
@@ -34,6 +35,7 @@ const routes: Routes = [
     {path:'projects/project-plannig-add/:id',component:ProjectPlannigAddComponent,loadChildren:()=> import('./ui/components/projects/project-plannig/project-plannig-add/project-plannig-add.module').then(m=>m.ProjectPlannigAddModule)},
     {path:'projects/project-closing-process',component:ProjectClosingProcessComponent,loadChildren:()=> import('./ui/components/projects/project-closing-process/project-closing-process.module').then(m=>m.ProjectClosingProcessModule)},
     {path:'projects/project-closing-process/add/:id',component:ProjectClosingProcessAddComponent,loadChildren:()=> import('./ui/components/projects/project-closing-process/project-closing-process-add/project-closing-process-add.module').then(m=>m.ProjectClosingProcessAddModule)},
+    {path:'account',component:AccountComponent,loadChildren:()=> import('./ui/components/account/account.module').then(m=>m.AccountModule)},
   ]},
   {path:'login',component:LoginComponent,canActivateChild:[AuthGuard],loadChildren:()=> import('./ui/login/login.module').then(m=>m.LoginModule)},
   {path:'workSpace',component:WorkSpaceComponent},

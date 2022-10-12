@@ -81,7 +81,7 @@ export class ProjectService {
     this.spinner.show().then(() => {
       setTimeout(() => {
         this.spinner.hide();
-      }, 1000);
+      }, 2000);
     });
   }
 

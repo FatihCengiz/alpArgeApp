@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { SelectedProject } from '../../model/selected-project';
 import { ProjectService } from '../../service/project.service';
@@ -30,7 +30,7 @@ isVisible:boolean=true;
 isManager:boolean=false;
 isClosing:boolean=true;
 commentControl:boolean=false;
-  constructor(private route: ActivatedRoute, private projectService:ProjectService) {
+  constructor(private route: ActivatedRoute, private projectService:ProjectService,private router:Router) {
     this.projectNumber = this.route.snapshot.paramMap.get('id');
     this.getData();
   }
@@ -164,6 +164,10 @@ getData(){
         else{
           this.isVisible=true;
         }
+        if(responsible != responseUser){
+          this.disableProjectPlan();
+        }
+
       });
 
     }
@@ -197,6 +201,7 @@ projectClose(){
   this.projectService.selectedDemandPost(this.selectedProject).subscribe((response)=>{
     if(!response['error']){
       Swal.fire('', "Proje Onaylandı !", 'success');
+      this.router.navigate(["projects/project-closing"]);
     }else{
       Swal.fire('', 'Proje Onaylama İşlemi Başarısız !', 'error');
     }
@@ -210,6 +215,7 @@ projectReject(){
   this.projectService.selectedDemandPost(this.selectedProject).subscribe((response)=>{
     if(!response['error']){
       Swal.fire('', "Proje Geri Gönderildi  !", 'success');
+      this.router.navigate(["projects/project-closing"]);
     }else{
       Swal.fire('', 'Proje Onaylama İşlemi Başarısız !', 'error');
     }
@@ -217,6 +223,17 @@ projectReject(){
     Swal.fire('', 'Proje Onaylama İşlemi Başarısız !', 'error');
   });
 }
-
+disableProjectPlan(){
+  var parent=(document.getElementById('form1text9') as HTMLInputElement);
+  parent.setAttribute('disabled','');
+  parent=(document.getElementById('form2MainDiv') as HTMLInputElement);
+  var counter=0;
+  parent?.childNodes.forEach((element)=>{
+  var checked=(element.childNodes[0].childNodes[0].childNodes[0] as HTMLInputElement);
+  var comment=(element.childNodes[1].childNodes[0] as HTMLInputElement);
+  checked.setAttribute('disabled','');
+  comment.setAttribute('disabled','');
+  });
+}
 
 }

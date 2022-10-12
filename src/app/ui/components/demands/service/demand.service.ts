@@ -50,11 +50,19 @@ export class DemandService {
     let api = this.apiUrl+"/api_get_demands.php?projectNumber="+id+"&developer_mode_key=AlpArge_Dev_Key_GET" ;
     return  this.httpClient.get<Demands[]>(api);
   }
-   selectedDemandPost(selectedDemand:any){
+  getRequesterDemand(requester:string){
+    let api = this.apiUrl+"/api_get_demands.php?requester="+requester+"&developer_mode_key=AlpArge_Dev_Key_GET" ;
+    return  this.httpClient.get<Demands[]>(api);
+  }
+  getResponsibleDemand(responsible:string){
+    let api = this.apiUrl+"/api_get_demands.php?responsible="+responsible+"&developer_mode_key=AlpArge_Dev_Key_GET" ;
+    return  this.httpClient.get<Demands[]>(api);
+  }
+  selectedDemandPost(selectedDemand:any){
     let api = this.apiUrl+'/api_demand_update.php' ;
     return  this.httpClient.post(api,selectedDemand);
    }
-   getUser(guid:string){
+  getUser(guid:string){
     let api = this.apiUrl + "/api_get_user.php?id="+guid+"&developer_mode_key=AlpArge_Dev_Key_GET";
     return this.httpClient.get(api);
   }

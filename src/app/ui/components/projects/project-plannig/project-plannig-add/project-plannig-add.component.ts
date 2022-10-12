@@ -1,7 +1,7 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { SelectedProject } from '../../model/selected-project';
@@ -63,22 +63,22 @@ selectedProject: SelectedProject = {
   myDate = new Date();
   date:string;
 
-  constructor(private route: ActivatedRoute,private projectService:ProjectService,private cp:CurrencyPipe,private toastr:ToastrService,private datePipe: DatePipe) {
-
+  constructor(private route: ActivatedRoute,private projectService:ProjectService,private cp:CurrencyPipe,private toastr:ToastrService,private datePipe: DatePipe,private router:Router) {
     this.projectNumber = this.route.snapshot.paramMap.get('id');
     this.getAllUser();
-    this.getBudgetPlan();
     this.getCurrency();
     this.getTaskType();
+    this.projectService.spinnerShow();
+
     var date = this.datePipe.transform(this.myDate, 'yyyy-MM-dd')?.toString();
     if(date!=undefined)
     this.date=date;
-
-
   }
 
   ngOnInit(): void {
-
+    setTimeout(() => {
+      this.getBudgetPlan();
+    }, 1500);
   }
   onTabChange($event: number) {
     this.activePane = $event;
@@ -90,18 +90,27 @@ selectedProject: SelectedProject = {
 
     })
   }
-  getUserByID():any {
+  managerAuthority():any {
     let id = localStorage.getItem('token');
     if (id != undefined) {
       this.projectService.getUser(id?.toString()).subscribe((response) => {
         this.getUserResponse = response['user']['0'];
         if(this.getUserResponse.GroupID==1)
         this.isManager=true;
-
-        console.log("c "+this.isManager);
       });
     }
 
+  }
+  getUserByID(responsible:any){
+    let id = localStorage.getItem('token');
+    if (id != undefined) {
+      this.projectService.getUser(id?.toString()).subscribe((response) => {
+        this.getUserResponse = response['user']['0'];
+        console.log(this.getUserResponse.ID+" "+responsible);
+        if(this.getUserResponse.ID!=responsible)
+        this.disablePlans();
+      });
+    }
   }
   getCurrency(){
     this.projectService.getCurrency().subscribe((response)=>{
@@ -164,8 +173,8 @@ if(!this.isActive){
   var child2=document.getElementById('projectExpense');
   var indexChild2 =child2?.childNodes.length;
 
-let result=this.emptyControl('projectPlannigRow',indexChild1,2) ;
-let result2=this.emptyControl('projectExpense',indexChild2,3) ;
+// let result=this.emptyControl('projectPlannigRow',indexChild1,2) ;
+// let result2=this.emptyControl('projectExpense',indexChild2,3) ;
 
 
   if(this.emptyControl('projectPlannigRow',indexChild1,2)){
@@ -252,7 +261,7 @@ emptyControl(parentID,childIndex,formID):boolean{
 
   var parentIndex=parent1?.parentElement?.childNodes.length;
   if(parentIndex!=undefined)
-  if(this.emptyForm2Control && formID==2   ){
+  if(this.emptyForm2Control && formID==2 ){
     for(let j=0;j<childIndex;j++){
       var formElement=(parent1?.children[j].children[0] as HTMLInputElement).value;
       if(formElement==""){
@@ -305,8 +314,9 @@ getBudgetPlan(){
     form1Element6.value=this.getDemandResponse.Engineer;
     form1Element7.value=this.getDemandResponse.DemandDate;
     form1Element8.value=this.getDemandResponse.DeliveryDate;
+    var responsible=this.getDemandResponse.Responsible;
     if(this.getDemandResponse.ProjectStatus==3){
-      this.getUserByID();
+      this.managerAuthority();
       this.isActive=true;
       this.isClosing=false;
     }else if(this.getDemandResponse.ProjectStatus==4){
@@ -317,8 +327,8 @@ getBudgetPlan(){
         this.isManager=false;
         this.isClosing=true;
         this.isVisible=false;
-      }
-
+    }
+    this.getUserByID(responsible)
 
     var form4=(document.getElementById('form4MainDiv') as HTMLInputElement);
     var form4Element1=form4.children[0].childNodes[0].childNodes[1] as HTMLInputElement;
@@ -479,8 +489,17 @@ if(formID==2){
 total.value=(Number(projectPlanCost.value)+Number(projectPlanCost.value)).toString();
 }
 send(){
-  var plannedDate=(document.getElementById('form1text9') as HTMLInputElement).value;
-  if(!this.isActive && plannedDate!=""){
+  var plannedDate=(document.getElementById('form1text9') as HTMLInputElement);
+  if(this.expanseItemControl()){
+    Swal.fire('', 'Gider kalemlerindeki boşlukları doldurunuz !', 'warning');
+  }else if(this.projectPlanEmptyControl()){
+    Swal.fire('', 'Proje planındaki boşlukları doldurunuz !', 'warning');
+  }
+  else if(this.dateControl()){
+    Swal.fire('', 'Başlangıç tarihi bitiş tarihinden büyük olamaz !', 'warning');
+  }
+  else if(!this.isActive && plannedDate.value!="" ){
+    plannedDate.classList.remove('is-invalid')
     Swal.fire({
       title: '',
       text: 'Onaya gönderilecek emin misiniz ?',
@@ -504,7 +523,10 @@ send(){
       }
     })
   }else{
-    Swal.fire('', 'Lütfen planlanan talep tarihini boş bırakmayınız !', 'warning');
+    Swal.fire('', 'Lütfen zorunlu alanları boş bırakmayınız !', 'warning');
+    plannedDate.classList.add('is-invalid')
+    if(plannedDate.value!="")
+      plannedDate.classList.remove('is-invalid')
   }
 
 }
@@ -515,6 +537,8 @@ send(){
     this.projectService.selectedDemandPost(this.selectedProject).subscribe((response)=>{
       if(!response['error']){
         Swal.fire('', "Bütçe Planı Onaylandı !", 'success');
+        this.router.navigate(["projects/project-confirmation/"]);
+
       }else{
         Swal.fire('', 'Bütçe Onaylama İşlemi Başarısız !', 'error');
       }
@@ -528,6 +552,7 @@ send(){
     this.projectService.selectedDemandPost(this.selectedProject).subscribe((response)=>{
       if(!response['error']){
         Swal.fire('', "Bütçe Planı Reddedildi !", 'success');
+        this.router.navigate(["projects/project-confirmation/"]);
       }else{
         Swal.fire('', 'Bütçe Onaylama İşlemi Başarısız !', 'error');
       }
@@ -535,7 +560,86 @@ send(){
       Swal.fire('', 'Bütçe Onaylama İşlemi Başarısız !', 'error');
     });
   }
+  projectPlanEmptyControl():boolean{
+    var returnValue=false;
+    var parent=document.getElementById('mainDiv');
+    parent?.childNodes.forEach(element => {
+      var child=(element.childNodes[0] as HTMLInputElement)
+      child.parentNode?.childNodes.forEach(element=>{
+        var inputs=(element.childNodes[0] as HTMLInputElement)
+        if(inputs.value=="" || inputs.value=="0" ){
+          inputs.classList.add("is-invalid");
+          returnValue=true;
+        }else{
+          inputs.classList.remove("is-invalid");
+        }
+      })
 
+    })
+    return returnValue;
+  }
+  expanseItemControl(){
+    var returnValue=false;
+    var parent=document.getElementById('mainDivTab2');
+    parent?.childNodes.forEach(element => {
+      var firstChild=(element.childNodes[0].childNodes[0] as HTMLInputElement)
+      var child=(element.childNodes[0] as HTMLInputElement)
+
+      if(firstChild.value!="0")
+      {
+         child.parentNode?.childNodes.forEach(element=>{
+          var inputs=(element.childNodes[0] as HTMLInputElement)
+          if(inputs.value=="0" || inputs.value==""){
+            returnValue=true;
+            inputs.classList.add('is-invalid');
+          }else{
+            inputs.classList.remove('is-invalid');
+          }
+
+         })
+      }
+    });
+    return returnValue;
+  }
+  dateControl():boolean{
+    var returnValue=false;
+    var parent=document.getElementById('mainDiv') as HTMLInputElement;
+    parent?.childNodes.forEach(element => {
+      var dataStart=(element.childNodes[4].childNodes[0] as HTMLInputElement);
+      var dataEnd=(element.childNodes[5].childNodes[0] as HTMLInputElement);
+      const d1 = new Date(dataStart.value);
+      const d2 = new Date(dataEnd.value);
+      if(d1>d2){
+        returnValue=true;
+        dataStart.classList.add('is-invalid');
+        dataEnd.classList.add('is-invalid');
+      }else{
+        dataStart.classList.remove('is-invalid');
+        dataEnd.classList.remove('is-invalid');
+      }
+    });
+    return returnValue;
+  }
+  disablePlans(){
+    var parent=document.getElementById('form1text9');
+    parent?.setAttribute('disabled','');
+     parent=document.getElementById('mainDiv');
+    parent?.childNodes.forEach(element => {
+      var child=(element.childNodes[0] as HTMLInputElement)
+      child.parentNode?.childNodes.forEach(element=>{
+        var inputs=(element.childNodes[0] as HTMLInputElement)
+        inputs.setAttribute('disabled','')
+      })
+    });
+     parent=document.getElementById('mainDivTab2');
+    parent?.childNodes.forEach(element => {
+      var child=(element.childNodes[0] as HTMLInputElement)
+      child.parentNode?.childNodes.forEach(element=>{
+        var inputs=(element.childNodes[0] as HTMLInputElement)
+        inputs.setAttribute('disabled','')
+      })
+    });
+  }
 
   numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

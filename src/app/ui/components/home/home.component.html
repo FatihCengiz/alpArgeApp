@@ -3,39 +3,104 @@
     <div class="section__content section__content--p30" >
       <div class="container-fluid ">
         <div class="row ">
-          <div class="col-md-6 col-lg-3">
+          <div class="col-md-6 col-lg-1">
+          </div>
+          <div class="col-md-6 col-lg-2">
             <div class="statistic__item">
               <h2 class="number">{{pendingApproval}}</h2>
-              <span class="desc">Onay Bekleyen</span>
+              <span class="desc">Onay Bekleyen Talepler</span>
               <div class="icon">
                  <i class="zmdi zmdi-repeat-one"></i>
               </div>
             </div>
           </div>
 
-          <div class="col-md-6 col-lg-3">
+          <div class="col-md-6 col-lg-2">
+            <div class="statistic__item">
+              <h2 class="number">{{budgetPlan}}</h2>
+              <span class="desc">Bütçe Planlamasında</span>
+              <div class="icon">
+                <i class="zmdi zmdi-edit"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-2">
+            <div class="statistic__item">
+              <h2 class="number">{{budgetConfirmation}}</h2>
+              <span class="desc">Bütçe Onayında</span>
+              <div class="icon">
+                <i class="zmdi zmdi-search"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-2">
             <div class="statistic__item">
               <h2 class="number">{{active}}</h2>
-              <span class="desc">Aktif</span>
+              <span class="desc">Geliştirme Sürecinde</span>
               <div class="icon">
                 <i class="zmdi zmdi-chart-donut"></i>
               </div>
             </div>
           </div>
-          <div class="col-md-6 col-lg-3">
+
+          <div class="col-md-6 col-lg-2">
             <div class="statistic__item">
-              <h2 class="number">{{complated
-                }}</h2>
+              <h2 class="number">{{endConfirmation}}</h2>
+              <span class="desc">Bitiş Onayında</span>
+              <div class="icon">
+                <i class="zmdi zmdi-rotate-left"></i>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row ">
+          <div class="col-md-6 col-lg-1">
+          </div>
+          <div class="col-md-6 col-lg-2" id="dashboard6">
+            <div class="statistic__item">
+              <h2 class="number">{{rejected}}</h2>
+              <span class="desc">Reddilen Talepler</span>
+              <div class="icon">
+                 <i class="zmdi zmdi-close-circle"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-2" id="dashboard7">
+            <div class="statistic__item">
+              <h2 class="number">{{discontinued}}</h2>
+              <span class="desc">Durdurulan Projeler</span>
+              <div class="icon">
+                <i class="zmdi zmdi-pause-circle-outline"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-2" id="dashboard8">
+            <div class="statistic__item">
+              <h2 class="number">{{canceled}}</h2>
+              <span class="desc">İptal Edilen Projeler</span>
+              <div class="icon">
+                <i class="zmdi zmdi-delete"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-2">
+            <div class="statistic__item">
+              <h2 class="number">{{complated}}</h2>
               <span class="desc">Tamamlanan Projeler</span>
               <div class="icon">
                 <i class="zmdi zmdi-assignment-check"></i>
               </div>
             </div>
           </div>
-          <div class="col-md-6 col-lg-3">
+
+          <div class="col-md-6 col-lg-2">
             <div class="statistic__item">
               <h2 class="number">{{totalDemand}}</h2>
-              <span class="desc">Tüm Projeler</span>
+              <span class="desc">Tüm Talepler</span>
               <div class="icon">
                 <i class="zmdi zmdi-calendar-note"></i>
               </div>

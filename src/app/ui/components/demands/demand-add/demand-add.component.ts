@@ -8,7 +8,7 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { Demands } from '../model/demand';
 import { DemandService } from '../service/demand.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { SelectedDemands } from '../model/selected-demand';
@@ -34,6 +34,8 @@ export class DemandAddComponent implements OnInit {
   isActive:boolean=false;
   getUserAllResponse: any;
   isVisible:boolean=true;
+  groupID:any;
+  projectStatus:any;
 
   selectedDemands: SelectedDemands = {
     responsible: [],
@@ -48,7 +50,8 @@ export class DemandAddComponent implements OnInit {
     private toastr: ToastrService,
     private demandService: DemandService,
     private route: ActivatedRoute,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private router:Router
   ) {
  //   this.demandService.spinnerShow();
     this.projectNumber = this.route.snapshot.paramMap.get('id');
@@ -81,6 +84,17 @@ export class DemandAddComponent implements OnInit {
       });
     } else {
       this.toastr.warning('Lütfen boşlukları doldurunuz');
+      for(let i=0;i<11;i++){
+        var element=document.getElementById('demandForm')?.childNodes[i].childNodes[1] as HTMLInputElement
+        if(element.value==""){
+          element.classList.add('is-invalid');
+        }else {
+          element.classList.remove('is-invalid');
+          element.classList.add('is-valid');
+        }
+
+      }
+
     }
   }
   demandSave() {
@@ -132,12 +146,10 @@ export class DemandAddComponent implements OnInit {
             feature6: [this.get.Feature6],
             requester:[this.user],
           });
+          this.projectStatus=this.get.ProjectStatus
           this.demandForm.disable();
-          if(this.get.ProjectStatus==1){
-            this.isVisible=false;
-          }else{
-            this.isVisible=true;
-          }
+          this.showManagerAuthority()
+
         });
     } else if (localStorage.getItem('demand')) {
       this.btnVisible=false;
@@ -196,9 +208,10 @@ export class DemandAddComponent implements OnInit {
     if (id != undefined) {
        this.demandService.getUser(id).subscribe((response)=>{
           this.user=response['user'][0].Name +" "+response['user'][0].Surname;
+          this.groupID=response['user'][0].GroupID;
           this.formFill();
 
-     })
+     });
     }
   }
   getCustomer(){
@@ -219,6 +232,7 @@ export class DemandAddComponent implements OnInit {
       this.demandService.selectedDemandPost(this.selectedDemands).subscribe((response)=>{
         if(!response['error']){
           Swal.fire('', 'Talep Onaylandı !', 'success');
+          this.router.navigate(["/demands"]);
         }else{
           Swal.fire('', 'Talep Onaylama İşlemi Başarısız !', 'error');
         }
@@ -238,12 +252,19 @@ export class DemandAddComponent implements OnInit {
     this.demandService.selectedDemandPost(this.selectedDemands).subscribe((response)=>{
       if(!response['error']){
         Swal.fire('', 'Talep Reddedildi !', 'success');
+        this.router.navigate(["/demands"]);
       }else{
         Swal.fire('', 'Talep Onaylama İşlemi Başarısız !', 'error');
       }
     },(err)=>{
       Swal.fire('', 'Talep Onaylama İşlemi Başarısız !', 'error');
     })
-
+  }
+  showManagerAuthority(){
+    if(this.projectStatus==1 && this.groupID==1){
+      this.isVisible=false;
+    }else{
+      this.isVisible=true;
+    }
   }
 }

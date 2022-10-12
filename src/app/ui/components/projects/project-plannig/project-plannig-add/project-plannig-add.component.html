@@ -189,7 +189,7 @@
             formControlName="taskType"
             placeholder="Görev Türü"
             (change)="form2Control($event.target)"
-          >  <option value="0" disabled selected hidden>Görev Türü</option>
+          >  <option value="0" disabled selected hidden></option>
             <option value="Tasarım">Tasarım</option>
             <option value="Tedarik">Tedarik</option>
             <option value="Üretim">Üretim</option>
@@ -207,7 +207,7 @@
             formControlName="taskType"
             placeholder="Görev Tipi"
             (change)="form2Control($event.target)"
-          >  <option value="0" disabled selected hidden>Görev Tipi</option>
+          >  <option value="0" disabled selected hidden></option>
           <option value="{{task.HourPrice}}" *ngFor="let task of getTaskTypeResponse">{{task.Source}}</option>
           </select>
         </div>
@@ -221,7 +221,7 @@
             formControlName="quantity"
             placeholder="Kaynak"
             required>
-            <option value="0" disabled selected hidden>Kaynak</option>
+            <option value="0" disabled selected hidden></option>
             <option value="{{user.ID}}" *ngFor="let user of getUser">{{user.Name}} {{user.Surname}}</option>
 
           </select>
@@ -232,11 +232,12 @@
             autocomplete="off"
             type="Number"
             name="cnf-password"
-            class="form-control"
+            class="form-control disable"
             id="form2text4"
             formControlName="quantity"
             placeholder="Süre(Sa)"
             required
+            
           />
         </div>
 
@@ -324,7 +325,7 @@
             formControlName="taskType"
             placeholder="Görev Türü"
             (change)="form3Control($event.target)"
-          >  <option value="0" disabled selected hidden>Maliyet Tipi</option>
+          >  <option value="0" disabled selected hidden></option>
             <option value="İşçilik">İşçilik</option>
             <option value="Malzeme">Malzeme</option>
             <option value="Ekipman/Yazılım">Ekipman/Yazılım</option>
@@ -368,7 +369,7 @@
             class="form-control browser-default custom-select"
             formControlName="taskType"
             placeholder="Birim"
-          >  <option value="0" disabled selected hidden>Birim</option>
+          >  <option value="0" disabled selected hidden></option>
             <option value="1">Adet</option>
             <option value="2">Kg</option>
           </select>
@@ -380,7 +381,7 @@
             class="form-control browser-default custom-select"
             formControlName="taskType"
             placeholder="Birim"
-          >  <option value="0" disabled selected hidden>Döviz</option>
+          >  <option value="0" disabled selected hidden></option>
             <option value="1">EUR</option>
             <option value="2">USD</option>
             <option value="3">TL</option>
