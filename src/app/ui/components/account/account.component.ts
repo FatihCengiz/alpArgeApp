@@ -19,6 +19,7 @@ export class AccountComponent implements OnInit {
   }
 
   constructor(public _DomSanitizationService: DomSanitizer,private accountService:AccountService) {
+    this.accountService.spinnerShow();
    }
 
   ngOnInit(): void {

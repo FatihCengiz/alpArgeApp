@@ -27,4 +27,5 @@ export class SidenavService {
     let api = this.apiUrl+"/getImage.php?id="+id+"&developer_mode_key=AlpArge_Dev_Key_GET";
     return this.httpClient.get( api, { responseType: 'blob' })
  }
+
 }

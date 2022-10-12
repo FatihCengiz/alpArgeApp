@@ -46,6 +46,7 @@ demand:[]=[]
         this.getDemandAll();
       }else if(this.user.GroupID==2){
         this.getEngineerDemand(this.user.Name+" "+this.user.Surname,this.user.ID);
+
       }else if(this.user.GroupID==3){
         this.getRequesterDemand(this.user.Name+" "+this.user.Surname);
       }
@@ -71,7 +72,7 @@ demand:[]=[]
         this.pendingApproval=response['demand_list'].filter(x => x.ProjectStatus==1).length
       }
     });
-    console.log(responsible);
+
     this.demandService.getResponsibleDemand(responsible).subscribe((response)=>{
       this.totalDemand=response['demand_list'].length;
       this.budgetPlan=response['demand_list'].filter(x => x.ProjectStatus==2).length;
@@ -79,6 +80,7 @@ demand:[]=[]
       this.active=response['demand_list'].filter(x => x.ProjectStatus==4).length;
       this.endConfirmation=response['demand_list'].filter(x => x.ProjectStatus==5).length;
       this.complated=response['demand_list'].filter(x => x.ProjectStatus==6).length;
+      console.log(response);
     });
     this.displayDashboard();
    }

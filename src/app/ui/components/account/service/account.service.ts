@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -7,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class AccountService {
 
-  constructor(@Inject('apiUrl') private apiUrl: string,private httpClient: HttpClient) { }
+  constructor(@Inject('apiUrl') private apiUrl: string,private httpClient: HttpClient,private spinner:NgxSpinnerService) { }
   postImage(fd : FormData): Observable<string>{
     let api = this.apiUrl+'/postImage.php';
     return this.httpClient.post<string>(api, fd );
@@ -33,5 +34,11 @@ changePassword(form:any){;
   let api = this.apiUrl + "/api_password_update.php?&developer_mode_key=AlpArge_Dev_Key_GET";
   return this.httpClient.post(api,form);
 }
-
+spinnerShow() {
+  this.spinner.show().then(() => {
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 1500);
+  });
+}
 }
