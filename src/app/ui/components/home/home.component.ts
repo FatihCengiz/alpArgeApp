@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
+import Swal from 'sweetalert2';
 import { DemandService } from '../demands/service/demand.service';
 
 @Component({
@@ -20,11 +21,14 @@ canceled;
 complated;
 totalDemand;
 user:any;
-demand:[]=[]
+demand:[]=[];
+currency:any="";
+dolar:string="";
+euro:string="";
   constructor(private spinner:NgxSpinnerService,private demandService:DemandService) {
     this.spinnerShow();
-
     this.getUserByID();
+    this.getCurrency();
    }
 
   ngOnInit(): void {
@@ -60,9 +64,9 @@ demand:[]=[]
       this.budgetConfirmation=response['demand_list'].filter(x => x.ProjectStatus==3).length;
       this.active=response['demand_list'].filter(x => x.ProjectStatus==4).length;
       this.endConfirmation=response['demand_list'].filter(x => x.ProjectStatus==5).length;
-      this.rejected=response['demand_list'].filter(x => x.ProjectStatus==8).length;
+      this.rejected=response['demand_list'].filter(x => x.ProjectStatus==9).length;
       this.discontinued=response['demand_list'].filter(x => x.ProjectStatus==7).length;
-      this.canceled=response['demand_list'].filter(x => x.ProjectStatus==9).length;
+      this.canceled=response['demand_list'].filter(x => x.ProjectStatus==8).length;
       this.complated=response['demand_list'].filter(x => x.ProjectStatus==6).length;
     });
    }
@@ -80,7 +84,6 @@ demand:[]=[]
       this.active=response['demand_list'].filter(x => x.ProjectStatus==4).length;
       this.endConfirmation=response['demand_list'].filter(x => x.ProjectStatus==5).length;
       this.complated=response['demand_list'].filter(x => x.ProjectStatus==6).length;
-      console.log(response);
     });
     this.displayDashboard();
    }
@@ -107,4 +110,19 @@ demand:[]=[]
      element2.style.display='none';
      element3.style.display='none';
    }
+   getCurrency(){
+      this.demandService.getCurrency().subscribe((response)=>{
+        if(response!=undefined || response!=null){
+          this.currency=response;
+          this.dolar=this.currency.USD.Satış.trim().replace(",",".");
+          this.euro=this.currency.EUR.Satış.trim().replace(",",".");
+          this.dolar=this.dolar.substring(0,5);
+          this.euro=this.euro.substring(0,5);
+        }else{
+          // Swal.fire('', 'Kur bilgisi çekilemedi !', 'error');
+        }
+      },(err)=>{
+        // Swal.fire('', 'Kur bilgisi çekilemedi !', 'error');
+      });
+    }
 }

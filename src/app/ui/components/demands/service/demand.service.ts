@@ -74,6 +74,10 @@ export class DemandService {
     let api = this.apiUrl + "/api_get_customer.php?all&developer_mode_key=AlpArge_Dev_Key_GET";
     return this.httpClient.get(api);
   }
+  getCurrency() {
+    let api ='https://finans.truncgil.com/today.json';
+    return this.httpClient.get(api);
+  }
    spinnerShow(){
     this.spinner.show().then(() => {
       setTimeout(() => {

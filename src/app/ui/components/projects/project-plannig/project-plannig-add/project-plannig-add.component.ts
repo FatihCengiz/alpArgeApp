@@ -68,7 +68,7 @@ selectedProject: SelectedProject = {
     this.getAllUser();
     this.getCurrency();
     this.getTaskType();
-    this.projectService.spinnerShow();
+    this.projectService.spinnerShowByTime(1500);
 
     var date = this.datePipe.transform(this.myDate, 'yyyy-MM-dd')?.toString();
     if(date!=undefined)

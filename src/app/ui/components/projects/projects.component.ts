@@ -13,6 +13,7 @@ demandList:any;
 demand:any;
 search:any;
   constructor(private projectService:ProjectService) {
+    this.projectService.spinnerShow();
     this.getDemandList();
   }
 

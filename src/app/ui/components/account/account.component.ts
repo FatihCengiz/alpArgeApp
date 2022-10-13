@@ -102,7 +102,10 @@ deleteImage(){
 changePassword(){
   var newPass=(document.getElementById('passNew') as HTMLInputElement);
   var newPassRe=(document.getElementById('passNewRe') as HTMLInputElement);
-  if(newPass.value==newPassRe.value){
+  if(newPass.value==""){
+    Swal.fire('','Şifre boşluk bırakılamaz !','warning');
+  }
+ else if(newPass.value==newPassRe.value){
     this.password.id=this.userID;
     this.password.newPass=newPass.value;
     this.accountService.changePassword(this.password).subscribe((response)=>{

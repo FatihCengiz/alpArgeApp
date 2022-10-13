@@ -81,10 +81,16 @@ export class ProjectService {
     this.spinner.show().then(() => {
       setTimeout(() => {
         this.spinner.hide();
-      }, 2000);
+      }, 750);
     });
   }
-
+  spinnerShowByTime(time:number) {
+    this.spinner.show().then(() => {
+      setTimeout(() => {
+        this.spinner.hide();
+      }, time);
+    });
+  }
   async save(form: any){
       let Form = JSON.stringify(form);
       let api = this.apiUrl + '/api_project.php';

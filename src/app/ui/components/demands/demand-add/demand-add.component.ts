@@ -78,7 +78,8 @@ export class DemandAddComponent implements OnInit {
           this.demandService.add(this.demandForm).then(() => {
             setTimeout(() => {
               this.formFill();
-            }, 1000);
+              this.router.navigate(["/demands"]);
+            }, 750);
           });
         }
       });
