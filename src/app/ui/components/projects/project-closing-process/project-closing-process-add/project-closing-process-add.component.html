@@ -389,6 +389,51 @@
       </c-tab-pane>
 
       <c-tab-pane  class="p-3" #tab2>
+        <div class="container-fluid container-fluid-tab mt-2">
+          <div class="col-sm-12 mt-2">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Dosyalarım</h5>
+                </div>
+                <div class="card-block table-border-style">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Dosya Adı</th>
+                                    <th>Tipi</th>
+                                    <th>Yükleme Tarihi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr  *ngFor="let file of files let i = index">
+                                    <th scope="row">{{i+1}}</th>
+                                    <td> <a [href]="file.Url" download="{{file.FileName}}">{{file.FileName}}</a></td>
+                                    <td>{{file.Type}}</td>
+                                    <td>{{file.UploadDate}}</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-1 ">
+          <div class="col-sm-6 form-group">
+          <input id="photo" name="studentPhoto" type="file" (change)="getFile($event)" class="form-control">
+          </div>
+          <div class="col-sm-6 form-group">
+        <button class="btn btn-primary" (click)="sendFile()">Dosyayı Kaydet</button>
+          </div>
+        </div>
+
+        <!-- <a [href]="url" download="3.{{type}}">DownloadFile</a> -->
+        <!-- <a [href]="url" download="file.txt">DownloadFile</a> -->
+
+      </div>
       </c-tab-pane>
     </c-tab-content>
 

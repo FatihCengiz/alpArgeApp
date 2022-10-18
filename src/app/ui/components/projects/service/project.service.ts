@@ -3,8 +3,10 @@ import { Inject, Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { Demands } from '../../demands/model/demand';
+import { ProjectFile } from '../model/project-file';
 
 @Injectable({
   providedIn: 'root',
@@ -132,7 +134,27 @@ export class ProjectService {
   }
   getProjectPlanByID(id: string) {
     let api =this.apiUrl +'/api_get_project_plan.php?projectNumber='+id+'&developer_mode_key=AlpArge_Dev_Key_GET';
-    console.log(api);
-  return this.httpClient.get(api);
+   return this.httpClient.get(api);
   }
+  downloadFile(id:any){
+    let api = this.apiUrl+"/getImage.php?id="+id+"&developer_mode_key=AlpArge_Dev_Key_GET";
+    return this.httpClient.get( api, { responseType: 'blob' })
+  }
+  postFile(fd : FormData): Observable<string>{
+    let api = this.apiUrl+'/postFile.php';
+    return this.httpClient.post<string>(api, fd);
+  }
+  getFileById(id:any): Observable<Blob> {
+    let api = this.apiUrl+"/getFile.php?id="+id+"&developer_mode_key=AlpArge_Dev_Key_GET";
+    return this.httpClient.get( api, { responseType: 'blob' })
+ }
+ getFileDetailById(id:any) {
+  let api = this.apiUrl+"/getFile.php?id="+id+"&developer_mode_key=AlpArge_Dev_Key_GET";
+  return this.httpClient.get<ProjectFile[]>(api)
+}
+downloadFileByID(id:any,name:string){
+  let api = this.apiUrl+"/getFileByID.php?id="+id+"&name="+name+"&developer_mode_key=AlpArge_Dev_Key_GET";
+  console.log(api)
+  return this.httpClient.get( api, { responseType: 'blob' })
+}
 }

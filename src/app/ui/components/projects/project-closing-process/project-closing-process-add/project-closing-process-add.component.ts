@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, ReplaySubject } from 'rxjs';
 import Swal from 'sweetalert2';
+import { ProjectFile } from '../../model/project-file';
 import { SelectedProject } from '../../model/selected-project';
 import { ProjectService } from '../../service/project.service';
 
@@ -30,9 +33,22 @@ isVisible:boolean=true;
 isManager:boolean=false;
 isClosing:boolean=true;
 commentControl:boolean=false;
-  constructor(private route: ActivatedRoute, private projectService:ProjectService,private router:Router) {
-    this.projectNumber = this.route.snapshot.paramMap.get('id');
+base64Output : string;
+url;
+type="png";
+file;
+size;
+files:ProjectFile[]=[];
+
+  constructor(
+    private route: ActivatedRoute,
+    private projectService:ProjectService,
+    private router:Router,private sanitizer: DomSanitizer,
+    ) {
+    this.projectNumber=this.route.snapshot.paramMap.get('id');
+    this.getFiles();
     this.getData();
+    // this.downloadFiles();
   }
 
   ngOnInit(): void {
@@ -75,7 +91,6 @@ commentControl:boolean=false;
       this.saveToActualDeliveryDate(4);
       this.saveToProjectPlan();
       this.projectService.selectedDemandClosingPost(this.projectPlans).subscribe((response) => {
-        console.log(response);
         if(!response["error"]){
           Swal.fire('', 'Kaydedildi !', 'success');
         }else{
@@ -176,7 +191,6 @@ getData(){
   this.projectService.getProjectPlanByID(this.projectNumber).subscribe((response)=>{
     if(!response['error']){
       this.getDemandResponse=response['project_closing_information_list'][0];
-      console.log(this.getDemandResponse)
       var parent=(document.getElementById('form2MainDiv') as HTMLInputElement);
       var counter=0;
       parent?.childNodes.forEach((element)=>{
@@ -235,5 +249,95 @@ disableProjectPlan(){
   comment.setAttribute('disabled','');
   });
 }
+downloadFile(){
+  this.projectService.downloadFile(2).subscribe((response)=>{
+    // console.log(response);
+    const data = response;
+    const blob = new Blob([data], { type: 'application/octet-stream' });
+    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+  })
+}
+downloadFiles(fileName:string) {
+  this.projectService.downloadFileByID(this.projectNumber,fileName).subscribe((response)=>{
+    console.log(response);
+    const data = response;
+    const blob = new Blob([data], { type: 'application/octet-stream' });
+    this.url = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+  });
+}
+// getFile(event){
+//   this.file = event.target.files[0];
+//   const reader = new FileReader();
+//   reader.readAsBinaryString(this.file);
+//     reader.onload = () => {
+//         console.log(reader.result);
+//     };
+// }
+
+getFile(event){
+  this.file = event.target.files[0];
+  if(this.file!=undefined)
+  this.size=this.file.size;
+
+}
+sendFile(){
+  if(this.file!=undefined){
+    if(this.size<=16000000){
+      const fd = new FormData();
+      fd.append('usrfile',this.file);
+      fd.append('projectNumber',this.projectNumber);
+      this.projectService.postFile(fd).subscribe(res =>{
+       if(res['error']){
+        Swal.fire('',"Hatalı dosya formatı !",'error');
+       }else{
+        Swal.fire('',"Dosyanız kaydedildi !",'success');
+        setTimeout(() => {
+          this.getFiles();
+        }, 1000);
+       }
+        },(err)=>{
+          Swal.fire('',"Dosya gönderilemedi !",'error');
+        });
+    }else{
+      Swal.fire('',"Dosya 15 MB'den büyük olamaz !",'warning');
+    }
+
+  }else{
+    Swal.fire('','Lütfen dosya seçiniz !','warning');
+  }
+}
+
+getFiles(){
+  this.projectService.getFileDetailById(this.projectNumber).subscribe(res =>{
+    this.files=res['file_list'];
+    this.files.forEach((element)=>{
+      this.projectService.downloadFileByID(this.projectNumber,element.FileName).subscribe((response)=>{
+        console.log(response);
+        const data = response;
+        const blob = new Blob([data], { type: 'application/octet-stream' });
+        element.Url=this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+      });
+    });
+    console.log(this.files);
+  })
+}
+// onFileSelected(event){
+//   this.convertFile(event.target.files[0]).subscribe(base64 => {
+//     this.base64Output = base64;
+//   });
+// }
+// convertFile(file :File){
+
+//  const result = new ReplaySubject<string>(1);
+//  const reader = new FileReader();
+//  reader.readAsBinaryString(file);
+// reader.onload = (event) => {
+// let data = event.target?.result;
+// if(data!=null)
+//   result.next(btoa(data.toString()));
+// }
+//  return result;
+// }
+
 
 }
