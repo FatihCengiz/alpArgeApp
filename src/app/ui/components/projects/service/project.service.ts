@@ -154,7 +154,10 @@ export class ProjectService {
 }
 downloadFileByID(id:any,name:string){
   let api = this.apiUrl+"/getFileByID.php?id="+id+"&name="+name+"&developer_mode_key=AlpArge_Dev_Key_GET";
-  console.log(api)
   return this.httpClient.get( api, { responseType: 'blob' })
+}
+deleteFile(selectedFile:any) {
+  let api =this.apiUrl +'/deleteFile.php';
+  return this.httpClient.post(api,selectedFile);
 }
 }

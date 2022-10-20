@@ -26,6 +26,10 @@ selectedProject: SelectedProject = {
   projectNumber: [],
   projectStatus: 1,
 };
+selectedFile = {
+  projectNumber: 0,
+  fileName: [""],
+};
 projectNumber:any;
 getDemandResponse:any;
 isActive:boolean=true;
@@ -48,7 +52,6 @@ files:ProjectFile[]=[];
     this.projectNumber=this.route.snapshot.paramMap.get('id');
     this.getFiles();
     this.getData();
-    // this.downloadFiles();
   }
 
   ngOnInit(): void {
@@ -181,8 +184,8 @@ getData(){
         }
         if(responsible != responseUser){
           this.disableProjectPlan();
+          this.hideFileButtons();
         }
-
       });
 
     }
@@ -249,9 +252,13 @@ disableProjectPlan(){
   comment.setAttribute('disabled','');
   });
 }
+hideFileButtons(){
+  var inputFileElement=document.getElementById('fileButtonRow') as HTMLInputElement;
+  inputFileElement.style.display='none';
+}
+
 downloadFile(){
   this.projectService.downloadFile(2).subscribe((response)=>{
-    // console.log(response);
     const data = response;
     const blob = new Blob([data], { type: 'application/octet-stream' });
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
@@ -259,7 +266,6 @@ downloadFile(){
 }
 downloadFiles(fileName:string) {
   this.projectService.downloadFileByID(this.projectNumber,fileName).subscribe((response)=>{
-    console.log(response);
     const data = response;
     const blob = new Blob([data], { type: 'application/octet-stream' });
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
@@ -310,17 +316,65 @@ sendFile(){
 getFiles(){
   this.projectService.getFileDetailById(this.projectNumber).subscribe(res =>{
     this.files=res['file_list'];
+   if(this.files!=undefined)
     this.files.forEach((element)=>{
       this.projectService.downloadFileByID(this.projectNumber,element.FileName).subscribe((response)=>{
-        console.log(response);
         const data = response;
         const blob = new Blob([data], { type: 'application/octet-stream' });
         element.Url=this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
       });
     });
-    console.log(this.files);
   })
 }
+checkFile(){
+this.selectedFile.fileName.length=0;
+this.selectedFile.projectNumber=0;
+var parent=document.getElementById('listFile') as HTMLInputElement;
+var element=parent.childNodes[0].childNodes[0].childNodes[0] as HTMLInputElement;
+parent.childNodes.forEach(element=>{
+   if(parent.lastChild!=element){
+ if((element.childNodes[0].childNodes[0] as HTMLInputElement).checked){
+  let fileName=element.childNodes[2].textContent;
+  this.selectedFile.projectNumber=this.projectNumber;
+  if(fileName!=null)
+  this.selectedFile.fileName.push(fileName);
+ }
+   }
+})
+
+}
+deleteFile(){
+  this.checkFile();
+  if(this.selectedFile.fileName.length!=0){
+    this.projectService.deleteFile(this.selectedFile).subscribe(response=>{
+     if(!response['error']){
+      Swal.fire('','Dosya silme işlemi başarılı !','success');
+      setTimeout(() => {
+        this.getFiles();
+      }, 1000);
+     }else{
+      Swal.fire('','Dosya silme işlemi başarısız !','error');
+     }
+    },(err)=>{
+      Swal.fire('','Dosya silme işlemi başarısız !','error');
+    })
+  }else{
+    Swal.fire('','Seçili dosya bulunumadı !','question');
+  }
+}
+checkedRow(event){
+  if(event!=null){
+    var element= event.target.parentNode as HTMLInputElement;
+    if((element.childNodes[0] as HTMLInputElement).checked){
+      (element.parentNode as HTMLInputElement).style.backgroundColor='#92be21';
+    }else{
+      (element.parentNode as HTMLInputElement).style.backgroundColor='white';
+    }
+  }
+
+
+}
+
 // onFileSelected(event){
 //   this.convertFile(event.target.files[0]).subscribe(base64 => {
 //     this.base64Output = base64;

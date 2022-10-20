@@ -400,15 +400,17 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                  <th></th>
+                                    <th></th>
                                     <th>Dosya Adı</th>
-                                    <th>Tipi</th>
+                                    <th>Uzantı</th>
                                     <th>Yükleme Tarihi</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr  *ngFor="let file of files let i = index">
-                                    <th scope="row">{{i+1}}</th>
+                            <tbody id="listFile">
+                                <tr *ngFor="let file of files let i = index">
+                                  <th > <input (click)="checkedRow($event)" class="ml-2" type="checkbox" name="checkbox" /></th>
+                                    <th scope="row" >{{i+1}}</th>
                                     <td> <a [href]="file.Url" download="{{file.FileName}}">{{file.FileName}}</a></td>
                                     <td>{{file.Type}}</td>
                                     <td>{{file.UploadDate}}</td>
@@ -421,13 +423,16 @@
             </div>
         </div>
 
-        <div class="row mt-1 ">
+        <div class="row mt-1" id="fileButtonRow">
           <div class="col-sm-6 form-group">
-          <input id="photo" name="studentPhoto" type="file" (change)="getFile($event)" class="form-control">
+          <input id="file" name="projectFile" type="file" (change)="getFile($event)" class="form-control">
           </div>
-          <div class="col-sm-6 form-group">
-        <button class="btn btn-primary" (click)="sendFile()">Dosyayı Kaydet</button>
+          <div class="col-sm-1 form-group mr-4">
+        <button class="btn btn-primary " (click)="sendFile()">Dosyayı Kaydet</button>
           </div>
+          <div class="col-sm-1 form-group">
+            <button class="btn btn-danger" (click)="deleteFile()">Dosyayı Sil</button>
+              </div>
         </div>
 
         <!-- <a [href]="url" download="3.{{type}}">DownloadFile</a> -->
