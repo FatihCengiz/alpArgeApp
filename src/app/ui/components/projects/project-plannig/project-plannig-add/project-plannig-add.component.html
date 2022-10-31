@@ -200,7 +200,7 @@
           </select>
         </div>
 
-        <div class="col-sm-2 form-group">
+        <div class="col-sm-2 form-group" >
           <select
             id="form2text2"
             class="form-control browser-default custom-select"
@@ -208,9 +208,13 @@
             placeholder="Görev Tipi"
             (change)="form2Control($event.target)"
           >  <option value="0" disabled selected hidden></option>
-          <option value="{{task.HourPrice}}" *ngFor="let task of getTaskTypeResponse">{{task.Source}}</option>
+          <option value="{{task.Source}}" *ngFor="let task of getTaskTypeResponse">{{task.Source}}</option>
           </select>
+
         </div>
+
+
+
         <div class="col-sm-1 form-group">
           <select
             autocomplete="off"
@@ -222,7 +226,7 @@
             placeholder="Kaynak"
             required>
             <option value="0" disabled selected hidden></option>
-            <option value="{{user.ID}}" *ngFor="let user of getUser">{{user.Name}} {{user.Surname}}</option>
+            <option value="{{source.UserName}}" *ngFor="let source of sources">{{source.Name}} {{source.Surname}}</option>
 
           </select>
 
@@ -237,7 +241,7 @@
             formControlName="quantity"
             placeholder="Süre(Sa)"
             required
-            
+
           />
         </div>
 
@@ -358,7 +362,7 @@
             class="form-control"
             id="form3text3"
             formControlName="quantity"
-            placeholder="Miktar"
+            value="0"
             required
           />
         </div>

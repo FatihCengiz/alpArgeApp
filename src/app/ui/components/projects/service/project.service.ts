@@ -96,8 +96,7 @@ export class ProjectService {
   async save(form: any){
       let Form = JSON.stringify(form);
       let api = this.apiUrl + '/api_project.php';
-      console.log('form');
-      console.log(Form);
+
       this.httpClient.post(api, Form).subscribe(
         (response) => {
           this.get = response;
@@ -159,5 +158,12 @@ downloadFileByID(id:any,name:string){
 deleteFile(selectedFile:any) {
   let api =this.apiUrl +'/deleteFile.php';
   return this.httpClient.post(api,selectedFile);
+}
+goToPageTop(){
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+  });
 }
 }

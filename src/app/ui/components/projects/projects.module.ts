@@ -8,13 +8,15 @@ import { ProjectClosingModule } from './project-closing/project-closing.module';
 import { FormsModule } from '@angular/forms';
 import { SearchPipe } from './search.pipe';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { LimitToPipe } from './limit-to.pipe';
 
 
 
 @NgModule({
   declarations: [
     ProjectsComponent,
-    SearchPipe
+    SearchPipe,
+    LimitToPipe
   ],
   imports: [
     CommonModule,
@@ -31,6 +33,7 @@ import { Ng2SearchPipeModule } from 'ng2-search-filter';
     ProjectConfirmationModule,
     ProjectPlannigModule,
     ProjectClosingModule,
+    LimitToPipe,
   ]
 })
 export class ProjectsModule { }

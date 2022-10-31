@@ -15,6 +15,7 @@ search:any;
   constructor(private projectService:ProjectService) {
     this.projectService.spinnerShow();
     this.getDemandList();
+    this.projectService.goToPageTop();
   }
 
   ngOnInit(): void {

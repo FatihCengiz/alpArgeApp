@@ -24,7 +24,7 @@ export class ProjectConfirmationComponent implements OnInit {
   };
   responsibleVisible: boolean;
 
-  constructor(private projectService:ProjectService,private router:Router) { }
+  constructor(private projectService:ProjectService,private router:Router) { this.projectService.goToPageTop()}
 
   ngOnInit(): void {
     this.projectService.spinnerShow();

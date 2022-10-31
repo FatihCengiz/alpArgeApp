@@ -182,7 +182,7 @@ getData(){
         else{
           this.isVisible=true;
         }
-        if(responsible != responseUser){
+        if(responsible != responseUser || status>4){
           this.disableProjectPlan();
           this.hideFileButtons();
         }

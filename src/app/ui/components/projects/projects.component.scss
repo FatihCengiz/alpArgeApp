@@ -1,12 +1,42 @@
-.table-responsive-my-setting{
-  /* overflow-x: auto; */
-  -webkit-overflow-scrolling: touch !important;
-  overflow-X: scroll;
-  cursor:pointer;
+
+.Container{
+  width: 90%;
+  overflow-x: auto;
+  margin: 0 auto;
 }
 
+.Content{
+  width: 300px;
+  height: 400px;
+}
+
+.Flipped, .Flipped .table-responsive-my-setting{
+  transform: rotateX(180deg);
+}
 ::-webkit-scrollbar-track {
-  background: rgb(152, 152, 152);
+   background: rgb(152, 152, 152);
+
+
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: gainsboro;
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: black;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 //Vars

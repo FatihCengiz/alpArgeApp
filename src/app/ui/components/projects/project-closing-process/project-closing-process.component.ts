@@ -16,7 +16,7 @@ export class ProjectClosingProcessComponent implements OnInit {
   message: string;
   responsibleVisible: boolean;
 
-  constructor(private projectService: ProjectService, private router: Router) {}
+  constructor(private projectService: ProjectService, private router: Router) {this.projectService.goToPageTop();}
 
   ngOnInit(): void {
     this.projectService.spinnerShow();
@@ -66,4 +66,5 @@ export class ProjectClosingProcessComponent implements OnInit {
     var number=(projectNumber as HTMLInputElement).childNodes[0].textContent;
     this.router.navigate(["projects/project-closing-process/add/"+number]);
   }
+
 }

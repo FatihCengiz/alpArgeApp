@@ -40,7 +40,7 @@ selectedProject: SelectedProject = {
   // { form1Element2: 'Profile 02' },
   // { form1Element3: 'Contact 03'},
   // { form1Element4: 'Disabled 04' }, form1Elements:{data1:"",data2:"",data3:"",data4:"",data5:"",data6:"",data7:"",data8:"",data9:""} }
-  source:any []=[];
+  sources:any []=[];
   projeNo;
   myModel:string="data1";
   public projectForm: FormGroup;
@@ -50,7 +50,7 @@ selectedProject: SelectedProject = {
   getPlanProjectResponse:any;
   getUser:any;
   getUserResponse:any;
-  getTaskTypeResponse:any;
+  getTaskTypeResponse:any[]=[]
   currency:any;
   dolar:any;
   euro:any;
@@ -60,6 +60,7 @@ selectedProject: SelectedProject = {
   isVisible:boolean=true;
   isClosing:boolean=true;
   isManager:boolean=false;
+  isPreview:boolean=false;
   myDate = new Date();
   date:string;
 
@@ -85,8 +86,19 @@ selectedProject: SelectedProject = {
   }
   getAllUser(){
     this.projectService.getAllUser().subscribe((response)=>{
-      this.getUser=response['user'];
-      this.source = Object.keys(response['user']).map(key => ({value: response['user'][key]}));
+      // this.getUser=response['user'];
+      this.sources=response['user'];
+
+      const extraSource={
+        ID:991,
+        Name:"CNC",
+        Surname:"",
+      }
+      // this.source = Object.keys(response['user']).map(key => ({value: response['user'][key]}));
+      //extra soure
+      this.sources.push(extraSource);
+      // this.getUser=this.source;
+
 
     })
   }
@@ -106,7 +118,7 @@ selectedProject: SelectedProject = {
     if (id != undefined) {
       this.projectService.getUser(id?.toString()).subscribe((response) => {
         this.getUserResponse = response['user']['0'];
-        console.log(this.getUserResponse.ID+" "+responsible);
+
         if(this.getUserResponse.ID!=responsible)
         this.disablePlans();
       });
@@ -128,6 +140,8 @@ selectedProject: SelectedProject = {
   getTaskType(){
     this.projectService.getTaskType().subscribe((response)=>{
       this.getTaskTypeResponse=response['task_type_list'];
+      console.log(this.getTaskTypeResponse);
+      console.log(this.isPreview);
     })
   }
   createRow(row:string,mainDiv:string) {
@@ -142,7 +156,7 @@ selectedProject: SelectedProject = {
 
     if(cloneChild!=null)
     parent?.appendChild(cloneChild);
-    this.saveToList1(Number(index)-1,Number(childIndex));
+    //this.saveToList1(Number(index)-1,Number(childIndex)); incele ***
 
   }
 deleteRow(mainDiv,baseRowID,rowIndex){
@@ -189,6 +203,7 @@ if(!this.isActive){
     this.saveToList1(Number(index),Number(indexChild1));
     this.saveToList2(Number(index2),Number(indexChild2));
     this.getBudgetTab();
+    // console.log(this.budgetPlan)
     this.projectService.save(this.budgetPlan);
     this.toastr.success('Kayıt Başarılı');
   }
@@ -220,9 +235,10 @@ saveToList1(parentIndex:number,childIndex:number){
       newList.push(form2Element);
       }
       this.budgetPlan.form2Elements[i]=newList;
+
       newList=[];
     }
-  //  console.log(this.budgetPlan.form2Elements);
+
 }
 
 saveToList2(index:number,childIndex:number){
@@ -237,12 +253,13 @@ saveToList2(index:number,childIndex:number){
       }
     for(let j=0;j<childIndex;j++){
       var form3Element=(parent?.children[j].children[0] as HTMLInputElement).value;
+
       newList.push(form3Element);
       }
       this.budgetPlan.form3Elements[i]=newList;
       newList=[];
     }
-  //  console.log(this.budgetPlan.form3Elements);
+
 }
 getBudgetTab(){
   this.budgetPlan.form5Elements=[];
@@ -277,7 +294,7 @@ emptyControl(parentID,childIndex,formID):boolean{
         }
       }
   }
-  // console.log(parentIndex +" / "+this.emptyForm2Control+" / "+this.emptyForm3Control);
+
   return emptyControl;
 }
 
@@ -295,7 +312,7 @@ form3Control(event) {
 getBudgetPlan(){
   this.projectService.getDemandById(this.projectNumber).subscribe((response)=>{
     this.getDemandResponse=response['demand_list'][0];
-   // console.log(this.getDemandResponse);
+
 
     var form1=(document.getElementById('form1') as HTMLInputElement);
     var form1Element1=form1.children[0].childNodes[0].childNodes[1] as HTMLInputElement;
@@ -351,6 +368,8 @@ getBudgetPlan(){
     if(!this.getPlanProjectResponse.error2){
       var form1=(document.getElementById('form1') as HTMLInputElement);
       var form1Element9=form1.children[4].childNodes[0].childNodes[1] as HTMLInputElement;
+
+     // console.log(this.getPlanProjectResponse['demand_project_list'][0].PlannedDeliveryDate)
       form1Element9.value=this.getPlanProjectResponse['demand_project_list'][0].PlannedDeliveryDate;
 
 
@@ -363,7 +382,7 @@ getBudgetPlan(){
       for(let i=0;i<rowProjectPlanNumber;i++){
 
         const mapped = Object.keys(this.getPlanProjectResponse['project_plan'][i]).map(key => ({type: key, value: this.getPlanProjectResponse['project_plan'][i][key]}));
-
+        //console.log(mapped)
 
         if(i==0){
           var parent=document.getElementById(id);
@@ -374,33 +393,51 @@ getBudgetPlan(){
 
       for(let j=0;j<Number(childIndex);j++){
          var form2Element=(parent?.children[j].children[0] as HTMLInputElement);
-        form2Element.value=mapped[j+2].value
-        }
+         form2Element.value=mapped[j+1].value;
+      //  form2Element.value=mapped[j+1].value;
+      //  console.log(mapped[j+1].value)
+       //  if(j!=1){
+        //   }
+       //  else{
+         //   form2Element.value=mapped[j+1].value
+
+            // console.log(form2Element.value);
+            // console.log(mapped[j+1].value)
+          //}
+         }
+
       }
     }
 
     if(!this.getPlanProjectResponse.error3){
       let id="projectExpense";
       var form2=document.getElementById(id);
-      // console.log((form2?.children[0].children[0] as HTMLInputElement).value)
+
 
       let rowExpenseItemNumber=this.getPlanProjectResponse['expense_item'].length;
+      //console.log(this.getPlanProjectResponse['expense_item'])
       let childIndex2=form2?.childNodes.length;
+
       for(let i=0;i<rowExpenseItemNumber;i++){
 
         const mapped = Object.keys(this.getPlanProjectResponse['expense_item'][i]).map(key => ({type: key, value: this.getPlanProjectResponse['expense_item'][i][key]}));
 
 
         if(i==0){
+        //  console.log("0 "+i)
           var parent=document.getElementById(id);
+
         }else{
+         // console.log("1 "+i)
           this.createRow(id,'mainDivTab2');
+
           var parent=document.getElementById(id+i.toString());
+          // console.log(id+i.toString())
         }
 
       for(let j=0;j<Number(childIndex2);j++){
-        var form2Element=(parent?.children[j].children[0] as HTMLInputElement);;
-        form2Element.value=mapped[j+2].value
+        var form2Element=(parent?.children[j].children[0] as HTMLInputElement);
+        form2Element.value=mapped[j+1].value
         }
       }
     }
@@ -460,7 +497,11 @@ if(quantiy!=""){
   let totalBudget=0;
   var parent=document.getElementById('mainDiv');
   parent?.childNodes.forEach(element => {
-    var hourPrice=(element.childNodes[1].childNodes[0] as HTMLInputElement).value;
+    // var hourPrice2=(element.childNodes[1].childNodes[0] as HTMLInputElement).value.toString().split("/",2)[1];
+    var hourPriceSource=(element.childNodes[1].childNodes[0] as HTMLInputElement).value
+    var hourPrice = this.getTaskTypeResponse.find(x=>x.Source == hourPriceSource).HourPrice;
+    console.log(hourPrice)
+
     var price=element.childNodes[6].childNodes[0] as HTMLInputElement;
     var totalPrice=element.childNodes[7].childNodes[0] as HTMLInputElement;
     var hours=(element.childNodes[3].childNodes[0] as HTMLInputElement).value;
@@ -473,7 +514,7 @@ if(quantiy!=""){
     totalBudget=totalBudget+Number(totalPrice.value);
     totalBudget=Math.round((totalBudget + Number.EPSILON) * 100) / 100;
     this.budgetCalculate(3,totalBudget)
-
+    console.log(this.isPreview)
   });
  }
 budgetCalculate(formID:number,cost:number){
@@ -639,6 +680,8 @@ send(){
         inputs.setAttribute('disabled','')
       })
     });
+    this.isPreview=true;
+
   }
 
   numberWithCommas(x) {

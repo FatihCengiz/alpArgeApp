@@ -14,10 +14,10 @@
       <input id="search" [(ngModel)]="search" type="text"  name="something"  class="fontAwesome"  placeholder="&#xf002; Search" autocomplete="off" autofocus required />
     </div>
 
-      <div class="table-responsive table--no-card m-b-30 mt-4">
-        <table class="table table-borderless table-striped table-earning table-responsive-my-setting ">
+      <div class="table-responsive table--no-card m-b-30 mt-4 Container Flipped">
+        <table class="table table-borderless table-striped table-earning table-responsive-my-setting" >
           <thead>
-            <tr >
+            <tr>
               <th>Proje Kodu</th>
               <th>Proje tipi</th>
               <th>Durum</th>
@@ -30,12 +30,12 @@
 
             </tr>
           </thead>
-          <tbody >
+          <tbody style="font-size: 14px;" >
             <tr *ngFor="let demand of demandList | filter:search" (click)="showDemand($event)">
-              <td>{{demand.ProjectNumber}}</td>
+              <td >{{demand.ProjectNumber}}</td>
               <td>{{demand.ProjectType}}</td>
               <td>{{demand.Status}}</td>
-              <td>{{demand.ProjectName}}</td>
+               <td  title="{{demand.ProjectName}}"> {{(demand.ProjectName | limitTo : '35')}}</td>
               <td>{{demand.Requester}}</td>
               <td>{{demand.Engineer}}</td>
               <td>{{demand.DemandDate}}</td>
