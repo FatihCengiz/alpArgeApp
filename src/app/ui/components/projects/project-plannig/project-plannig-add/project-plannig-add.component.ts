@@ -312,8 +312,6 @@ form3Control(event) {
 getBudgetPlan(){
   this.projectService.getDemandById(this.projectNumber).subscribe((response)=>{
     this.getDemandResponse=response['demand_list'][0];
-
-
     var form1=(document.getElementById('form1') as HTMLInputElement);
     var form1Element1=form1.children[0].childNodes[0].childNodes[1] as HTMLInputElement;
     var form1Element2=form1.children[0].childNodes[1].childNodes[1] as HTMLInputElement;
@@ -344,6 +342,9 @@ getBudgetPlan(){
         this.isManager=false;
         this.isClosing=true;
         this.isVisible=false;
+    }
+    if(this.getDemandResponse.ProjectStatus>2){//disable plan
+      this.disablePlans();
     }
     this.getUserByID(responsible)
 
@@ -681,7 +682,6 @@ send(){
       })
     });
     this.isPreview=true;
-
   }
 
   numberWithCommas(x) {

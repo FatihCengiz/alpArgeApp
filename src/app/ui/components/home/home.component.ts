@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import Swal from 'sweetalert2';
 import { DemandService } from '../demands/service/demand.service';
@@ -25,7 +26,8 @@ demand:[]=[];
 currency:any="";
 dolar:string="";
 euro:string="";
-  constructor(private spinner:NgxSpinnerService,private demandService:DemandService) {
+groupUserID:string="";
+  constructor(private spinner:NgxSpinnerService,private demandService:DemandService,private router:Router) {
     this.spinnerShow();
     this.getUserByID();
     this.getCurrency();
@@ -48,8 +50,10 @@ euro:string="";
       this.user=response['user']['0'];
       if(this.user.GroupID==1){
         this.getDemandAll();
+        this.groupUserID="1";
       }else if(this.user.GroupID==2){
         this.getEngineerDemand(this.user.Name+" "+this.user.Surname,this.user.ID);
+
 
       }else if(this.user.GroupID==3){
         this.getRequesterDemand(this.user.Name+" "+this.user.Surname);
@@ -84,11 +88,13 @@ euro:string="";
       this.active=response['demand_list'].filter(x => x.ProjectStatus==4).length;
       this.endConfirmation=response['demand_list'].filter(x => x.ProjectStatus==5).length;
       this.complated=response['demand_list'].filter(x => x.ProjectStatus==6).length;
+      this.rejected=response['demand_list'].filter(x => x.ProjectStatus==9).length;
+      this.discontinued=response['demand_list'].filter(x => x.ProjectStatus==7).length;
+      this.canceled=response['demand_list'].filter(x => x.ProjectStatus==8).length;
     });
-    this.displayDashboard();
+  //  this.displayDashboard();
    }
    getRequesterDemand(requester:string){
-    console.log(requester);
     this.demandService.getRequesterDemand(requester).subscribe((response)=>{
       if(!response['error']){
         this.totalDemand=response['demand_list'].length;
@@ -98,9 +104,12 @@ euro:string="";
         this.active=response['demand_list'].filter(x => x.ProjectStatus==4).length;
         this.endConfirmation=response['demand_list'].filter(x => x.ProjectStatus==5).length;
         this.complated=response['demand_list'].filter(x => x.ProjectStatus==6).length;
+        this.rejected=response['demand_list'].filter(x => x.ProjectStatus==9).length;
+        this.discontinued=response['demand_list'].filter(x => x.ProjectStatus==7).length;
+        this.canceled=response['demand_list'].filter(x => x.ProjectStatus==8).length;
       }
     });
-    this.displayDashboard();
+  //  this.displayDashboard();
    }
    displayDashboard(){
      var element1=(document.getElementById('dashboard6') as HTMLInputElement);
@@ -125,4 +134,20 @@ euro:string="";
         // Swal.fire('', 'Kur bilgisi çekilemedi !', 'error');
       });
     }
+    projectConfirmationRouter(groupID:any){
+      if(groupID==this.groupUserID){
+        this.router.navigate(['/projects/project-confirmation'])
+      }
+    }
+    projectClosingRouter(groupID:any){
+      if(groupID==this.groupUserID){
+        this.router.navigate(['/projects/project-closing'])
+      }
+    }
+    projectsRouter(groupID:any){
+      if(groupID==this.groupUserID){
+        this.router.navigate(['/projects'])
+      }
+    }
+
 }

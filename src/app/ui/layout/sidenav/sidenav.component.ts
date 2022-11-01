@@ -11,7 +11,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./sidenav.component.scss']
 })
 export class SidenavComponent implements OnInit {
-  demandQuantity;
+  demandQuantity=0;
   get;
   userName;
   userID;
@@ -52,7 +52,7 @@ export class SidenavComponent implements OnInit {
         this.demandQuantity=response['demand_list'][0]['Count'];
       })
       // this.demandQuantity=this.get.demand_list.filter(x => x.ProjectStatus==1).length;
-    }, 3000);
+    }, 2000);
 
   }
   getUser(){

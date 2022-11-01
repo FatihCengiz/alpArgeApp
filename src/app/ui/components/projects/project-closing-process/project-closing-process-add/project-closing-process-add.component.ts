@@ -47,7 +47,8 @@ files:ProjectFile[]=[];
   constructor(
     private route: ActivatedRoute,
     private projectService:ProjectService,
-    private router:Router,private sanitizer: DomSanitizer,
+    private router:Router,
+    private sanitizer: DomSanitizer,
     ) {
     this.projectNumber=this.route.snapshot.paramMap.get('id');
     this.getFiles();
@@ -55,8 +56,7 @@ files:ProjectFile[]=[];
   }
 
   ngOnInit(): void {
-
-
+    this.projectService.spinnerShowByTime(1500);
   }
 
   saveToActualDeliveryDate(projectStatus:number){

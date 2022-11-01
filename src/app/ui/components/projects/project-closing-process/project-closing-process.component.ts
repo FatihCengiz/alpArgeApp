@@ -39,6 +39,7 @@ export class ProjectClosingProcessComponent implements OnInit {
       this.demands.forEach((element) => {
         element.Checked = false;
       });
+      this.demands.sort((a,b) => a.ProjectStatus.toString().localeCompare(b.ProjectStatus.toString()));
     });
   }
   getUser(): any {

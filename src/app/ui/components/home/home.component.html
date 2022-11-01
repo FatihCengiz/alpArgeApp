@@ -29,7 +29,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6 col-lg-2" style="cursor: pointer;" routerLink="/projects/project-confirmation" >
+          <div class="col-md-6 col-lg-2" style="cursor: pointer;" (click)="projectConfirmationRouter(1)"  >
             <div class="statistic__item">
               <h2 class="number">{{budgetConfirmation}}</h2>
               <span class="desc">Bütçe Onayında</span>
@@ -48,7 +48,7 @@
             </div>
           </div>
 
-          <div class="col-md-6 col-lg-2" style="cursor: pointer;" routerLink="/projects/project-closing">
+          <div class="col-md-6 col-lg-2" style="cursor: pointer;" (click)="projectClosingRouter(1)" >
             <div class="statistic__item">
               <h2 class="number">{{endConfirmation}}</h2>
               <span class="desc">Bitiş Onayında</span>
@@ -102,7 +102,7 @@
             </div>
           </div>
 
-          <div class="col-md-6 col-lg-2" style="cursor: pointer;" routerLink="/projects" >
+          <div class="col-md-6 col-lg-2" style="cursor: pointer;"  (click)="projectsRouter(1)" >
             <div class="statistic__item">
               <h2 class="number">{{totalDemand}}</h2>
               <span class="desc">Tüm Projeler</span>
