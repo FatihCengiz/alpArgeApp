@@ -20,7 +20,7 @@
             </div>
           </div>
 
-          <div class="col-md-6 col-lg-2">
+          <div class="col-md-6 col-lg-2" style="cursor: pointer;" (click)="projectPlannigRouter(groupUserID,2)">
             <div class="statistic__item">
               <h2 class="number">{{budgetPlan}}</h2>
               <span class="desc">Bütçe Planlamasında</span>
@@ -29,7 +29,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6 col-lg-2" style="cursor: pointer;" (click)="projectConfirmationRouter(1)"  >
+          <div class="col-md-6 col-lg-2" style="cursor: pointer;" (click)="projectConfirmationRouter(groupUserID,3)"  >
             <div class="statistic__item">
               <h2 class="number">{{budgetConfirmation}}</h2>
               <span class="desc">Bütçe Onayında</span>
@@ -38,7 +38,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6 col-lg-2">
+          <div class="col-md-6 col-lg-2" style="cursor: pointer;" (click)="projectDevelopmentRouter(groupUserID,4)">
             <div class="statistic__item">
               <h2 class="number">{{active}}</h2>
               <span class="desc">Geliştirme Sürecinde</span>
@@ -48,7 +48,7 @@
             </div>
           </div>
 
-          <div class="col-md-6 col-lg-2" style="cursor: pointer;" (click)="projectClosingRouter(1)" >
+          <div class="col-md-6 col-lg-2" style="cursor: pointer;" (click)="projectClosingRouter(groupUserID,5)" >
             <div class="statistic__item">
               <h2 class="number">{{endConfirmation}}</h2>
               <span class="desc">Bitiş Onayında</span>
@@ -62,7 +62,7 @@
         <div class="row ">
           <div class="col-md-6 col-lg-1">
           </div>
-          <div class="col-md-6 col-lg-2" id="dashboard6">
+          <div class="col-md-6 col-lg-2" style="cursor: pointer;" id="dashboard6" (click)="projectRejectedRouter(groupUserID,9)">
             <div class="statistic__item">
               <h2 class="number">{{rejected}}</h2>
               <span class="desc">Reddilen Talepler</span>
@@ -72,7 +72,7 @@
             </div>
           </div>
 
-          <div class="col-md-6 col-lg-2" id="dashboard7">
+          <div class="col-md-6 col-lg-2" style="cursor: pointer;" id="dashboard7" (click)="projectDiscontinuedRouter(groupUserID,7)">
             <div class="statistic__item">
               <h2 class="number">{{discontinued}}</h2>
               <span class="desc">Durdurulan Projeler</span>
@@ -82,7 +82,7 @@
             </div>
           </div>
 
-          <div class="col-md-6 col-lg-2" id="dashboard8">
+          <div class="col-md-6 col-lg-2" style="cursor: pointer;" id="dashboard8" (click)="projectCanceledRouter(groupUserID,8)">
             <div class="statistic__item">
               <h2 class="number">{{canceled}}</h2>
               <span class="desc">İptal Edilen Projeler</span>
@@ -92,7 +92,7 @@
             </div>
           </div>
 
-          <div class="col-md-6 col-lg-2">
+          <div class="col-md-6 col-lg-2" style="cursor: pointer;" (click)="projectComplatedRouter(groupUserID,6)">
             <div class="statistic__item">
               <h2 class="number">{{complated}}</h2>
               <span class="desc">Tamamlanan Projeler</span>
@@ -102,7 +102,7 @@
             </div>
           </div>
 
-          <div class="col-md-6 col-lg-2" style="cursor: pointer;"  (click)="projectsRouter(1)" >
+          <div class="col-md-6 col-lg-2" style="cursor: pointer;"  (click)="projectsRouter(groupUserID)" >
             <div class="statistic__item">
               <h2 class="number">{{totalDemand}}</h2>
               <span class="desc">Tüm Projeler</span>

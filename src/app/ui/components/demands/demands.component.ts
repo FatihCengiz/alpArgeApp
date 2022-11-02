@@ -91,6 +91,7 @@ export class DemandsComponent implements OnInit {
   getAllUser(){
     this.demandService.getAllUser().subscribe((response) => {
       this.getUserAllResponse=response['user'];
+      this.getUserAllResponse.sort((a,b) => a.Name.toString().localeCompare(b.Name.toString()));
   });
 }
 

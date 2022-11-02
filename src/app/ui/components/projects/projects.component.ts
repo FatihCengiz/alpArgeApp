@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from './service/project.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -12,10 +13,16 @@ export class ProjectsComponent implements OnInit {
 demandList:any;
 demand:any;
 search:any;
-  constructor(private projectService:ProjectService) {
+userName:any;
+projectStatus:any;
+groupID:any;
+  constructor(private projectService:ProjectService,private router: Router) {
     this.projectService.spinnerShow();
     this.getDemandList();
     this.projectService.goToPageTop();
+    this.userName=this.router.getCurrentNavigation()?.extras.state?.userName;
+    this.projectStatus=this.router.getCurrentNavigation()?.extras.state?.projectStatus;
+    this.groupID=this.router.getCurrentNavigation()?.extras.state?.groupID;
   }
 
   ngOnInit(): void {
@@ -23,7 +30,18 @@ search:any;
   }
   getDemandList(){
     this.projectService.getDemands().subscribe((response=>{
-      this.demandList=response['demand_list'];
+      //this.demandList=response['demand_list'];
+       // console.log(response['demand_list'])
+      if(this.userName==undefined && this.projectStatus==undefined){
+        this.userName="";
+        this.projectStatus="";
+      }
+      if(this.groupID!=3){
+        this.demandList=response['demand_list'].filter(s=> s.Engineer.includes(this.userName) && s.ProjectStatus.includes(this.projectStatus));
+      }else{
+        this.demandList=response['demand_list'].filter(s=> s.Requester.includes(this.userName) && s.ProjectStatus.includes(this.projectStatus));
+      }
+
     }));
   }
   showDemand(event:Event){
