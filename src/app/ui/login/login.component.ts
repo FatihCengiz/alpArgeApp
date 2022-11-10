@@ -35,13 +35,18 @@ export class LoginComponent implements OnInit {
           (response) => {
             this.get = response;
             if (!this.get.error) {
-              this.toastr.success('Giriş İşlemi Başarılı');
-              localStorage.setItem('token',this.get.guid);
-
              this.authService.getUser(this.get.guid).subscribe((response)=>{
               this.userInformation=response;
-             })
-              this.router.navigate(['home']);
+              if(this.userInformation.user[0].IsActive==1){
+                this.toastr.success('Giriş İşlemi Başarılı');
+                localStorage.setItem('token',this.get.guid);
+                this.router.navigate(['home']);
+              }else{
+                this.toastr.warning('Hesabınız aktif değildir');
+                this.user.password="";
+              }
+             });
+
             } else {
               this.toastr.error('Kullancı adı veya şifre yanlış');
               this.user.password="";
