@@ -30,6 +30,7 @@ selectedFile = {
   projectNumber: 0,
   fileName: [""],
 };
+
 projectNumber:any;
 getDemandResponse:any;
 isActive:boolean=true;
@@ -43,6 +44,7 @@ type="png";
 file;
 size;
 files:ProjectFile[]=[];
+
 
   constructor(
     private route: ActivatedRoute,
@@ -73,7 +75,6 @@ files:ProjectFile[]=[];
     parent?.childNodes.forEach((element)=>{
       var checked=(element.childNodes[0].childNodes[0].childNodes[0] as HTMLInputElement).checked;
       var comment=(element.childNodes[1].childNodes[0] as HTMLInputElement).value;
-
       if(checked)
         if(comment==""){
           this.commentControl=true;
@@ -271,14 +272,6 @@ downloadFiles(fileName:string) {
     this.url = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
   });
 }
-// getFile(event){
-//   this.file = event.target.files[0];
-//   const reader = new FileReader();
-//   reader.readAsBinaryString(this.file);
-//     reader.onload = () => {
-//         console.log(reader.result);
-//     };
-// }
 
 getFile(event){
   this.file = event.target.files[0];
@@ -292,15 +285,18 @@ sendFile(){
       const fd = new FormData();
       fd.append('usrfile',this.file);
       fd.append('projectNumber',this.projectNumber);
+      fd.append('isDemandFile',"01");
       this.projectService.postFile(fd).subscribe(res =>{
        if(res['error']){
         Swal.fire('',"Hatalı dosya formatı !",'error');
        }else{
         Swal.fire('',"Dosyanız kaydedildi !",'success');
+        (document.getElementById('projectFile') as HTMLInputElement).value="";
         setTimeout(() => {
           this.getFiles();
         }, 1000);
-       }
+      }
+
         },(err)=>{
           Swal.fire('',"Dosya gönderilemedi !",'error');
         });
@@ -314,7 +310,7 @@ sendFile(){
 }
 
 getFiles(){
-  this.projectService.getFileDetailById(this.projectNumber).subscribe(res =>{
+  this.projectService.getFileDetailById(this.projectNumber,0).subscribe(res =>{
     this.files=res['file_list'];
    if(this.files!=undefined)
     this.files.forEach((element)=>{
@@ -371,27 +367,7 @@ checkedRow(event){
       (element.parentNode as HTMLInputElement).style.backgroundColor='white';
     }
   }
-
-
 }
-
-// onFileSelected(event){
-//   this.convertFile(event.target.files[0]).subscribe(base64 => {
-//     this.base64Output = base64;
-//   });
-// }
-// convertFile(file :File){
-
-//  const result = new ReplaySubject<string>(1);
-//  const reader = new FileReader();
-//  reader.readAsBinaryString(file);
-// reader.onload = (event) => {
-// let data = event.target?.result;
-// if(data!=null)
-//   result.next(btoa(data.toString()));
-// }
-//  return result;
-// }
 
 
 }

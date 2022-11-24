@@ -76,7 +76,13 @@ export class ProjectService {
   getAllUser() {
     let api =
       this.apiUrl +
-      '/api_get_user.php?all&developer_mode_key=AlpArge_Dev_Key_GET';
+      '/api_get_user.php?all&isActive=True&developer_mode_key=AlpArge_Dev_Key_GET';
+    return this.httpClient.get(api);
+  }
+  getAllUserForSource() {
+    let api =
+      this.apiUrl +
+      '/api_get_user.php?all&isActive=False&developer_mode_key=AlpArge_Dev_Key_GET';
     return this.httpClient.get(api);
   }
   spinnerShow() {
@@ -147,8 +153,8 @@ export class ProjectService {
     let api = this.apiUrl+"/getFile.php?id="+id+"&developer_mode_key=AlpArge_Dev_Key_GET";
     return this.httpClient.get( api, { responseType: 'blob' })
  }
- getFileDetailById(id:any) {
-  let api = this.apiUrl+"/getFile.php?id="+id+"&developer_mode_key=AlpArge_Dev_Key_GET";
+ getFileDetailById(id:any,isDemandFile:any) {
+  let api = this.apiUrl+"/getFile.php?id="+id+"&isDemandFile="+isDemandFile+"&developer_mode_key=AlpArge_Dev_Key_GET";
   return this.httpClient.get<ProjectFile[]>(api)
 }
 downloadFileByID(id:any,name:string){
@@ -157,6 +163,30 @@ downloadFileByID(id:any,name:string){
 }
 deleteFile(selectedFile:any) {
   let api =this.apiUrl +'/deleteFile.php';
+  return this.httpClient.post(api,selectedFile);
+}
+postTempFile(fd : FormData): Observable<string>{
+  let api = this.apiUrl+'/postTempFile.php';
+  return this.httpClient.post<string>(api, fd);
+}
+getTempFileDetailById(id:any) {
+  let api = this.apiUrl+"/getTempFile.php?id="+id+"&developer_mode_key=AlpArge_Dev_Key_GET";
+  return this.httpClient.get<ProjectFile[]>(api)
+}
+downloadTempFileByID(id:any,name:string){
+  let api = this.apiUrl+"/getTempFileByID.php?id="+id+"&name="+name+"&developer_mode_key=AlpArge_Dev_Key_GET";
+  return this.httpClient.get( api, { responseType: 'blob' })
+}
+deleteTempFile(selectedFile:any) {
+  let api =this.apiUrl +'/deleteTempFile.php';
+  return this.httpClient.post(api,selectedFile);
+}
+deleteTempAllFile(userID:any) {
+  let api =this.apiUrl +'/deleteTempAllFile.php';
+  return this.httpClient.post(api,userID);
+}
+transferFile(selectedFile:any) {
+  let api =this.apiUrl +'/transferFile.php';
   return this.httpClient.post(api,selectedFile);
 }
 goToPageTop(){

@@ -55,4 +55,9 @@ input, select {
 .project-confirm-button {
   display: none;
 }
+@media (max-width: 444px) {
+  .btnExportImport {
+     margin-top: 5%;
+  }
+}
 

@@ -6,6 +6,11 @@ import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
 import { SelectedProject } from '../../model/selected-project';
 import { ProjectService } from '../../service/project.service';
+import * as XLSX from 'xlsx';
+import { ProjectFile } from '../../model/project-file';
+import { DomSanitizer } from '@angular/platform-browser';
+import { _isNumberValue } from '@angular/cdk/coercion';
+
 
 @Component({
   selector: 'app-project-plannig-add',
@@ -64,9 +69,29 @@ selectedProject: SelectedProject = {
   myDate = new Date();
   date:string;
 
-  constructor(private route: ActivatedRoute,private projectService:ProjectService,private cp:CurrencyPipe,private toastr:ToastrService,private datePipe: DatePipe,private router:Router) {
+  url;
+  type="png";
+  file;
+  size;
+  files:ProjectFile[]=[];
+
+  projectPlanJsonList:any = []
+  expenseItemJsonList:any = []
+
+  sourceID:any=['990','991','992'];
+  sourceName:any=['CNC','MONTAJ','TORNA'];
+
+ excelData:any;
+  constructor(
+    private route: ActivatedRoute,
+    private projectService:ProjectService,
+    private cp:CurrencyPipe,
+    private toastr:ToastrService,
+    private datePipe: DatePipe,
+    private router:Router,
+    private sanitizer: DomSanitizer) {
     this.projectNumber = this.route.snapshot.paramMap.get('id');
-    this.getAllUser();
+    this.getAllUserForSource();
     this.getCurrency();
     this.getTaskType();
     this.projectService.spinnerShowByTime(1500);
@@ -84,22 +109,27 @@ selectedProject: SelectedProject = {
   onTabChange($event: number) {
     this.activePane = $event;
   }
-  getAllUser(){
+  getAllUserForSource(){
     this.projectService.getAllUser().subscribe((response)=>{
       // this.getUser=response['user'];
       this.sources=response['user'];
 
-      const extraSource={
-        ID:991,
-        Name:"CNC",
-        Surname:"",
-      }
       // this.source = Object.keys(response['user']).map(key => ({value: response['user'][key]}));
       //extra soure
-      this.sources.push(extraSource);
+      for(let i=0;i<this.sourceID.length;i++){
+        const extraSource={
+          ID:this.sourceID[i],
+          UserName:this.sourceName[i],
+          Name:this.sourceName[i],
+          Surname:''
+        }
+        this.sources.push(extraSource);
+      }
+
+      console.log(this.sources)
       // this.getUser=this.source;
 
-
+      this.getFiles();
     })
   }
   managerAuthority():any {
@@ -141,7 +171,6 @@ selectedProject: SelectedProject = {
     this.projectService.getTaskType().subscribe((response)=>{
       this.getTaskTypeResponse=response['task_type_list'];
       console.log(this.getTaskTypeResponse);
-      console.log(this.isPreview);
     })
   }
   createRow(row:string,mainDiv:string) {
@@ -159,14 +188,14 @@ selectedProject: SelectedProject = {
     //this.saveToList1(Number(index)-1,Number(childIndex)); incele ***
 
   }
-deleteRow(mainDiv,baseRowID,rowIndex){
+deleteRow(mainDiv,baseRowID,columnIndex){
   var parent=document.getElementById(mainDiv);
   var baseRow=document.getElementById(baseRowID);
   if(parent?.lastChild!=null &&  parent.childNodes.length>1)
   {
     parent?.removeChild(parent.lastChild);
   }else{
-    for(let j=0;j<rowIndex;j++){
+    for(let j=0;j<columnIndex;j++){
       var element = (baseRow?.children[j].children[0] as HTMLInputElement);
       element.value="";
     }
@@ -235,7 +264,6 @@ saveToList1(parentIndex:number,childIndex:number){
       newList.push(form2Element);
       }
       this.budgetPlan.form2Elements[i]=newList;
-
       newList=[];
     }
 
@@ -264,9 +292,9 @@ saveToList2(index:number,childIndex:number){
 getBudgetTab(){
   this.budgetPlan.form5Elements=[];
   var parent=document.getElementById("form5MainDiv");
-  var form5Element1=(parent?.children[0].children[0].children[1] as HTMLInputElement).value;
-  var form5Element2=(parent?.children[1].children[0].children[1] as HTMLInputElement).value;
-  var form5Element3=(parent?.children[5].children[0].children[1] as HTMLInputElement).value;
+  var form5Element1=(parent?.children[0].children[0].children[1] as HTMLInputElement).value.replace('TRY','').trim();
+  var form5Element2=(parent?.children[1].children[0].children[1] as HTMLInputElement).value.replace('TRY','').trim();
+  var form5Element3=(parent?.children[5].children[0].children[1] as HTMLInputElement).value.replace('TRY','').trim();
   this.budgetPlan.form5Elements.push(form5Element1);
   this.budgetPlan.form5Elements.push(form5Element2);
   this.budgetPlan.form5Elements.push(form5Element3);
@@ -301,6 +329,17 @@ emptyControl(parentID,childIndex,formID):boolean{
 form2Control(event) {
   if(event=!null){
     this.emptyForm2Control=true;
+    this.getTaskTypeResponse=this.getTaskTypeResponse;
+
+    const arr:any = [1, 11, 1, 111, 1111, 'a', 1, 1111, 11];
+
+    const indexes = arr.reduce((r, n, i) => {
+     ( n === 1 || n === 11 || n === 'a' ) && r.push(n);
+      return r;
+    }, []);
+
+    console.log(indexes);
+
   }
 }
 form3Control(event) {
@@ -367,6 +406,12 @@ getBudgetPlan(){
     this.getPlanProjectResponse=response;
 
     if(!this.getPlanProjectResponse.error2){
+   //   console.log(this.getPlanProjectResponse.project_plan);
+      this.getPlanProjectResponse.project_plan.forEach((element)=>{
+        this.projectPlanJsonList.push(element)
+
+      })
+    //  console.log( this.projectPlanJsonList);
       var form1=(document.getElementById('form1') as HTMLInputElement);
       var form1Element9=form1.children[4].childNodes[0].childNodes[1] as HTMLInputElement;
 
@@ -380,6 +425,7 @@ getBudgetPlan(){
 
       let rowProjectPlanNumber=this.getPlanProjectResponse['project_plan'].length;
       let childIndex=form2?.childNodes.length;
+
       for(let i=0;i<rowProjectPlanNumber;i++){
 
         const mapped = Object.keys(this.getPlanProjectResponse['project_plan'][i]).map(key => ({type: key, value: this.getPlanProjectResponse['project_plan'][i][key]}));
@@ -411,11 +457,12 @@ getBudgetPlan(){
     }
 
     if(!this.getPlanProjectResponse.error3){
+      this.getPlanProjectResponse.expense_item.forEach((element)=>{
+        this.expenseItemJsonList.push(element)
+      })
       let id="projectExpense";
       var form2=document.getElementById(id);
-
-
-      let rowExpenseItemNumber=this.getPlanProjectResponse['expense_item'].length;
+      let rowExpenseItemNumber=this.getPlanProjectResponse['expense_item'].length;/*aa2*/
       //console.log(this.getPlanProjectResponse['expense_item'])
       let childIndex2=form2?.childNodes.length;
 
@@ -425,15 +472,10 @@ getBudgetPlan(){
 
 
         if(i==0){
-        //  console.log("0 "+i)
           var parent=document.getElementById(id);
-
         }else{
-         // console.log("1 "+i)
           this.createRow(id,'mainDivTab2');
-
           var parent=document.getElementById(id+i.toString());
-          // console.log(id+i.toString())
         }
 
       for(let j=0;j<Number(childIndex2);j++){
@@ -455,7 +497,7 @@ getBudgetPlan(){
   });
 }
 currencyCalculate() {
-  let totalBudget=0;
+let totalBudget=0;
 var parent=document.getElementById('mainDivTab2');
 parent?.childNodes.forEach(element => {
 var quantiy=(element.childNodes[2].childNodes[0] as HTMLInputElement).value
@@ -500,35 +542,46 @@ if(quantiy!=""){
   parent?.childNodes.forEach(element => {
     // var hourPrice2=(element.childNodes[1].childNodes[0] as HTMLInputElement).value.toString().split("/",2)[1];
     var hourPriceSource=(element.childNodes[1].childNodes[0] as HTMLInputElement).value
-    var hourPrice = this.getTaskTypeResponse.find(x=>x.Source == hourPriceSource).HourPrice;
-    console.log(hourPrice)
+    if((element.childNodes[1].childNodes[0]as HTMLInputElement).value!="")
+      {
+        var hourPrice = this.getTaskTypeResponse.find(x=>x.Source == hourPriceSource).HourPrice;
+        var price=element.childNodes[6].childNodes[0] as HTMLInputElement;
+        var totalPrice=element.childNodes[7].childNodes[0] as HTMLInputElement;
+        var hours=(element.childNodes[3].childNodes[0] as HTMLInputElement).value;
+        if(hourPrice != "0" && hours != ""){
+          price.value=hourPrice;
+          totalPrice.value=(Number(hourPrice)*Number(hours)).toString();
+        }else{
+          Swal.fire('', 'Lütfen Kaynak ve Süre alanını boş bırakmayınız !', 'warning');
+        }
+        totalBudget=totalBudget+Number(totalPrice.value);
+        totalBudget=Math.round((totalBudget + Number.EPSILON) * 100) / 100;
+        this.budgetCalculate(3,totalBudget)
+        // console.log(this.isPreview)
+      }else{
+        this.budgetCalculate(3,0)
+      }
 
-    var price=element.childNodes[6].childNodes[0] as HTMLInputElement;
-    var totalPrice=element.childNodes[7].childNodes[0] as HTMLInputElement;
-    var hours=(element.childNodes[3].childNodes[0] as HTMLInputElement).value;
-    if(hourPrice != "0" && hours != ""){
-      price.value=hourPrice;
-      totalPrice.value=(Number(hourPrice)*Number(hours)).toString();
-    }else{
-      Swal.fire('', 'Lütfen Kaynak ve Süre alanını boş bırakmayınız !', 'warning');
-    }
-    totalBudget=totalBudget+Number(totalPrice.value);
-    totalBudget=Math.round((totalBudget + Number.EPSILON) * 100) / 100;
-    this.budgetCalculate(3,totalBudget)
-    console.log(this.isPreview)
   });
  }
 budgetCalculate(formID:number,cost:number){
 var parent=document.getElementById('form5MainDiv');
-var projectPlanCost=parent?.childNodes[0].childNodes[0].childNodes[1] as HTMLInputElement;
 var expenseItemCost=parent?.childNodes[1].childNodes[0].childNodes[1] as HTMLInputElement;
+expenseItemCost.value=expenseItemCost.value.replace('TRY','');
+var projectPlanCost=parent?.childNodes[0].childNodes[0].childNodes[1] as HTMLInputElement
+projectPlanCost.value=projectPlanCost.value.replace('TRY','');
 var total=parent?.childNodes[5].childNodes[0].childNodes[1] as HTMLInputElement;
 if(formID==2){
-  projectPlanCost.value=cost.toString();
+  expenseItemCost.value=cost.toString().trim() + ' TRY';
+  projectPlanCost.value=projectPlanCost.value.trim() + ' TRY';
 }else{
-  expenseItemCost.value=cost.toString();
+  projectPlanCost.value=cost.toString().trim()  + ' TRY';
+  expenseItemCost.value=expenseItemCost.value.trim() + ' TRY';
+
 }
-total.value=(Number(projectPlanCost.value)+Number(projectPlanCost.value)).toString();
+//console.log( projectPlanCost.value);
+
+total.value=(Number(projectPlanCost.value.replace('TRY',''))+Number(expenseItemCost.value.replace('TRY',''))).toString().trim() + ' TRY';
 }
 send(){
   var plannedDate=(document.getElementById('form1text9') as HTMLInputElement);
@@ -686,5 +739,117 @@ send(){
 
   numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    downloadFile(){
+      this.projectService.downloadFile(2).subscribe((response)=>{
+        const data = response;
+        const blob = new Blob([data], { type: 'application/octet-stream' });
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+      })
+    }
+    downloadFiles(fileName:string) {
+      this.projectService.downloadFileByID(this.projectNumber,fileName).subscribe((response)=>{
+        const data = response;
+        const blob = new Blob([data], { type: 'application/octet-stream' });
+        this.url = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+      });
+    }
+    getFiles(){
+      this.projectService.getFileDetailById(this.projectNumber,1).subscribe(res =>{
+        this.files=res['file_list'];
+       if(this.files!=undefined)
+        this.files.forEach((element)=>{
+          this.projectService.downloadFileByID(this.projectNumber,element.FileName).subscribe((response)=>{
+            const data = response;
+            const blob = new Blob([data], { type: 'application/octet-stream' });
+            element.Url=this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+          });
+        });
+      })
+    }
+    readExcel(event:any){
+      let file=event.target.files[0];
+      if(event.target.files[0].type=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+        let fileReader=new FileReader();
+        fileReader.readAsBinaryString(file);
+
+        fileReader.onload=(e)=>{
+          var workBook=XLSX.read(fileReader.result,{type:'binary'});
+          var sheetNames=workBook.SheetNames;
+         this.excelData= XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]])
+        }
+      }else{
+        Swal.fire('', 'Excel formatı bulunamadı !', 'error');
+        (document.getElementById('projectPlanFileInput') as HTMLInputElement).value="";
+
+      }
+
+    }
+    importExcel(rowID:string,mainDiv:string,formIndex:Number){
+      try{
+        if(_isNumberValue(this.excelData[0].ProjectNumber)){
+          let rowNumber=this.excelData.length;
+          var formColNumber=document.getElementById(rowID)?.childNodes.length;
+          this.deleteAllRow(Number(rowNumber),Number(formColNumber),mainDiv,rowID);
+          for(let i=0;i<rowNumber;i++){
+            const mapped = Object.keys(this.excelData[i]).map(key => ({type: key, value: this.excelData[i][key]}));
+            if(i==0){
+              var parent=document.getElementById(rowID);
+            }else{
+              this.createRow(rowID,mainDiv);
+              var parent=document.getElementById(rowID+i.toString());
+            }
+            for(let j=0;j<Number(formColNumber);j++){
+              var form2Element=(parent?.children[j].children[0] as HTMLInputElement);
+             form2Element.value=mapped[j+1].value;
+             if(formIndex==1){
+              this.projectPlanJsonList=this.excelData;
+             }else{
+              this.expenseItemJsonList=this.excelData;
+             }
+            }
+          }
+          this.hourPriceCalculate();
+          this.currencyCalculate();
+        }else{
+          Swal.fire('', 'Uygun format bulunamadı !', 'error');
+          (document.getElementById('projectPlanFileInput') as HTMLInputElement).value="";
+        }
+      }catch(err){
+        Swal.fire('', 'Dosya bulunamadı !', 'error');
+        (document.getElementById('projectPlanFileInput') as HTMLInputElement).value="";
+      }
+
+    }
+
+    exportexcel(fileName:string, jsonList:any)
+    {
+      /* pass here the table id */
+      let element = document.getElementById('excel-table');
+      const ws: XLSX.WorkSheet =XLSX.utils.json_to_sheet(jsonList);
+
+      /* generate workbook and add the worksheet */
+      const wb: XLSX.WorkBook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+      /* save to file */
+      XLSX.writeFile(wb, fileName);
+
+    }
+    deleteAllRow(rowIndex:Number,columnIndex:Number,mainDiv:string,rowID:string){
+      for(let j=0;j<rowIndex;j++){
+        var parent=document.getElementById(mainDiv);
+        var baseRow=document.getElementById(rowID);
+        if(parent?.lastChild!=null &&  parent.childNodes.length>1){
+          parent?.removeChild(parent.lastChild);
+        }else{
+          for(let j=0;j<columnIndex;j++){
+            var element = (baseRow?.children[j].children[0] as HTMLInputElement);
+            element.value="";
+          }
+        }
+      }
+
     }
 }

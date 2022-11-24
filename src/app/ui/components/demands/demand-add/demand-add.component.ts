@@ -12,6 +12,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
 import { SelectedDemands } from '../model/selected-demand';
+import { ProjectService } from '../../projects/service/project.service';
+import { ProjectFile } from '../../projects/model/project-file';
+import { DomSanitizer } from '@angular/platform-browser';
 
 
 @Component({
@@ -35,7 +38,15 @@ export class DemandAddComponent implements OnInit {
   getUserAllResponse: any;
   isVisible:boolean=true;
   groupID:any;
+  userID:any;
   projectStatus:any;
+  numbers:number[]=[0];
+  url;
+  type="png";
+  file;
+  size;
+  files:ProjectFile[]=[];
+
 
   selectedDemands: SelectedDemands = {
     responsible: [],
@@ -43,6 +54,18 @@ export class DemandAddComponent implements OnInit {
     projectStatus: 2,
   };
 
+  selectedFile = {
+    projectNumber: 0,
+    fileName: [""],
+  };
+  selectedTempFile = {
+    userID: 0,
+    fileName: [""],
+  };
+  trasferFile = {
+    projectNumber: 0,
+    userID:0,
+  };
   ngOnInit(): void {}
 
   constructor(
@@ -51,7 +74,9 @@ export class DemandAddComponent implements OnInit {
     private demandService: DemandService,
     private route: ActivatedRoute,
     private datePipe: DatePipe,
-    private router:Router
+    private router:Router,
+    private projectService:ProjectService,
+    private sanitizer: DomSanitizer,
   ) {
  //   this.demandService.spinnerShow();
     this.projectNumber = this.route.snapshot.paramMap.get('id');
@@ -78,8 +103,11 @@ export class DemandAddComponent implements OnInit {
           this.demandService.add(this.demandForm).then(() => {
             setTimeout(() => {
               this.formFill();
-              this.router.navigate(["/demands"]);
-            }, 750);
+              this.sendTempFileToProjectFile();
+            }, 1500);
+            // setTimeout(() => {
+            //   this.router.navigate(["/demands"]);
+            // }, 1000);
           });
         }
       });
@@ -149,7 +177,8 @@ export class DemandAddComponent implements OnInit {
           });
           this.projectStatus=this.get.ProjectStatus
           this.demandForm.disable();
-          this.showManagerAuthority()
+          this.showManagerAuthority();
+          this.hideFileButtons();
 
         });
     } else if (localStorage.getItem('demand')) {
@@ -210,8 +239,11 @@ export class DemandAddComponent implements OnInit {
        this.demandService.getUser(id).subscribe((response)=>{
           this.user=response['user'][0].Name +" "+response['user'][0].Surname;
           this.groupID=response['user'][0].GroupID;
+          this.userID=response['user'][0].ID;
+          this.trasferFile.userID=this.userID;
           this.formFill();
-
+          this.deleteTempAllFile();
+          this.getFiles();
      });
     }
   }
@@ -268,4 +300,238 @@ export class DemandAddComponent implements OnInit {
       this.isVisible=true;
     }
   }
+  // getProjectNumber(){
+  //   this.numbers.length=0;
+  //   this.demandService.getDemands().subscribe((response)=>{
+  //     response['demand_list'].forEach((item)=>{
+  //       this.numbers.push(Number(item.ProjectNumber))
+  //     });
+  //      this.lastProjectMumber=Math.max.apply(null,this.numbers)+1;
+  //      this.trasferFile.userID=this.lastProjectMumber;
+  //   })
+  // }
+
+  hideFileButtons(){
+    var inputFileElement=document.getElementById('fileButtonRow') as HTMLInputElement;
+    inputFileElement.style.background='grey';
+    inputFileElement.style.display='none';
+
+  }
+
+  downloadFile(){
+    this.projectService.downloadFile(2).subscribe((response)=>{
+      const data = response;
+      const blob = new Blob([data], { type: 'application/octet-stream' });
+      this.url = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+    })
+  }
+  downloadFiles(fileName:string) {
+    this.projectService.downloadFileByID(this.projectNumber,fileName).subscribe((response)=>{
+      const data = response;
+      const blob = new Blob([data], { type: 'application/octet-stream' });
+      this.url = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+    });
+  }
+
+  getFile(event){
+    this.file = event.target.files[0];
+    if(this.file!=undefined)
+    this.size=this.file.size;
+  }
+  sendFile(){
+    if(this.file!=undefined){
+      if(this.size<=16000000){
+        const fd = new FormData();
+        fd.append('usrfile',this.file);
+        fd.append('projectNumber',this.projectNumber);
+        fd.append('isDemandFile',"1");
+        this.projectService.postFile(fd).subscribe(res =>{
+         if(res['error']){
+          Swal.fire('',"Hatalı dosya formatı !",'error');
+         }else{
+          Swal.fire('',"Dosyanız kaydedildi !",'success');
+          setTimeout(() => {
+            this.getFiles();
+          }, 1000);
+         }
+          },(err)=>{
+            Swal.fire('',"Dosya gönderilemedi !",'error');
+          });
+      }else{
+        Swal.fire('',"Dosya 15 MB'den büyük olamaz !",'warning');
+      }
+
+    }else{
+      Swal.fire('','Lütfen dosya seçiniz !','warning');
+    }
+  }
+
+  getFiles(){
+    this.projectService.getFileDetailById(this.projectNumber,1).subscribe(res =>{
+      this.files=res['file_list'];
+     if(this.files!=undefined)
+      this.files.forEach((element)=>{
+        this.projectService.downloadFileByID(this.projectNumber,element.FileName).subscribe((response)=>{
+          const data = response;
+          const blob = new Blob([data], { type: 'application/octet-stream' });
+          element.Url=this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+        });
+      });
+    })
+  }
+  checkFile(){
+  this.selectedFile.fileName.length=0;
+  this.selectedFile.projectNumber=0;
+  var parent=document.getElementById('listFile') as HTMLInputElement;
+  parent.childNodes.forEach(element=>{
+     if(parent.lastChild!=element){
+   if((element.childNodes[0].childNodes[0] as HTMLInputElement).checked){
+    let fileName=element.childNodes[2].textContent;
+    this.selectedFile.projectNumber=this.projectNumber;
+    if(fileName!=null)
+    this.selectedFile.fileName.push(fileName);
+   }
+     }
+  })
+
+  }
+  deleteFile(){
+    this.checkFile();
+    if(this.selectedFile.fileName.length!=0){
+      this.projectService.deleteFile(this.selectedFile).subscribe(response=>{
+       if(!response['error']){
+        Swal.fire('','Dosya silme işlemi başarılı !','success');
+        setTimeout(() => {
+          this.getFiles();
+        }, 1000);
+       }else{
+        Swal.fire('','Dosya silme işlemi başarısız !','error');
+       }
+      },(err)=>{
+        Swal.fire('','Dosya silme işlemi başarısız !','error');
+      })
+    }else{
+      Swal.fire('','Seçili dosya bulunumadı !','question');
+    }
+  }
+  checkedRow(event){
+    if(event!=null){
+      var element= event.target.parentNode as HTMLInputElement;
+      if((element.childNodes[0] as HTMLInputElement).checked){
+        (element.parentNode as HTMLInputElement).style.backgroundColor='#92be21';
+      }else{
+        (element.parentNode as HTMLInputElement).style.backgroundColor='white';
+      }
+    }
+  }
+  sendTempFile(){
+    if(this.file!=undefined){
+      if(this.size<=16000000){
+        const fd = new FormData();
+        fd.append('usrfile',this.file);
+        fd.append('userID',this.userID);
+       // console.log(this.userID +" "+this.file )
+        this.projectService.postTempFile(fd).subscribe((res) =>{
+          console.log(res);
+         if(res['error']){
+          Swal.fire('',"Hatalı dosya formatı !",'error');
+         }else{
+          Swal.fire('',"Dosyanız kaydedildi !",'success');
+          setTimeout(() => {
+            this.getTempFiles();
+          }, 1000);
+         }
+          },(err)=>{
+            Swal.fire('',"Dosya gönderilemedi !",'error');
+          });
+      }else{
+        Swal.fire('',"Dosya 15 MB'den büyük olamaz !",'warning');
+      }
+
+    }else{
+      Swal.fire('','Lütfen dosya seçiniz !','warning');
+    }
+  }
+  getTempFiles(){
+    this.projectService.getTempFileDetailById(this.userID).subscribe(res =>{
+      this.files=res['file_list'];
+     if(this.files!=undefined)
+      this.files.forEach((element)=>{
+        this.projectService.downloadTempFileByID(this.userID,element.FileName).subscribe((response)=>{
+          const data = response;
+          const blob = new Blob([data], { type: 'application/octet-stream' });
+          element.Url=this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+        });
+      });
+    })
+  }
+  checkTempFile(){
+    this.selectedTempFile.fileName.length=0;
+    this.selectedTempFile.userID=0;
+    var parent=document.getElementById('listFile') as HTMLInputElement;
+    parent.childNodes.forEach(element=>{
+       if(parent.lastChild!=element){
+     if((element.childNodes[0].childNodes[0] as HTMLInputElement).checked){
+      let fileName=element.childNodes[2].textContent;
+      this.selectedTempFile.userID=this.userID;
+      if(fileName!=null)
+      this.selectedTempFile.fileName.push(fileName);
+         }
+       }
+    })
+  }
+  deleteTempFile(){
+    this.checkTempFile();
+    if(this.selectedTempFile.fileName.length!=0){
+    this.projectService.deleteTempFile(this.selectedTempFile).subscribe(response=>{
+      console.log(response);
+      if(!response['error']){
+       Swal.fire('','Dosya silme işlemi başarılı !','success');
+       setTimeout(() => {
+         this.getTempFiles();
+       }, 1000);
+      }else{
+       Swal.fire('','Dosya silme işlemi başarısız !','error');
+      }
+
+     },(err)=>{
+       Swal.fire('','Dosya silme işlemi başarısız !','error');
+
+     })
+    }else{
+      Swal.fire('','Seçili dosya bulunumadı !','question');
+    }
+  }
+  public deleteTempAllFile(){
+    this.projectService.deleteTempAllFile(this.userID).subscribe((response)=>{
+    })
+  }
+  public transferFile(){
+    this.projectService.transferFile(this.trasferFile).subscribe((response)=>{
+      if(!response['error']){
+        this.deleteTempAllFile();
+        (document.getElementById('projectFile') as HTMLInputElement).value="";
+        setTimeout(() => {
+        this.getTempFiles();
+    this.router.navigate(["/demands"]);
+        }, 1000);
+      }else{
+        Swal.fire('','Dosya aktarımı yapılmadı!','error');
+      }
+    })
+  }
+  public sendTempFileToProjectFile(){
+    this.demandService.getMax().subscribe((response)=>{
+      if(!response['error']){
+        this.trasferFile.projectNumber=(Number(response['max_number']['MAX(ProjectNumber)']))
+        this.transferFile();
+      }else{
+        Swal.fire('','Dosya gönderme işlemi başarısız !','error');
+      }
+    },(err)=>{
+      Swal.fire('','Dosya gönderme işlemi başarısız !','error');
+    })
+   // console.log(this.trasferFile)
+  }
+
 }

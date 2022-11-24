@@ -384,6 +384,26 @@
 </div>
 </div>
 
+<div class="row">
+  <div class="col-sm-6 form-group">
+    <label class="form-control2">
+      <input type="checkbox" name="checkbox" />
+      Fatura kesildi mi?
+    </label>
+</div>
+
+  <div class="col-sm-6 form-group">
+
+  <input
+    type="text"
+    class="form-control"
+    id="form5text13"
+    formControlName="demandDate"
+    required
+  />
+</div>
+</div>
+
           </div>
         </div>
       </c-tab-pane>
@@ -425,12 +445,12 @@
 
         <div class="row mt-1" id="fileButtonRow">
           <div class="col-sm-6 form-group">
-          <input id="file" name="projectFile" type="file" (change)="getFile($event)" class="form-control">
-          </div>
-          <div class="col-sm-1 form-group mr-4">
-        <button class="btn btn-primary " (click)="sendFile()">Dosyayı Kaydet</button>
+          <input id="file" name="projectFile" id="projectFile" type="file" (change)="getFile($event)" class="form-control">
           </div>
           <div class="col-sm-1 form-group">
+        <button class="btn btn-primary " (click)="sendFile()">Dosyayı Kaydet</button>
+          </div>
+          <div class="col-sm-1 form-group" style="margin-left: 5%;">
             <button class="btn btn-danger" (click)="deleteFile()">Dosyayı Sil</button>
               </div>
         </div>

@@ -13,6 +13,7 @@ export class DemandService {
   get;
 
 
+
   constructor(
     @Inject('apiUrl') private apiUrl: string,
     private httpClient: HttpClient,
@@ -42,6 +43,7 @@ export class DemandService {
       }
     );
   }
+
    getDemands(){
     let api = this.apiUrl+'/api_get_demands.php?all&developer_mode_key=AlpArge_Dev_Key_GET' ;
     return  this.httpClient.get<Demands[]>(api);
@@ -78,6 +80,11 @@ export class DemandService {
     let api ='https://finans.truncgil.com/today.json';
     return this.httpClient.get(api);
   }
+  getMax() {
+    let api =this.apiUrl + "/api_get_max.php";
+    return this.httpClient.get(api);
+  }
+
    spinnerShow(){
     this.spinner.show().then(() => {
       setTimeout(() => {

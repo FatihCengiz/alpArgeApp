@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <form  [formGroup]="demandForm"  *ngIf="this.demandForm"  autocomplete="off" >
           <h2 class="text-center mb-4">{{projectNameHeader}}</h2>
-          <div class="row" id="demandForm">
+          <div class="row mb-3" id="demandForm">
             <div class="col-sm-6 form-group">
               <label for="name-p">Proje Adı</label>
               <input
@@ -24,13 +24,14 @@
                 <option value="Bilister Kalıbı">Bilister Kalıbı</option>
                 <option value="Elektronik Kart">Elektronik Kart</option>
                 <option value="Fikstür / Aparat">Fikstür / Aparat</option>
+                <option value="Fizibilite">Fizibilite</option>
                 <option value="Makina / Cihaz">Makina / Cihaz</option>
                 <option value="Mekanik Tasarım">Mekanik Tasarım</option>
                 <option value="Patent Projesi">Patent Projesi</option>
                 <option value="Revizyon İsteği">Revizyon İsteği</option>
                 <option value="Taşıma Arabası">Taşıma Arabası</option>
                 <option value="Temel Araştırma">Temel Araştırma</option>
-                <option value="TestJigi">TestJigi</option>
+                <option value="TestJigi">Test Jigi</option>
                 <option value="Yazılım">Yazılım</option>
 
               </select>
@@ -65,7 +66,7 @@
               />
             </div>
             <div class="col-sm-3 form-group">
-              <label for="DeliveryD">Teslim Tarihi</label>
+              <label for="DeliveryD">İstenilen Teslim Tarihi</label>
               <input
                 type="Date"
                 name="dob"
@@ -240,12 +241,60 @@
               </div>
             </div>
             </div>
-
-
-
-
         </form>
+        <h2 class="text-center mb-4" style="margin-top: 3%;">Eklenen Dosyalar</h2>
+        <div class="container-fluid container-fluid-tab mt-2">
+          <div class="col-sm-12 mt-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5></h5>
+                </div>
+                <div class="card-block table-border-style">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                  <th></th>
+                                    <th></th>
+                                    <th>Dosya Adı</th>
+                                    <th>Uzantı</th>
+                                    <th>Yükleme Tarihi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="listFile">
+                                <tr *ngFor="let file of files let i = index">
+                                  <th > <input (click)="checkedRow($event)" class="ml-2" type="checkbox" name="checkbox" /></th>
+                                    <th scope="row" >{{i+1}}</th>
+                                    <td> <a [href]="file.Url" download="{{file.FileName}}">{{file.FileName}}</a></td>
+                                    <td>{{file.Type}}</td>
+                                    <td>{{file.UploadDate}}</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-1" style="margin-left: 1px;" id="fileButtonRow">
+          <div class="col-sm-6 form-group">
+          <input id="file" name="projectFile" id="projectFile" type="file" (change)="getFile($event)" class="form-control">
+          </div>
+          <div class="col-sm-1 form-group">
+        <button class="btn btn-success" (click)="sendTempFile()">Dosyayı Kaydet</button>
+          </div>
+          <div class="col-sm-1 form-group" style="margin-left: 5%;">
+            <button class="btn btn-danger" (click)="deleteTempFile()">Dosyayı Sil</button>
+              </div>
+        </div>
+
+        <!-- <a [href]="url" download="3.{{type}}">DownloadFile</a> -->
+        <!-- <a [href]="url" download="file.txt">DownloadFile</a> -->
+
+      </div>
       </div>
     </div>
+
   </section>
 </div>
