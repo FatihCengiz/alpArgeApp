@@ -27,8 +27,6 @@ export class DemandsComponent implements OnInit {
   header:string;
 
   constructor(private demandService: DemandService) {
-
-
   }
   ngOnInit(): void {
     this.demandService.spinnerShow();
@@ -109,22 +107,6 @@ export class DemandsComponent implements OnInit {
         this.demands[Number(index)].Checked = false;
       }
     }
-    // if (e.target != null) {
-    //   // console.log((e.target as HTMLInputElement).checked)
-    //   let action=(e.target as HTMLInputElement).checked
-    //   if((e.target as HTMLInputElement).checked==true){
-
-    //     if(elementRef!=undefined){
-    //       elementRef.style.backgroundColor="#DDDDDD";
-    //       const selectedDemand: any = {
-    //         projectNumber:projectNumber,
-    //         event:e,
-    //         action:action
-    //       };
-    //       this.demandList.push(selectedDemand);
-    //     }
-
-    // }
   }
 
   checkBoxControlAll(e: Event) {
@@ -193,7 +175,6 @@ export class DemandsComponent implements OnInit {
               .selectedDemandPost(this.selectedDemands)
               .subscribe(
                 (response) => {
-                  // console.log(response);
                   this.get = response;
                   if (!this.get.error) {
                     this.selectedDemands = {
@@ -212,7 +193,6 @@ export class DemandsComponent implements OnInit {
                   }
                 },
                 (err) => {
-                //  console.log(err);
                   Swal.fire('', 'Talep Onaylama İşlemi Başarısız !', 'error');
                 }
               );

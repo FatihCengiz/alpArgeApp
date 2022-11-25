@@ -16,7 +16,9 @@ search:any;
 userName:any;
 projectStatus:any;
 groupID:any;
-  constructor(private projectService:ProjectService,private router: Router) {
+  constructor(
+    private projectService:ProjectService,
+    private router: Router) {
     this.projectService.spinnerShow();
     this.getDemandList();
     this.projectService.goToPageTop();
@@ -31,7 +33,6 @@ groupID:any;
   getDemandList(){
     this.projectService.getDemands().subscribe((response=>{
       //this.demandList=response['demand_list'];
-       // console.log(response['demand_list'])
       if(this.userName==undefined && this.projectStatus==undefined){
         this.userName="";
         this.projectStatus="";

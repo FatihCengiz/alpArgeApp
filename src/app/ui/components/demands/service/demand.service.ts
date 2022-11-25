@@ -69,7 +69,7 @@ export class DemandService {
     return this.httpClient.get(api);
   }
   getAllUser(){
-    let api = this.apiUrl + "/api_get_user.php?all&developer_mode_key=AlpArge_Dev_Key_GET";
+    let api = this.apiUrl + "/api_get_user.php?all&isActive=True&developer_mode_key=AlpArge_Dev_Key_GET";
     return this.httpClient.get(api);
   }
   getCustomer(){

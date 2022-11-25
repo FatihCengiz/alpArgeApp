@@ -105,21 +105,20 @@ changePassword(){
   if(newPass.value==""){
     Swal.fire('','Şifre boşluk bırakılamaz !','warning');
   }
- else if(newPass.value==newPassRe.value){
-    this.password.id=this.userID;
-    this.password.newPass=newPass.value;
-    this.accountService.changePassword(this.password).subscribe((response)=>{
-      if(!response['error']){
-        Swal.fire('','Şifre değiştirme işlemi başarılı !','success');
-        newPass.value="";
-        newPassRe.value="";
-      }
-    },(err)=>{
-      Swal.fire('','Şifre değiştirme işlemi başarısız !','error');
-    });
-  }else{
-    Swal.fire('','Şifre eşleşmedi !','warning');
+  else if(newPass.value==newPassRe.value){
+      this.password.id=this.userID;
+      this.password.newPass=newPass.value;
+      this.accountService.changePassword(this.password).subscribe((response)=>{
+        if(!response['error']){
+          Swal.fire('','Şifre değiştirme işlemi başarılı !','success');
+          newPass.value="";
+          newPassRe.value="";
+        }
+      },(err)=>{
+        Swal.fire('','Şifre değiştirme işlemi başarısız !','error');
+      });
+    }else{
+      Swal.fire('','Şifre eşleşmedi !','warning');
+    }
   }
-
-}
 }

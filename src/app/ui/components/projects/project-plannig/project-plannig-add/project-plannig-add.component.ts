@@ -55,7 +55,8 @@ selectedProject: SelectedProject = {
   getPlanProjectResponse:any;
   getUser:any;
   getUserResponse:any;
-  getTaskTypeResponse:any[]=[]
+  getTaskTypeResponse:any[]=[];
+  tempTaskTypeResponse:any[]=[]
   currency:any;
   dolar:any;
   euro:any;
@@ -126,7 +127,6 @@ selectedProject: SelectedProject = {
         this.sources.push(extraSource);
       }
 
-      console.log(this.sources)
       // this.getUser=this.source;
 
       this.getFiles();
@@ -170,7 +170,7 @@ selectedProject: SelectedProject = {
   getTaskType(){
     this.projectService.getTaskType().subscribe((response)=>{
       this.getTaskTypeResponse=response['task_type_list'];
-      console.log(this.getTaskTypeResponse);
+      this.tempTaskTypeResponse=this.getTaskTypeResponse;
     })
   }
   createRow(row:string,mainDiv:string) {
@@ -232,7 +232,6 @@ if(!this.isActive){
     this.saveToList1(Number(index),Number(indexChild1));
     this.saveToList2(Number(index2),Number(indexChild2));
     this.getBudgetTab();
-    // console.log(this.budgetPlan)
     this.projectService.save(this.budgetPlan);
     this.toastr.success('Kayıt Başarılı');
   }
@@ -326,22 +325,23 @@ emptyControl(parentID,childIndex,formID):boolean{
   return emptyControl;
 }
 
-form2Control(event) {
-  if(event=!null){
+form2Control() {
+
     this.emptyForm2Control=true;
-    this.getTaskTypeResponse=this.getTaskTypeResponse;
-
-    const arr:any = [1, 11, 1, 111, 1111, 'a', 1, 1111, 11];
-
-    const indexes = arr.reduce((r, n, i) => {
-     ( n === 1 || n === 11 || n === 'a' ) && r.push(n);
-      return r;
-    }, []);
-
-    console.log(indexes);
+    var index=(document.getElementById('form2text1') as HTMLSelectElement).selectedIndex;
+    this.getTaskTypeResponse=this.tempTaskTypeResponse;
+    this.getTaskTypeResponse=this.getTaskTypeResponse.reduce((r,n,i)=>{
+      if(index==1){r.push(n); return r;}
+      else if(index==2){( i === 1 || i === 2 || i === 8 || i === 11 || i === 13 || i === 17 || i === 18 || i === 20) && r.push(n); return r;}
+      else if(index==3){( i === 14) && r.push(n); return r;}
+      else if(index==4){( i === 3 || i === 6 || i === 7 || i === 9 || i === 15 || i === 16 || i === 19 ) && r.push(n); return r;}
+      else if(index==5){( i === 5 || i === 12 ) && r.push(n); return r;}
+      else if(index==6){( i === 17 ) && r.push(n); return r;}
+      else if(index==7){( i === 0 ) && r.push(n); return r;}
+    },[])
 
   }
-}
+
 form3Control(event) {
   if(event=!null){
     this.emptyForm3Control=true;
@@ -369,6 +369,7 @@ getBudgetPlan(){
     form1Element7.value=this.getDemandResponse.DemandDate;
     form1Element8.value=this.getDemandResponse.DeliveryDate;
     var responsible=this.getDemandResponse.Responsible;
+
     if(this.getDemandResponse.ProjectStatus==3){
       this.managerAuthority();
       this.isActive=true;
@@ -384,6 +385,7 @@ getBudgetPlan(){
     }
     if(this.getDemandResponse.ProjectStatus>2){//disable plan
       this.disablePlans();
+      this.isClosing=false;
     }
     this.getUserByID(responsible)
 
@@ -406,22 +408,17 @@ getBudgetPlan(){
     this.getPlanProjectResponse=response;
 
     if(!this.getPlanProjectResponse.error2){
-   //   console.log(this.getPlanProjectResponse.project_plan);
       this.getPlanProjectResponse.project_plan.forEach((element)=>{
         this.projectPlanJsonList.push(element)
 
       })
-    //  console.log( this.projectPlanJsonList);
       var form1=(document.getElementById('form1') as HTMLInputElement);
       var form1Element9=form1.children[4].childNodes[0].childNodes[1] as HTMLInputElement;
-
-     // console.log(this.getPlanProjectResponse['demand_project_list'][0].PlannedDeliveryDate)
       form1Element9.value=this.getPlanProjectResponse['demand_project_list'][0].PlannedDeliveryDate;
 
 
       let id="projectPlannigRow";
       var form2=document.getElementById(id);
-      // console.log((form2?.children[0].children[0] as HTMLInputElement).value)
 
       let rowProjectPlanNumber=this.getPlanProjectResponse['project_plan'].length;
       let childIndex=form2?.childNodes.length;
@@ -429,7 +426,6 @@ getBudgetPlan(){
       for(let i=0;i<rowProjectPlanNumber;i++){
 
         const mapped = Object.keys(this.getPlanProjectResponse['project_plan'][i]).map(key => ({type: key, value: this.getPlanProjectResponse['project_plan'][i][key]}));
-        //console.log(mapped)
 
         if(i==0){
           var parent=document.getElementById(id);
@@ -441,16 +437,6 @@ getBudgetPlan(){
       for(let j=0;j<Number(childIndex);j++){
          var form2Element=(parent?.children[j].children[0] as HTMLInputElement);
          form2Element.value=mapped[j+1].value;
-      //  form2Element.value=mapped[j+1].value;
-      //  console.log(mapped[j+1].value)
-       //  if(j!=1){
-        //   }
-       //  else{
-         //   form2Element.value=mapped[j+1].value
-
-            // console.log(form2Element.value);
-            // console.log(mapped[j+1].value)
-          //}
          }
 
       }
@@ -463,7 +449,6 @@ getBudgetPlan(){
       let id="projectExpense";
       var form2=document.getElementById(id);
       let rowExpenseItemNumber=this.getPlanProjectResponse['expense_item'].length;/*aa2*/
-      //console.log(this.getPlanProjectResponse['expense_item'])
       let childIndex2=form2?.childNodes.length;
 
       for(let i=0;i<rowExpenseItemNumber;i++){
@@ -557,7 +542,6 @@ if(quantiy!=""){
         totalBudget=totalBudget+Number(totalPrice.value);
         totalBudget=Math.round((totalBudget + Number.EPSILON) * 100) / 100;
         this.budgetCalculate(3,totalBudget)
-        // console.log(this.isPreview)
       }else{
         this.budgetCalculate(3,0)
       }
@@ -577,9 +561,7 @@ if(formID==2){
 }else{
   projectPlanCost.value=cost.toString().trim()  + ' TRY';
   expenseItemCost.value=expenseItemCost.value.trim() + ' TRY';
-
 }
-//console.log( projectPlanCost.value);
 
 total.value=(Number(projectPlanCost.value.replace('TRY',''))+Number(expenseItemCost.value.replace('TRY',''))).toString().trim() + ' TRY';
 }

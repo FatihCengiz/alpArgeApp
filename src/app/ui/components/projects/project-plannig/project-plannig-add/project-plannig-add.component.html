@@ -193,16 +193,15 @@
             class="form-control browser-default custom-select"
             formControlName="taskType"
             placeholder="Görev Türü"
-            (change)="form2Control($event.target)"
+            (change)="form2Control()"
           >  <option value="0" disabled selected hidden></option>
             <option value="Genel">Genel</option>
             <option value="Tasarım">Tasarım</option>
             <option value="Tedarik">Tedarik</option>
             <option value="Üretim">Üretim</option>
-            <option value="Tasarım">Genel</option>
-            <option value="Tedarik">Prototip</option>
-            <option value="Üretim">Taslak Tasarın</option>
-            <option value="Tasarım">Araştırma</option>
+            <option value="Prototip">Prototip</option>
+            <option value="Taslak Tasarım">Taslak Tasarım</option>
+            <option value="Araştırma">Araştırma</option>
           </select>
         </div>
 
@@ -212,7 +211,6 @@
             class="form-control browser-default custom-select"
             formControlName="taskType"
             placeholder="Görev Tipi"
-            (change)="form2Control($event.target)"
           >  <option value="0" disabled selected hidden></option>
           <option value="{{task.Source}}" *ngFor="let task of getTaskTypeResponse">{{task.Source}}</option>
           </select>
